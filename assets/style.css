@@ -1,3 +1,6 @@
+/* ==========================================================================
+   CSS Custom Properties (Variables)
+   ========================================================================== */
 :root {
     --primary-green: #a8e6cf;
     --primary-blue: #7fcdbb;
@@ -6,42 +9,107 @@
     --dark-text: #e8e8e8;
     --accent: #5eb3a6;
     --shadow: rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --border-radius: 10px;
 }
 
+/* ==========================================================================
+   Global Styles & Resets
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    transition: background-color 0.3s, color 0.3s;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 body {
     background-color: var(--dark-bg);
     color: var(--dark-text);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
+    overflow-x: hidden;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
-s}
+}
 
-/* Header & Navbar */
+/* ==========================================================================
+   Animations
+   ========================================================================== */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* ==========================================================================
+   Preloader
+   ========================================================================== */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-bg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.preloader-content {
+    text-align: center;
+}
+
+.preloader-content img {
+    width: 80px;
+    height: auto;
+    margin-bottom: 20px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+
+.preloader-text {
+    color: var(--primary-green);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   Header & Navigation
+   ========================================================================== */
 header {
     background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
     box-shadow: 0 2px 10px var(--shadow);
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: var(--transition);
 }
 
 nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 1.5rem 0; /* More padding for balance */
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
 }
 
 .logo {
@@ -52,62 +120,52 @@ nav {
     color: var(--dark-bg);
 }
 
-.logo i {
+.logo img {
+    height: 50px;
+    width: auto;
+    display: block;
     margin-right: 10px;
-    font-size: 2rem;
+}
+
+.logo p {
+    margin: 0;
 }
 
 .nav-links {
-     display: flex;
-     list-style: none;
-     flex-wrap: wrap;
+    display: flex;
+    list-style: none;
 }
 
 .nav-links li {
-     margin-left: 20px;
+    margin-left: 20px;
 }
 
 .nav-links a {
-     text-decoration: none;
-     color: var(--dark-bg);
-     font-weight: 500;
-     padding: 5px 10px;
-     border-radius: 4px;
-     transition: all 0.3s;
+    text-decoration: none;
+    color: var(--dark-bg);
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: var(--transition);
 }
 
-.nav-links a:hover {
-     background-color: rgba(255, 255, 255, 0.2);
+.nav-links a:hover,
+.nav-links a.active {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .menu-toggle {
-     display: none;
-     background: none;
-     border: none;
-     color: var(--dark-bg);
-     font-size: 1.5rem;
-     cursor: pointer;
+    display: none;
+    background: none;
+    border: none;
+    color: var(--dark-bg);
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
-/* Hero Section */
-.hero {
-     padding: 80px 0;
-     text-align: center;
-     background: linear-gradient(135deg, rgba(168, 230, 207, 0.2), rgba(127, 205, 187, 0.2));
-}
-
-.hero h1 {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    color: var(--primary-green);
-}
-
-.hero p {
-    font-size: 1.2rem;
-    max-width: 800px;
-    margin: 0 auto 30px;
-}
-
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
 .btn {
     display: inline-block;
     background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
@@ -117,9 +175,10 @@ nav {
     border-radius: 30px;
     font-weight: bold;
     margin: 10px;
-    transition: all 0.3s;
+    transition: var(--transition);
     cursor: pointer;
     border: none;
+    text-align: center;
 }
 
 .btn:hover {
@@ -127,35 +186,181 @@ nav {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Main Content */
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary-green);
+    color: var(--primary-green);
+}
+
+.btn-outline:hover {
+    background: var(--primary-green);
+    color: var(--dark-bg);
+}
+
+.btn-small {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+}
+
+.btn-block {
+    display: block;
+    width: 100%;
+    margin: 0;
+}
+
+.btn-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+.hero {
+    padding: 80px 0;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(168, 230, 207, 0.2), rgba(127, 205, 187, 0.2));
+    z-index: -1;
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+}
+
+.hero-content {
+    flex: 1;
+    text-align: left;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    color: var(--primary-green);
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    max-width: 600px;
+    margin-bottom: 30px;
+}
+
+.hero-buttons {
+    margin-bottom: 40px;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 30px;
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-blue);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.hero-image {
+    flex: 1;
+    max-width: 500px;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Main Content & Sections
+   ========================================================================== */
 main {
-   padding: 40px 0;
+    padding: 40px 0;
 }
 
 .section {
-   margin-bottom: 60px;
+    margin-bottom: 80px;
 }
 
 .section-title {
-   font-size: 2.5rem;
-   margin-bottom: 30px;
-   color: var(--primary-green);
-   text-align: center;
-   position: relative;
-   padding-bottom: 15px;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: var(--primary-green);
+    text-align: center;
+    position: relative;
+    padding-bottom: 15px;
 }
 
 .section-title::after {
-   content: '';
-   position: absolute;
-   bottom: 0;
-   left: 50%;
-   transform: translateX(-50%);
-   width: 100px;
-   height: 3px;
-   background: linear-gradient(90deg, var(--primary-green), var(--primary-blue));
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-green), var(--primary-blue));
 }
 
+/* About Section */
+.about-content {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-text p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.about-image {
+    flex: 1;
+    max-width: 500px;
+}
+
+.about-image img {
+    width: 100%;
+    height: auto;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================================
+   Standard Card Component (FITUR, INFO, etc.)
+   ========================================================================== */
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -165,10 +370,13 @@ main {
 
 .card {
     background-color: var(--dark-card);
-    border-radius: 10px;
-    padding: 25px;
+    border-radius: var(--border-radius);
+    padding: 25px; /* Padding asli ada di sini */
     box-shadow: 0 5px 15px var(--shadow);
-    transition: all 0.3s;
+    transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
@@ -176,14 +384,34 @@ main {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
+.card-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.card-icon i {
+    font-size: 1.5rem;
+    color: var(--dark-bg);
+}
+
 .card h3 {
     color: var(--primary-blue);
     margin-bottom: 15px;
     font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 .card p {
     margin-bottom: 20px;
+    flex-grow: 1;
 }
 
 .card-link {
@@ -192,17 +420,122 @@ main {
     color: var(--accent);
     text-decoration: none;
     font-weight: 500;
+    transition: var(--transition);
+}
+
+.card-link:hover {
+    text-decoration: underline;
+    transform: translateX(5px);
 }
 
 .card-link i {
     margin-left: 5px;
 }
 
-.card-link:hover {
-    text-decoration: underline;
+/* ==========================================================================
+   Download Card Component (Terpisah)
+   ========================================================================== */
+.download-content {
+    margin-top: 40px;
 }
 
-/* Status badges */
+.download-info {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.download-info h3 {
+    font-size: 1.8rem;
+    color: var(--primary-green);
+    margin-bottom: 10px;
+}
+
+/* 1. Gunakan grid yang sama dengan .card-container */
+.download-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+/* 2. Buat .download-card mirip dengan .card */
+.download-card {
+    background-color: var(--dark-card);
+    border-radius: var(--border-radius);
+    padding: 25px; /* Pindahkan padding ke sini agar ukuran luar sama */
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.download-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.download-card.coming-soon {
+    opacity: 0.8;
+}
+
+/* 3. Hapus padding dari elemen dalam, karena sekarang ada di .download-card */
+.download-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* padding: 20px; <-- DIHAPUS */
+}
+
+.download-header h4 {
+    margin: 0;
+    color: var(--primary-blue);
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.download-size {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+.download-body {
+    flex-grow: 1;
+    /* padding: 20px; <-- DIHAPUS */
+}
+
+.download-body p {
+    margin-bottom: 15px;
+}
+
+.download-features {
+    list-style: none;
+}
+
+.download-features li {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+}
+
+.download-features i {
+    color: var(--primary-green);
+    margin-right: 10px;
+}
+
+.download-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin-top: auto;
+    /* padding: 20px; <-- DIHAPUS */
+}
+
+/* ==========================================================================
+   Status Badges
+   ========================================================================== */
 .status-badge {
     display: inline-block;
     padding: 4px 12px;
@@ -212,22 +545,13 @@ main {
     margin-left: 10px;
 }
 
-.status-fixed {
-    background-color: #4caf50;
-    color: white;
-}
+.status-fixed { background-color: #4caf50; color: white; }
+.status-bug { background-color: #f44336; color: white; }
+.status-new { background-color: #2196f3; color: white; }
 
-.status-bug {
-    background-color: #f44336;
-    color: white;
-}
-
-.status-new {
-    background-color: #2196f3;
-    color: white;
-}
-
-/* Gallery Section */
+/* ==========================================================================
+   Gallery Section
+   ========================================================================== */
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -238,10 +562,10 @@ main {
 .gallery-item {
     position: relative;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
     box-shadow: 0 5px 15px var(--shadow);
     cursor: pointer;
-    transition: all 0.3s;
+    transition: var(--transition);
     height: 250px;
 }
 
@@ -254,7 +578,7 @@ main {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.3s;
+    transition: var(--transition);
 }
 
 .gallery-item:hover img {
@@ -269,7 +593,7 @@ main {
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
     padding: 20px;
     transform: translateY(100%);
-    transition: transform 0.3s;
+    transition: var(--transition);
 }
 
 .gallery-item:hover .gallery-overlay {
@@ -286,7 +610,9 @@ main {
     font-size: 0.9rem;
 }
 
-/* Lightbox */
+/* ==========================================================================
+   Lightbox
+   ========================================================================== */
 .lightbox {
     display: none;
     position: fixed;
@@ -314,7 +640,7 @@ main {
 .lightbox-content img {
     width: 100%;
     height: auto;
-    border-radius: 10px;
+    border-radius: var(--border-radius);
 }
 
 .lightbox-close {
@@ -324,7 +650,7 @@ main {
     color: var(--dark-text);
     font-size: 2rem;
     cursor: pointer;
-    transition: color 0.3s;
+    transition: var(--transition);
 }
 
 .lightbox-close:hover {
@@ -340,7 +666,42 @@ main {
     color: var(--dark-text);
 }
 
-/* Download Modal */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+}
+
+.lightbox-prev,
+.lightbox-next {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox-prev:hover,
+.lightbox-next:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-prev { margin-left: -70px; }
+.lightbox-next { margin-right: -70px; }
+
+/* ==========================================================================
+   Modal
+   ========================================================================== */
 .download-modal {
     display: none;
     position: fixed;
@@ -389,14 +750,15 @@ main {
     color: var(--dark-text);
     font-size: 1.5rem;
     cursor: pointer;
-    transition: color 0.3s;
+    transition: var(--transition);
 }
 
 .modal-close:hover {
     color: var(--primary-green);
 }
 
-.download-options {
+/* Ganti nama agar tidak bentrok dengan .download-options */
+.modal-download-options {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -407,8 +769,8 @@ main {
     align-items: center;
     padding: 15px;
     background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    transition: all 0.3s;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
     cursor: pointer;
     text-decoration: none;
     color: var(--dark-text);
@@ -436,31 +798,54 @@ main {
     opacity: 0.8;
 }
 
-/* Footer */
+/* ==========================================================================
+   Footer
+   ========================================================================== */
 footer {
     background-color: var(--dark-card);
-    padding: 40px 0;
-    text-align: center;
-    margin-top: 60px;
+    padding: 60px 0 20px;
+    margin-top: 80px;
 }
 
 .footer-content {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    gap: 30px;
 }
 
 .footer-section {
     flex: 1;
-    min-width: 200px;
+    min-width: 250px;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
     margin-bottom: 20px;
-    padding: 0 15px;
+}
+
+.footer-logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+
+.footer-logo h3 {
+    color: var(--primary-green);
+    margin: 0;
+    font-size: 1.5rem;
 }
 
 .footer-section h3 {
     color: var(--primary-green);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+}
+
+.footer-section p {
+    margin-bottom: 20px;
+    opacity: 0.8;
 }
 
 .footer-section ul {
@@ -468,12 +853,13 @@ footer {
 }
 
 .footer-section ul li {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
 .footer-section a {
     color: var(--dark-text);
     text-decoration: none;
+    transition: var(--transition);
 }
 
 .footer-section a:hover {
@@ -483,7 +869,6 @@ footer {
 
 .social-links {
     display: flex;
-    justify-content: center;
     margin-top: 20px;
 }
 
@@ -491,68 +876,164 @@ footer {
     display: inline-block;
     width: 40px;
     height: 40px;
-    background-color: var(--primary-green);
-    color: var(--dark-bg);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--dark-text);
     border-radius: 50%;
     text-align: center;
     line-height: 40px;
-    margin: 0 10px;
-    transition: all 0.3s;
+    margin-right: 10px;
+    transition: var(--transition);
 }
 
 .social-links a:hover {
-    background-color: var(--primary-blue);
+    background-color: var(--primary-green);
+    color: var(--dark-bg);
     transform: translateY(-3px);
 }
 
 .copyright {
-    margin-top: 30px;
+    text-align: center;
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 0.9rem;
+    opacity: 0.8;
 }
 
-/* Responsive */
+.copyright i {
+    color: var(--primary-green);
+    margin: 0 5px;
+}
+
+/* ==========================================================================
+   Back to Top Button
+   ========================================================================== */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+    color: var(--dark-bg);
+    border: none;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    z-index: 99;
+}
+
+#back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#back-to-top:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+@media (max-width: 992px) {
+    .hero .container {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .hero-content {
+        text-align: center;
+    }
+    
+    .hero-stats {
+        justify-content: center;
+    }
+    
+    .about-content {
+        flex-direction: column;
+    }
+    
+    .about-text, 
+    .about-image {
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
     }
 
     .nav-links {
-       position: fixed;
-       top: 70px;
-       left: -100%;
-       width: 100%;
-       height: calc(100vh - 70px);
-       background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
-       flex-direction: column;
-       align-items: center;
-       padding-top: 50px;
-       transition: left 0.5s;
+        position: fixed;
+        top: 0; /* Akan diatur oleh JS */
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px); /* Akan diatur oleh JS */
+        background: linear-gradient(135deg, var(--primary-green), var(--primary-blue));
+        flex-direction: column;
+        align-items: center;
+        padding-top: 50px;
+        transition: left 0.5s;
     }
 
     .nav-links.active {
-       left: 0;
+        left: 0;
     }
 
     .nav-links li {
-       margin: 15px 0;
+        margin: 15px 0;
     }
-
+    
     .hero h1 {
-        font-size: 2rem;
+        font-size: 2.5rem;
     }
-
+    
+    .hero p {
+        font-size: 1rem;
+    }
+    
     .section-title {
         font-size: 2rem;
     }
-
+    
     .footer-content {
         flex-direction: column;
     }
-
+    
     .gallery-grid {
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
         gap: 15px;
+    }
+    
+    .lightbox-prev {
+        margin-left: 10px;
+    }
+    
+    .lightbox-next {
+        margin-right: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .card-container,
+    .download-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
     }
 }

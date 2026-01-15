@@ -3,165 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>T4n OS - Sistem Operasi Berbasis Void Linux</title>
+    <title>T4n OS</title>
+    <meta name="description" content="T4n OS adalah distribusi Linux berbasis Void Linux dengan repositori VUR (Void User Repository) yang dirancang untuk power user dan pengguna umum.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="assets/style.css">
+    <link rel="icon" href="assets/images/t4n-os.svg" type="image/svg+xml">
 </head>
 <body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="preloader-content">
+            <img src="assets/images/t4n-os.svg" alt="T4n OS">
+            <div class="preloader-text">Loading...</div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
     <header>
         <nav class="container">
-            <div class="logo">
-                <i class="fas fa-desktop"></i>
-                T4n OS
-            </div>
+            <a href="#home" class="logo-link">
+                <div class="logo">
+                    <img src="assets/images/t4n-os.svg" alt="T4n OS">
+                    <p>T4n OS</p>
+                </div>
+            </a>
+
             <ul class="nav-links">
-                <li><a href="#home">Beranda</a></li>
-                <li><a href="#about">Tentang</a></li>
-                <li><a href="#goals">Goals</a></li>
-                <li><a href="#features">Fitur</a></li>
-                <li><a href="#fixed">Fixed</a></li>
-                <li><a href="#bugs">Bug</a></li>
-                <li><a href="#gallery">Galeri</a></li>
-                <li><a href="#info">Info</a></li>
+                <li><a href="#home" class="btn btn-small">Home</a></li>
+                <li><a href="#about" class="btn btn-small">About</a></li>
+                <li><a href="#features" class="btn btn-small">Features</a></li>
+                <li><a href="#gallery" class="btn btn-small">Gallery</a></li>
+                <li><a href="#info" class="btn btn-small">Information</a></li>
+                <li><a href="#download" class="btn btn-small">Download</a></li>
             </ul>
-            <button class="menu-toggle" id="menu-toggle">
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">
                 <i class="fas fa-bars"></i>
             </button>
         </nav>
     </header>
 
+    <!-- Hero Section -->
     <section id="home" class="hero">
+        <div class="hero-bg"></div>
         <div class="container">
-            <h1>T4n OS</h1>
-            <p>Sistem Operasi berbasis Void Linux dengan repositori pengguna sendiri (VUR) dan tools kustomisasi yang powerful</p>
-            <button class="btn" id="get-started-btn">Get Started</button>
-            <a href="https://github.com/t4n-os/T4n_OS" class="btn" target="_blank">v.0.1.0</a>
+            <div class="hero-content">
+                <h1>T4n OS</h1>
+                <p>Sistem Operasi berbasis Void Linux dengan repositori VUR.</p>
+                <div class="hero-buttons">
+                    <a href="#download" class="btn">Get Started</a>
+                    <a href="https://github.com/t4n-company/t4n-os" class="btn btn-outline" target="_blank">v.0.1.0</a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">Rolling</div>
+                        <div class="stat-label">Release Model</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">XBPS</div>
+                        <div class="stat-label">Package Manager</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="assets/images/T4nos.png" alt="T4n OS Desktop">
+            </div>
         </div>
     </section>
 
+    <!-- Main Content -->
     <main class="container">
+        <!-- About Section -->
         <section id="about" class="section">
             <h2 class="section-title">Tentang T4n OS</h2>
-            <div class="card-container">
-                <div class="card">
-                    <h3>T4n OS</h3>
-                    <p>T4n OS adalah Distribusi Linux yang berbasis Void Linux. Sistem ini dirancang untuk pengguna yang menginginkan kontrol penuh(Power User) dan pengguna umum seperti : Browsing, Office, Content Creator, Editor, Programmer dan Server</p>
-                    <a href="https://github.com/t4n-os/T4n_OS" class="card-link" target="_blank">
+            <div class="about-content">
+                <div class="about-text">
+                    <p>T4n OS adalah Distribusi Linux yang berbasis Void Linux. Sistem ini dirancang untuk pengguna yang menginginkan kontrol penuh (Power User) dan pengguna umum untuk keperluan: Browsing, Office, Content Creator, Editor, Programmer dan Server.</p>
+                    <p>Dengan integrasi VUR (Void User Repository), T4n OS menyediakan akses ke ribuan paket tambahan yang tidak tersedia di repository resmi Void Linux, memberikan fleksibilitas maksimal untuk pengguna.</p>
+                    <a href="https://github.com/t4n-company/t4n-os" class="card-link" target="_blank">
                         Kunjungi GitHub <i class="fas fa-arrow-right"></i>
                     </a>
                 </div>
-                <div class="card">
-                    <h3>VUR (Void User Repository)</h3>
-                    <p>VUR atau Void User Repository adalah repository dengan kumpulan template yang berguna seperti AUR dan menutupi kekurangan repository resmi void linux</p>
-                    <a href="https://github.com/t4n-os/VUR" class="card-link" target="_blank">
-                        Kunjungi GitHub <i class="fas fa-arrow-right"></i>
-                    </a>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Void Linux Terminal">
                 </div>
             </div>
         </section>
 
-        <section id="goals" class="section">
-            <h2 class="section-title">Goals</h2>
-            <div class="card-container">
-                <div class="card">
-                    <h3>Eksperimen</h3>
-                    <p>Hanya Eksperimen dari Bocah Atjeh (Hehehehehe)</p>
-                </div>
-                <div class="card">
-                    <h3>Perkenalan Void Linux</h3>
-                    <p>Memperkenalkan Void Linux kepada pengguna yang belum familiar dengan distribusi ini</p>
-                </div>
-                <div class="card">
-                    <h3>Highly Customizable</h3>
-                    <p>Memberikan pengalaman yang dapat disesuaikan sepenuhnya sesuai kebutuhan pengguna</p>
-                </div>
-                <div class="card">
-                    <h3>Lightweight</h3>
-                    <p>Dirancang agar ringan dan efisien, cocok untuk laptop dengan spesifikasi rendah</p>
-                </div>
-                <div class="card">
-                    <h3>Kustomisasi Runit</h3>
-                    <p>Mengoptimalkan sistem init runit untuk booting cepat dan manajemen layanan yang efisien</p>
-                </div>
-                <div class="card">
-                    <h3>Pilihan Sistem Init</h3>
-                    <p>SystemD untuk server saja atau gunakan Runit untuk server, terserah kepada pengguna</p>
-                </div>
-            </div>
-        </section>
-
+        <!-- Features Section -->
         <section id="features" class="section">
-            <h2 class="section-title">Fitur</h2>
+            <h2 class="section-title">Fitur Unggulan</h2>
             <div class="card-container">
                 <div class="card">
-                    <div>
-                        <h3>VUR Integration <span class="status-badge status-new">COMING SOON</span></h3>
-                        <p>Integrasi penuh dengan Void User Repository (VUR) yang menyediakan akses ke ribuan paket tambahan yang tidak tersedia di repository resmi Void Linux.</p>
+                    <div class="card-icon">
+                        <i class="fas fa-rocket"></i>
                     </div>
-
-                    <div>
-                        <h3>Multiple Desktop Environments <span class="status-badge status-new">COMING SOON</span></h3>
-                        <p>Dukungan untuk berbagai lingkungan desktop termasuk XFCE4 untuk X11 dan KDE untuk Wayland, memberikan fleksibilitas penuh kepada pengguna.</p>
+                    <h3>VUR Integration <span class="status-badge status-new">COMING SOON</span></h3>
+                    <p>Integrasi penuh dengan Void User Repository (VUR) yang menyediakan akses ke ribuan paket tambahan yang tidak tersedia di repository resmi Void Linux.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-bolt"></i>
                     </div>
-
-                    <div>
-                        <h3>Optimized Performance</h3>
-                        <p>Optimasi khusus untuk berbagai use case dari daily computing hingga server production, dengan fokus pada penggunaan sumber daya yang minimal.</p>
+                    <h3>Custom Init System <span class="status-badge status-new">COMING SOON</span></h3>
+                    <p>Sistem init runit yang dikustomisasi untuk booting ultra-cepat dan manajemen layanan yang efisien, serta opsi untuk menggunakan SystemD.</p>
+                </div>
+                
+                <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-palette"></i>
                     </div>
-
-                    <div>
-                        <h3>Custom Init System <span class="status-badge status-new">COMING SOON</span></h3>
-                        <p>Sistem init runit yang dikustomisasi untuk booting ultra-cepat dan manajemen layanan yang efisien, dengan opsi untuk menggunakan SystemD pada server.</p>
-                    </div>
-
+                    <h3>Kustomisasi Maksimal</h3>
+                    <p>Desktop environment yang dapat disesuaikan sepenuhnya dengan pilihan Window Manager modern seperti BSPWM & River, atau Desktop Environment lengkap seperti XFCE4 & KDE.</p>
                 </div>
             </div>
         </section>
-        
-        <section id="bugs" class="section">
-            <h2 class="section-title">Bug</h2>
-            <div class="card-container">
-                <div class="card">
-                    <div>
-                        <div class="card">
-                            <h3>Sudo<span class="status-badge status-bug">BUG</span></h3>
-                            <p>Sudo masih bermasalah, harus setup mandiri. Lihat Arch Wiki atau Void Docs</p>
-                        </div>
 
-                        <div class="card">
-                            <h3>DBUS Service<span class="status-badge status-bug">BUG</span></h3>
-                            <p>Adanya transparancy Terminal Emulator dan menjalankan dual window firefox secara bersamaan pada Session BSPWM yang menggunakan Lightdm</p>
-                        </div>
-                   </div>
-              </div>
-        </section>
-        
-        <section id="fixed" class="section">
-            <h2 class="section-title">Fixed</h2>
-            <div class="card-container">
-                <div class="card">
-                    <div>
-                        <div class="card">
-                            <h3>?<span class="status-badge status-fixed">FIXED</span></h3>
-                            <p>? baru dimulai ?</p>
-                        </div>
-
-                        <div class="card">
-                            <h3>?<span class="status-badge status-fixed">FIXED</span></h3>
-                            <p>?</p>
-                        </div>
-                  </div>
-            </div>
-        </section>
-
+        <!-- Gallery Section -->
         <section id="gallery" class="section">
             <h2 class="section-title">Galeri</h2>
             <div class="gallery-grid">
-                <div class="gallery-item" data-title="T4n OS" data-caption="Tampilan desktop Void Linux dengan environment yang bersih">
-                    <img src="assets/images/T4nos.jpg" alt="T4n OS Logo">
+                <div class="gallery-item" data-title="T4n OS Desktop" data-caption="Tampilan desktop T4n OS dengan environment yang bersih dan modern">
+                    <img src="assets/images/T4nos.jpg" alt="T4n OS Desktop">
                     <div class="gallery-overlay">
-                        <h3>T4n OS</h3>
-                        <p>T4n OS Logo</p>
+                        <h3>T4n OS Desktop</h3>
+                        <p>Desktop environment yang bersih dan modern</p>
                     </div>
                 </div>
                 <div class="gallery-item" data-title="Void Linux Terminal" data-caption="Terminal Void Linux dengan tampilan yang powerful">
@@ -202,10 +168,14 @@
             </div>
         </section>
 
+        <!-- Information Section -->
         <section id="info" class="section">
             <h2 class="section-title">Informasi & Sumber Daya</h2>
             <div class="card-container">
                 <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
                     <h3>Dokumentasi</h3>
                     <p>Dokumentasi lengkap tentang instalasi, konfigurasi, dan penggunaan T4n OS beserta komponen-komponennya.</p>
                     <a href="doc/index.html" class="card-link">
@@ -213,6 +183,9 @@
                     </a>
                 </div>
                 <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
                     <h3>Komunitas</h3>
                     <p>Bergabung dengan komunitas T4n OS untuk berdiskusi, berbagi pengalaman, dan mendapatkan bantuan dari pengguna lain.</p>
                     <a href="#" class="card-link">
@@ -220,6 +193,9 @@
                     </a>
                 </div>
                 <div class="card">
+                    <div class="card-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
                     <h3>Kontribusi</h3>
                     <p>Ikut berkontribusi pada pengembangan T4n OS dengan melaporkan bug, menyarankan fitur, atau mengirimkan pull request.</p>
                     <a href="#" class="card-link">
@@ -228,28 +204,211 @@
                 </div>
             </div>
         </section>
+
+        <!-- Download Section -->
+        <section id="download" class="section">
+            <h2 class="section-title">Unduh T4n OS</h2>
+            <div class="download-content">
+                <div class="download-info">
+                    <h3>Pilih Versi T4n OS</h3>
+                    <p>Tersedia dalam beberapa varian untuk kebutuhan berbeda. Pilih yang sesuai dengan kebutuhan Anda.</p>
+                </div>
+                <div class="download-options">
+                    <div class="download-card">
+                        <div class="download-header">
+                            <h4>BASE</h4>
+                            <span class="download-size">1.0 GB</span>
+                        </div>
+                        <div class="download-body">
+                            <p>Base CLI</p>
+                            <ul class="download-features">
+                                <li><i class="fas fa-check"></i> Command Line Interface</li>
+                                <li><i class="fas fa-check"></i> init - Runit</li>
+                                <li><i class="fas fa-check"></i> Basic Utilities</li>
+                            </ul>
+                        </div>
+                        <div class="download-footer">
+                            <button class="btn download-btn" data-version="BASE" data-size="1.0 GB">Get Started</button>
+                        </div>
+                    </div>
+
+                    <div class="download-card">
+                        <div class="download-header">
+                            <h4>Server <span class="status-badge status-new">COMING SOON</span></h4>
+                            <span class="download-size">TBA</span>
+                        </div>
+                        <div class="download-body">
+                            <p>Server CLI</p>
+                            <ul class="download-features">
+                                <li><i class="fas fa-check"></i> Command Line Interface</li>
+                                <li><i class="fas fa-check"></i> init - SystemD</li>
+                                <li><i class="fas fa-check"></i> Basic Utilities</li>
+                            </ul>
+                        </div>
+                        <div class="download-footer">
+                            <button class="btn btn-block btn-disabled" disabled>
+                                <i class="fas fa-clock"></i> Coming Soon
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="download-card">
+                        <div class="download-header">
+                            <h4>XFCE4 <span class="status-badge status-new">COMING SOON</span></h4>
+                            <span class="download-size">TBA</span>
+                        </div>
+                        <div class="download-body">
+                            <p>Desktop Environment XFCE4</p>
+                            <ul class="download-features">
+                                <li><i class="fas fa-check"></i> Desktop Environment</li>
+                                <li><i class="fas fa-check"></i> General Application</li>
+                                <li><i class="fas fa-check"></i> init - Runit</li>
+                                <li><i class="fas fa-check"></i> Basic Utilities</li>
+                            </ul>
+                        </div>
+                        <div class="download-footer">
+                            <button class="btn btn-block btn-disabled" disabled>
+                                <i class="fas fa-clock"></i> Coming Soon
+                            </button>
+                        </div>
+                    </div>
+            
+                    <div class="download-card">
+                        <div class="download-header">
+                            <h4>KDE <span class="status-badge status-new">COMING SOON</span></h4>
+                            <span class="download-size">TBA</span>
+                        </div>
+                        <div class="download-body">
+                            <p>Desktop Environment KDE</p>
+                            <ul class="download-features">
+                                <li><i class="fas fa-check"></i> Desktop Environment</li>
+                                <li><i class="fas fa-check"></i> General Application</li>
+                                <li><i class="fas fa-check"></i> init - Runit</li>
+                                <li><i class="fas fa-check"></i> Basic Utilities</li>
+                            </ul>
+                        </div>
+                        <div class="download-footer">
+                            <button class="btn btn-block btn-disabled" disabled>
+                                <i class="fas fa-clock"></i> Coming Soon
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="download-card">
+                        <div class="download-header">
+                            <h4>BSPWM <span class="status-badge status-new">COMING SOON</span></h4>
+                            <span class="download-size">TBA</span>
+                        </div>
+                        <div class="download-body">
+                            <p>Window Manager BSPWM</p>
+                            <ul class="download-features">
+                                <li><i class="fas fa-check"></i> Window Manager</li>
+                                <li><i class="fas fa-check"></i> General Application</li>
+                                <li><i class="fas fa-check"></i> init - Runit</li>
+                                <li><i class="fas fa-check"></i> Basic Utilities</li>
+                            </ul>
+                        </div>
+                        <div class="download-footer">
+                            <button class="btn btn-block btn-disabled" disabled>
+                                <i class="fas fa-clock"></i> Coming Soon
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="download-card">
+                        <div class="download-header">
+                            <h4>RiverWM <span class="status-badge status-new">COMING SOON</span></h4>
+                            <span class="download-size">TBA</span>
+                        </div>
+                        <div class="download-body">
+                            <p>Window Manager RiverWM</p>
+                            <ul class="download-features">
+                                <li><i class="fas fa-check"></i> Window Manager</li>
+                                <li><i class="fas fa-check"></i> General Application</li>
+                                <li><i class="fas fa-check"></i> init - Runit</li>
+                                <li><i class="fas fa-check"></i> Basic Utilities</li>
+                            </ul>
+                        </div>
+                        <div class="download-footer">
+                            <button class="btn btn-block btn-disabled" disabled>
+                                <i class="fas fa-clock"></i> Coming Soon
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="assets/images/t4n-os.svg" alt="T4n OS">
+                        <h3>T4n OS</h3>
+                    </div>
+                    <p>Distribusi Linux berbasis Void Linux dengan fokus pada kustomisasi dan performa.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/t4n-company" target="_blank" aria-label="GitHub Organization"><i class="fab fa-github"></i></a>
+                        <a href="https://github.com/gh0st4n" target="_blank" aria-label="GitHub Personal"><i class="fab fa-github"></i></a>
+                        <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="#" target="_blank" aria-label="Reddit"><i class="fab fa-reddit"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Sumber Daya</h3>
+                    <ul>
+                        <li><a href="https://github.com/t4n-company/t4n-os" target="_blank">T4n OS</a></li>
+                        <li><a href="https://t4n-company.github.io/t4n-os/doc/index.html" target="_blank">Docs T4n OS</a></li>
+                        <li><a href="https://github.com/t4n-company/VUR" target="_blank">VUR</a></li>
+                        <li><a href="https://github.com/t4n-company/VUR-Helper" target="_blank">VUR-Helper</a></li>
+                        <li><a href="https://voidlinux.org/" target="_blank">Void Linux</a></li>
+                        <li><a href="https://docs.voidlinux.org/" target="_blank">Docs Void Linux</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Kontribusi</h3>
+                    <p>T4n OS adalah proyek komunitas yang terbuka untuk kontribusi dari siapa saja.</p>
+                    <a href="https://github.com/t4n-company/t4n-os" class="btn btn-small" target="_blank">
+                        <i class="fab fa-github"></i> Kontribusi di GitHub
+                    </a>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2026 T4n OS. Project Community. Dibangun dengan <i class="fas fa-heart"></i> berbasis Void Linux.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" aria-label="Back to top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <!-- Download Modal -->
     <div class="download-modal" id="download-modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">Unduh T4n OS</h2>
-                <button class="modal-close" id="modal-close">&times;</button>
+                <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
             </div>
-            <div class="download-options">
-                <a href="https://drive.google.com/drive/folders/1Ocg6Bilwax_r4zdpf58bkDpW09vZ7S6Z?usp=drive_link" target="_blank" class="download-option">
-                    <i class="fab fa-google-drive"></i>
-                    <div class="download-info">
-                        <h3>Google Drive 1</h3>
-                        <p>Unduh langsung dari Google Drive</p>
-                    </div>
                 <a href="#" target="_blank" class="download-option">
                     <i class="fab fa-google-drive"></i>
                     <div class="download-info">
-                        <h3>Google Drive 2</h3>
+                        <h3>Google Drive</h3>
                         <p>Unduh langsung dari Google Drive</p>
                     </div>
+                </a>
+                <a href="#" target="_blank" class="download-option">
+                    <i class="fa-solid fa-download"></i>
+                    <div class="download-info">
+                        <h3>SourceForge</h3>
+                        <p>Unduh langsung dari SourceForger</p>
+                    </div>
+                </a>
                 <a href="#" target="_blank" class="download-option">
                     <i class="fas fa-magnet"></i>
                     <div class="download-info">
@@ -264,44 +423,16 @@
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox">
         <div class="lightbox-content">
-            <span class="lightbox-close" id="lightbox-close">&times;</span>
+            <span class="lightbox-close" id="lightbox-close" aria-label="Close lightbox">&times;</span>
             <img id="lightbox-image" src="" alt="">
             <div class="lightbox-caption" id="lightbox-caption"></div>
+            <div class="lightbox-nav">
+                <button class="lightbox-prev" aria-label="Previous image"><i class="fas fa-chevron-left"></i></button>
+                <button class="lightbox-next" aria-label="Next image"><i class="fas fa-chevron-right"></i></button>
+            </div>
         </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>Tentang</h3>
-                    <p>T4n OS adalah distribusi Linux berbasis Void Linux dengan fokus pada kustomisasi dan performa.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Sumber Daya</h3>
-                    <ul>
-                        <li><a href="https://github.com/t4n-os/T4n_OS" target="_blank">T4n OS</a></li>
-                        <li><a href="https://t4n-os.github.io/T4n_OS/doc/index.html" target="_blank">Docs T4n OS</a></li>
-                        <li><a href="https://github.com/t4n-os/VUR" target="_blank">VUR</a></li>
-                        <li><a href="https://github.com/t4n-os/VUR-Helper" target="_blank">VUR-Helper</a></li>
-                        <li><a href="https://voidlinux.org/" target="_blank">Void Linux</a></li>
-                        <li><a href="https://docs.voidlinux.org/" target="_blank">Docs Void Linux</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="social-links">
-                <a href="https://github.com/t4n-os" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="https://github.com/gh0st4n" target="_blank"><i class="fab fa-github"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-discord"></i></a>
-                <a href="#" target="_blank"><i class="fab fa-reddit"></i></a>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2026 T4n OS. Project Community.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="assets/main.js"></script>
+    <script src="assets/script.js"></script>
 </body>
 </html>
