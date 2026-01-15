@@ -19,11 +19,11 @@
   - Gaming (*on going*)
 - Variant
   - Base
-  - Server
-  - XFCE4
-  - BSPWM
-  - KDE
-  - RiverWm
+  - Server (on Going)
+  - XFCE4 (on Going)
+  - BSPWM (on Going)
+  - KDE (on Going)
+  - RiverWM (on Going)
  
 ## 🧠 Filosofi
 - Simpel
