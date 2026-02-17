@@ -7,7 +7,7 @@
     <meta name="description" content="T4n OS adalah sistem operasi berbasis Void Linux yang dirancang untuk memberikan pengalaman penggunaan yang mudah, ringan, dan stabil.">
     <link rel="icon" href="./assets/images/Logo-W.svg" type="image/svg+xml">    
 
-    <!-- Google Fonts untuk Gaya Luxury -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -17,25 +17,34 @@
     
     <style>
         /* ==========================================================================
-           CSS Custom Properties (Luxury Theme Variables)
+           CSS Custom Properties (Shadow Forest Theme Variables)
            ========================================================================== */
         :root {
-            /* Palette Luxury: Gold & Deep Blue */
-            --primary-gold: #d4af37;
-            --primary-gold-hover: #b5952f;
-            --secondary-gold: #f3e5ab;
+            /* Palette: Black Night, Forest Green, Concrete Grey */
             
-            --dark-bg: #050505;
-            --dark-card: rgba(20, 20, 30, 0.7);
-            --dark-surface: #0f111a;
+            /* 10% Aksen: Cool Grey/Concrete */
+            --accent-concrete: #b0b8c1;
+            --concrete-hover: #ced6da;
+            --concrete-glow: rgba(176, 184, 193, 0.2);
             
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
+            /* 30% Sekunder: Forest Green */
+            --forest-green: #2d6a4f;       /* Deep Forest */
+            --forest-light: #40916c;       /* Lighter Forest */
+            --forest-tint: rgba(45, 106, 79, 0.15);
+            --border-forest: rgba(45, 106, 79, 0.3);
             
-            --accent-glow: rgba(212, 175, 55, 0.15);
-            --glass-border: rgba(212, 175, 55, 0.2);
+            /* 60% Dominan: Black Night */
+            --black-night: #050505;       /* Deep Shadow */
+            --dark-card: rgba(10, 20, 15, 0.7); /* Black with green tint */
+            --dark-surface: #0a0f0c;
             
-            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            /* Text Colors */
+            --text-main: #eceff1;
+            --text-muted: #90a4ae;
+            
+            /* UI Elements */
+            --shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.7);
+            --shadow-green: 0 0 20px rgba(45, 106, 79, 0.25);
             --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             --border-radius: 4px;
         }
@@ -54,14 +63,15 @@
         }
 
         body {
-            background-color: var(--dark-bg);
+            background-color: var(--black-night);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             line-height: 1.7;
             overflow-x: hidden;
+            /* Ambient forest fog effect */
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(30, 40, 60, 0.4) 0%, transparent 40%);
+                radial-gradient(circle at 15% 50%, rgba(45, 106, 79, 0.08) 0%, transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(20, 30, 25, 0.4) 0%, transparent 40%);
         }
 
         h1, h2, h3, h4, h5 {
@@ -76,21 +86,21 @@
             padding: 0 24px;
         }
 
-        /* Utility Text Gradient */
+        /* Utility Text Gradient (Concrete to Forest) */
         .text-gradient {
-            background: linear-gradient(135deg, var(--secondary-gold), var(--primary-gold));
+            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px var(--accent-glow);
+            text-shadow: 0 0 20px rgba(45, 106, 79, 0.2);
         }
 
         /* ==========================================================================
            Animations
            ========================================================================== */
-        @keyframes pulse-luxury {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        @keyframes pulse-forest {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(45, 106, 79, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(45, 106, 79, 0); }
         }
 
         @keyframes fadeInUp {
@@ -107,7 +117,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--dark-bg);
+            background-color: var(--black-night);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -128,12 +138,12 @@
             width: 100px;
             height: auto;
             margin-bottom: 30px;
-            animation: pulse-luxury 2s infinite;
-            filter: drop-shadow(0 0 10px var(--primary-gold));
+            animation: pulse-forest 2s infinite;
+            filter: drop-shadow(0 0 10px var(--forest-green));
         }
 
         .preloader-text {
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             font-size: 1rem;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -148,10 +158,10 @@
             top: 0;
             z-index: 100;
             transition: var(--transition);
-            background: rgba(5, 5, 5, 0.8);
+            background: rgba(5, 5, 5, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--border-forest);
         }
 
         nav {
@@ -179,13 +189,16 @@
             width: auto;
             display: block;
             margin-right: 12px;
-            filter: drop-shadow(0 0 5px var(--primary-gold));
+            filter: drop-shadow(0 0 5px var(--forest-green));
         }
 
         .logo p {
             margin: 0;
             font-family: 'Cinzel', serif;
             letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-links {
@@ -199,7 +212,7 @@
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-main);
+            color: var(--text-muted);
             font-weight: 400;
             font-size: 0.9rem;
             letter-spacing: 1px;
@@ -209,7 +222,7 @@
             transition: var(--transition);
         }
 
-        /* Efek Garis Bawah Emas */
+        /* Efek Garis Bawah Forest Green */
         .nav-links a::after {
             content: '';
             position: absolute;
@@ -217,13 +230,14 @@
             height: 1px;
             bottom: 0;
             left: 0;
-            background-color: var(--primary-gold);
+            background-color: var(--forest-green);
+            box-shadow: 0 0 8px var(--forest-green);
             transition: width 0.3s ease;
         }
 
         .nav-links a:hover,
         .nav-links a.active {
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
         }
 
         .nav-links a:hover::after,
@@ -235,18 +249,18 @@
             display: none;
             background: none;
             border: none;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             font-size: 1.5rem;
             cursor: pointer;
         }
 
         /* ==========================================================================
-           Buttons (Luxury Style)
+           Buttons (Concrete Style)
            ========================================================================== */
         .btn {
             display: inline-block;
-            background: transparent;
-            color: var(--primary-gold);
+            background: var(--accent-concrete);
+            color: #1a1a1a; /* Dark text for contrast on concrete */
             padding: 12px 35px;
             text-decoration: none;
             font-size: 0.9rem;
@@ -256,10 +270,12 @@
             margin: 10px;
             transition: var(--transition);
             cursor: pointer;
-            border: 1px solid var(--primary-gold);
+            border: 1px solid var(--accent-concrete);
+            border-radius: var(--border-radius);
             position: relative;
             overflow: hidden;
             z-index: 1;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
 
         .btn::before {
@@ -269,7 +285,7 @@
             left: 0;
             width: 0;
             height: 100%;
-            background-color: var(--primary-gold);
+            background-color: var(--forest-green);
             transition: width 0.3s ease;
             z-index: -1;
         }
@@ -279,22 +295,26 @@
         }
 
         .btn:hover {
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            color: #fff;
+            border-color: var(--forest-green);
+            box-shadow: 0 0 25px rgba(45, 106, 79, 0.4);
         }
 
         .btn-outline {
+            background: transparent;
+            color: var(--accent-concrete);
             border: 1px solid var(--text-muted);
-            color: var(--text-muted);
+            box-shadow: none;
         }
 
         .btn-outline:hover {
-            border-color: var(--primary-gold);
-            color: var(--primary-gold);
+            border-color: var(--accent-concrete);
+            color: var(--text-main);
+            background: rgba(176, 184, 193, 0.1);
         }
         
         .btn-outline::before {
-            background-color: transparent;
+            background: transparent;
         }
 
         .btn-small {
@@ -312,15 +332,38 @@
         .btn-disabled {
             opacity: 0.3;
             cursor: not-allowed;
+            background-color: var(--text-muted);
             border-color: var(--text-muted);
-            color: var(--text-muted);
+            color: #000;
         }
         
         .btn-disabled:hover {
-            background: transparent;
-            color: var(--text-muted);
+            background: var(--text-muted);
+            color: #000;
             box-shadow: none;
             transform: none;
+        }
+
+        /* Tombol Hitam Normal khusus untuk Contribute */
+        .btn-black {
+            background-color: #000000; /* Warna Hitam Pekat */
+            color: #ffffff;             /* Teks Putih agar kontras */
+            border-color: #000000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        /* Menghapus efek slide-in hijau (animasi ::before) dari tombol utama */
+        .btn-black::before {
+            display: none; 
+        }
+
+        /* Efek Hover pada tombol hitam */
+        .btn-black:hover {
+            background-color: #1a1a1a; /* Sedikit lebih terang saat di-hover */
+            color: #ffffff;
+            border-color: #1a1a1a;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); /* Glow putih halus */
+            transform: translateY(-2px);
         }
 
         /* ==========================================================================
@@ -341,7 +384,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.8), rgba(5, 5, 5, 1));
+            background: radial-gradient(circle at 50% 50%, rgba(15, 25, 20, 0.8), rgba(5, 5, 5, 1));
             z-index: -1;
         }
 
@@ -365,18 +408,20 @@
         }
         
         .hero h1 span {
-            color: var(--primary-gold);
+            /* Gradient Concrete to Green */
+            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
-        /* Styling khusus untuk teks baru "Welcome To NEW ERA..." */
         .hero-subtitle {
             font-size: 1.2rem;
-            color: var(--text-muted);
+            color: var(--accent-concrete);
             margin-bottom: 30px;
             font-family: 'Inter', sans-serif;
             letter-spacing: 2px;
             text-transform: uppercase;
-            border-left: 3px solid var(--primary-gold);
+            border-left: 3px solid var(--forest-green);
             padding-left: 20px;
             display: inline-block;
         }
@@ -397,7 +442,7 @@
             display: flex;
             gap: 50px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid var(--border-forest);
         }
 
         .stat-item {
@@ -407,7 +452,7 @@
         .stat-number {
             font-size: 1.8rem;
             font-weight: 700;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             font-family: 'Cinzel', serif;
             display: block;
         }
@@ -432,7 +477,7 @@
             right: -20px;
             width: 100%;
             height: 100%;
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border-forest);
             z-index: -1;
         }
 
@@ -440,8 +485,9 @@
             width: 100%;
             height: auto;
             border-radius: var(--border-radius);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border: 1px solid var(--border-forest);
+            filter: sepia(20%) hue-rotate(80deg) contrast(1.1); /* Green tint */
         }
 
         /* ==========================================================================
@@ -465,8 +511,9 @@
         }
 
         .section-title span {
-            border-bottom: 2px solid var(--primary-gold);
+            border-bottom: 2px solid var(--accent-concrete);
             padding-bottom: 10px;
+            color: var(--accent-concrete);
         }
 
         /* About Section */
@@ -498,16 +545,18 @@
             height: auto;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            filter: grayscale(20%) sepia(10%);
+            filter: sepia(30%) hue-rotate(90deg) contrast(1.1);
             transition: var(--transition);
+            border: 1px solid var(--border-forest);
         }
         
         .about-image:hover img {
-            filter: grayscale(0%);
+            filter: sepia(0%) hue-rotate(0deg);
+            border-color: var(--accent-concrete);
         }
 
         /* ==========================================================================
-           Standard Card Component (Glassmorphism)
+           Standard Card Component (Forest Glassmorphism)
            ========================================================================== */
         .card-container {
             display: grid;
@@ -520,7 +569,7 @@
             background-color: var(--dark-card);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border-forest);
             border-radius: var(--border-radius);
             padding: 35px;
             transition: var(--transition);
@@ -538,15 +587,15 @@
             left: 0;
             width: 100%;
             height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+            background: linear-gradient(90deg, transparent, var(--forest-green), transparent);
             transform: scaleX(0);
             transition: transform 0.4s ease;
         }
 
         .card:hover {
             transform: translateY(-10px);
-            border-color: var(--primary-gold);
-            box-shadow: 0 15px 40px -10px rgba(0,0,0,0.5);
+            border-color: var(--forest-green);
+            box-shadow: var(--shadow-green);
         }
 
         .card:hover::before {
@@ -557,17 +606,29 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            background: rgba(212, 175, 55, 0.1);
+            background: rgba(45, 106, 79, 0.15);
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 25px;
-            border: 1px solid var(--primary-gold);
+            border: 1px solid var(--border-forest);
+            transition: var(--transition);
+        }
+
+        .card:hover .card-icon {
+            background: rgba(45, 106, 79, 0.3);
+            border-color: var(--accent-concrete);
+            box-shadow: 0 0 15px rgba(176, 184, 193, 0.2);
         }
 
         .card-icon i {
             font-size: 1.5rem;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
+            transition: var(--transition);
+        }
+
+        .card:hover .card-icon i {
+            color: var(--forest-light);
         }
 
         .card h3 {
@@ -590,7 +651,7 @@
         .card-link {
             display: inline-flex;
             align-items: center;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             text-decoration: none;
             font-weight: 600;
             text-transform: uppercase;
@@ -600,7 +661,7 @@
         }
 
         .card-link:hover {
-            color: var(--text-main);
+            color: var(--forest-light);
             letter-spacing: 2px;
         }
 
@@ -622,7 +683,7 @@
 
         .download-info h3 {
             font-size: 2rem;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             margin-bottom: 15px;
         }
 
@@ -636,7 +697,7 @@
             background-color: var(--dark-card);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border-forest);
             border-radius: var(--border-radius);
             padding: 30px;
             transition: var(--transition);
@@ -646,11 +707,12 @@
         }
         
         .download-card:hover {
-            border-color: var(--primary-gold);
+            border-color: var(--forest-green);
+            box-shadow: var(--shadow-green);
         }
 
         .download-header {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-forest);
             padding-bottom: 15px;
             margin-bottom: 15px;
             display: flex;
@@ -670,12 +732,12 @@
         }
 
         .download-size {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--primary-gold);
+            background: rgba(176, 184, 193, 0.15);
+            color: var(--accent-concrete);
             padding: 4px 12px;
             font-size: 0.75rem;
             border-radius: 20px;
-            border: 1px solid rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--accent-concrete);
         }
 
         .download-body {
@@ -704,11 +766,11 @@
         }
         
         .download-features li i {
-            margin-top: 4px; /* Align icon with top of text */
+            margin-top: 4px;
         }
 
         .download-features i {
-            color: var(--primary-gold);
+            color: var(--forest-light);
             margin-right: 12px;
             font-size: 0.8rem;
             min-width: 15px;
@@ -716,7 +778,7 @@
 
         .download-footer {
             margin-top: auto;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid var(--border-forest);
             padding-top: 20px;
         }
 
@@ -738,10 +800,10 @@
         .status-fixed { background-color: rgba(76, 175, 80, 0.2); color: #4caf50; border: 1px solid #4caf50; }
         .status-bug { background-color: rgba(244, 67, 54, 0.2); color: #f44336; border: 1px solid #f44336; }
         .status-new { 
-            background-color: rgba(212, 175, 55, 0.2); 
-            color: var(--primary-gold); 
-            border: 1px solid var(--primary-gold);
-            animation: pulse-luxury 2s infinite;
+            background-color: rgba(45, 106, 79, 0.2); 
+            color: var(--forest-light); 
+            border: 1px solid var(--forest-green);
+            animation: pulse-forest 2s infinite;
         }
 
         /* ==========================================================================
@@ -761,12 +823,12 @@
             cursor: pointer;
             transition: var(--transition);
             height: 280px;
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border-forest);
         }
 
         .gallery-item:hover {
             transform: scale(1.02);
-            border-color: var(--primary-gold);
+            border-color: var(--forest-green);
         }
 
         .gallery-item img {
@@ -774,12 +836,12 @@
             height: 100%;
             object-fit: cover;
             transition: transform 0.6s ease;
-            filter: grayscale(30%);
+            filter: sepia(40%) hue-rotate(80deg) contrast(1.1); /* Greenish tint */
         }
 
         .gallery-item:hover img {
             transform: scale(1.1);
-            filter: grayscale(0%);
+            filter: sepia(0%) hue-rotate(0deg);
         }
 
         .gallery-overlay {
@@ -800,13 +862,13 @@
         }
 
         .gallery-overlay h3 {
-            color: var(--primary-gold);
+            color: var(--forest-light);
             margin-bottom: 5px;
             font-size: 1.2rem;
         }
 
         .gallery-overlay p {
-            color: var(--text-muted);
+            color: var(--accent-concrete);
             font-size: 0.85rem;
         }
 
@@ -836,8 +898,9 @@
             max-width: 90%;
             max-height: 90%;
             position: relative;
-            border: 1px solid var(--primary-gold);
-            padding: 5px; /* Frame effect */
+            border: 1px solid var(--forest-green);
+            padding: 5px; 
+            box-shadow: 0 0 30px rgba(45, 106, 79, 0.2);
         }
 
         .lightbox-content img {
@@ -857,7 +920,7 @@
         }
 
         .lightbox-close:hover {
-            color: var(--primary-gold);
+            color: var(--forest-light);
         }
 
         .lightbox-caption {
@@ -866,7 +929,7 @@
             left: 0;
             right: 0;
             text-align: center;
-            color: var(--text-muted);
+            color: var(--accent-concrete);
             font-family: 'Cinzel', serif;
             letter-spacing: 1px;
         }
@@ -897,9 +960,9 @@
         }
 
         .lightbox-prev:hover, .lightbox-next:hover {
-            border-color: var(--primary-gold);
-            color: var(--primary-gold);
-            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--forest-green);
+            color: var(--forest-light);
+            background: rgba(45, 106, 79, 0.1);
         }
 
         /* ==========================================================================
@@ -912,7 +975,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             backdrop-filter: blur(5px);
             z-index: 1000;
             justify-content: center;
@@ -925,7 +988,7 @@
 
         .modal-content {
             background: var(--dark-surface);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border-forest);
             border-radius: var(--border-radius);
             padding: 40px;
             max-width: 500px;
@@ -939,12 +1002,12 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid var(--border-forest);
             padding-bottom: 20px;
         }
 
         .modal-title {
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             font-size: 1.8rem;
             margin: 0;
             font-family: 'Cinzel', serif;
@@ -960,7 +1023,7 @@
         }
 
         .modal-close:hover {
-            color: var(--text-main);
+            color: var(--forest-light);
         }
 
         .modal-download-options {
@@ -983,15 +1046,15 @@
         }
 
         .download-option:hover {
-            background-color: rgba(212, 175, 55, 0.05);
-            border-color: var(--primary-gold);
+            background-color: rgba(45, 106, 79, 0.1);
+            border-color: var(--forest-green);
             transform: translateX(5px);
         }
 
         .download-option i {
             font-size: 1.8rem;
             margin-right: 20px;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
         }
         
         .download-info h3 {
@@ -1013,7 +1076,7 @@
             background-color: #020202;
             padding: 80px 0 30px;
             margin-top: 100px;
-            border-top: 1px solid var(--glass-border);
+            border-top: 1px solid var(--border-forest);
         }
 
         .footer-content {
@@ -1038,7 +1101,7 @@
         .footer-logo img {
             height: 40px;
             margin-right: 15px;
-            filter: drop-shadow(0 0 5px var(--primary-gold));
+            filter: drop-shadow(0 0 5px var(--forest-green));
         }
 
         .footer-logo h3 {
@@ -1046,10 +1109,13 @@
             margin: 0;
             font-size: 1.5rem;
             font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .footer-section h3 {
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             margin-bottom: 25px;
             font-size: 1.2rem;
             font-family: 'Cinzel', serif;
@@ -1077,7 +1143,7 @@
         }
 
         .footer-section a:hover {
-            color: var(--primary-gold);
+            color: var(--forest-light);
             padding-left: 5px;
         }
 
@@ -1094,29 +1160,29 @@
             height: 45px;
             background-color: rgba(255, 255, 255, 0.05);
             color: var(--text-main);
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--border-forest);
             margin-right: 15px;
             transition: var(--transition);
             font-size: 1.1rem;
         }
 
         .social-links a:hover {
-            background-color: var(--primary-gold);
-            color: var(--dark-bg);
-            border-color: var(--primary-gold);
+            background-color: var(--forest-green);
+            color: #fff;
+            border-color: var(--forest-green);
             transform: translateY(-5px);
         }
 
         .copyright {
             text-align: center;
             padding-top: 30px;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(45, 106, 79, 0.2);
             font-size: 0.85rem;
             color: var(--text-muted);
         }
 
         .copyright i {
-            color: var(--primary-gold);
+            color: var(--forest-green);
             margin: 0 5px;
         }
 
@@ -1130,8 +1196,8 @@
             width: 50px;
             height: 50px;
             background: var(--dark-surface);
-            color: var(--primary-gold);
-            border: 1px solid var(--primary-gold);
+            color: var(--accent-concrete);
+            border: 1px solid var(--border-forest);
             border-radius: 50%;
             font-size: 1.2rem;
             cursor: pointer;
@@ -1150,9 +1216,9 @@
         }
 
         #back-to-top:hover {
-            background: var(--primary-gold);
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            background: var(--forest-green);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(45, 106, 79, 0.4);
         }
 
         /* ==========================================================================
@@ -1197,7 +1263,7 @@
                 max-width: 300px;
                 height: 100vh;
                 background-color: var(--dark-surface);
-                border-right: 1px solid var(--glass-border);
+                border-right: 1px solid var(--border-forest);
                 flex-direction: column;
                 align-items: flex-start;
                 padding: 100px 40px;
@@ -1273,7 +1339,7 @@
     <!-- Preloader -->
     <div class="preloader">
         <div class="preloader-content">
-            <div class="preloader-text">Loading Experience...</div>
+            <div class="preloader-text">Entering Shadow...</div>
         </div>
     </div>
 
@@ -1308,7 +1374,6 @@
         <div class="container">
             <div class="hero-content">
                 <h1>T4n<span class="text-gradient"> OS</span></h1>
-                <!-- TEKS BARU DITAMBAHKAN DISINI -->
                 <div class="hero-subtitle">Welcome To NEW ERA for VOID LINUX</div>
                 <p>Minimalist, Fast, and Light</p>                
                 <p>>> Keep Things Simple.</p>
@@ -1475,7 +1540,7 @@
             </div>
         </section>
 
-        <!-- Download Section (UPDATED) -->
+        <!-- Download Section -->
         <section id="download" class="section">
             <h2 class="section-title"><span>Unduh T4n OS</span></h2>
             <div class="download-content">
@@ -1548,75 +1613,6 @@
                             </button>
                         </div>
                     </div>
-            
-                    <!-- 4. KDE EDITION -->
-                    <div class="download-card">
-                        <div class="download-header">
-                            <h4>KDE <span class="status-badge status-new">COMING SOON</span></h4>
-                            <span class="download-size">TBA</span>
-                        </div>
-                        <div class="download-body">
-                            <p>Modern Plasma Desktop</p>
-                            <ul class="download-features">
-                                <li><i class="fas fa-check"></i> KDE Plasma Desktop</li>
-                                <li><i class="fas fa-check"></i> General App Suite</li>
-                                <li><i class="fas fa-check"></i> init - Runit</li>
-                                <li><i class="fas fa-check"></i> AI-T4n - SLM <span class="status-badge status-new">Coming Soon</span></li>
-                                <li><i class="fas fa-check"></i> include VUR & VUR-Helper <span class="status-badge status-new">Coming Soon</span></li>
-                            </ul>
-                        </div>
-                        <div class="download-footer">
-                            <button class="btn btn-block btn-disabled" disabled>
-                                <i class="fas fa-clock"></i> Coming Soon
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 5. BSPWM Edition -->
-                    <div class="download-card">
-                        <div class="download-header">
-                            <h4>BSPWM <span class="status-badge status-new">COMING SOON</span></h4>
-                            <span class="download-size">TBA</span>
-                        </div>
-                        <div class="download-body">
-                            <p>Stable Window Manager</p>
-                            <ul class="download-features">
-                                <li><i class="fas fa-check"></i> BSPWM Window Manager</li>
-                                <li><i class="fas fa-check"></i> General App Suite</li>
-                                <li><i class="fas fa-check"></i> init - Runit</li>
-                                <li><i class="fas fa-check"></i> AI-T4n - SLM <span class="status-badge status-new">Coming Soon</span></li>
-                                <li><i class="fas fa-check"></i> include VUR & VUR-Helper <span class="status-badge status-new">Coming Soon</span></li>
-                            </ul>
-                        </div>
-                        <div class="download-footer">
-                            <button class="btn btn-block btn-disabled" disabled>
-                                <i class="fas fa-clock"></i> Coming Soon
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- 6. River Edition -->
-                    <div class="download-card">
-                        <div class="download-header">
-                            <h4>River WM <span class="status-badge status-new">COMING SOON</span></h4>
-                            <span class="download-size">TBA</span>
-                        </div>
-                        <div class="download-body">
-                            <p>Modern Window Manage<r/p>
-                            <ul class="download-features">
-                                <li><i class="fas fa-check"></i> River Window Man1ager</li>
-                                <li><i class="fas fa-check"></i> General App Suite</li>
-                                <li><i class="fas fa-check"></i> init - Runit</li>
-                                <li><i class="fas fa-check"></i> AI-T4n - SLM <span class="status-badge status-new">Coming Soon</span></li>
-                                <li><i class="fas fa-check"></i> include VUR & VUR-Helper <span class="status-badge status-new">Coming Soon</span></li>
-                            </ul>
-                        </div>
-                        <div class="download-footer">
-                            <button class="btn btn-block btn-disabled" disabled>
-                                <i class="fas fa-clock"></i> Coming Soon
-                            </button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
@@ -1652,7 +1648,7 @@
                 <div class="footer-section">
                     <h3>Kontribusi</h3>
                     <p>T4n OS adalah proyek open-source yang terbuka untuk kontribusi dari berbagai para pengembang.</p>
-                    <a href="https://github.com/t4n-tech/t4n-os" class="btn btn-small" target="_blank" style="margin: 10px 0 0 0;">
+                    <a href="https://github.com/t4n-tech/t4n-os" class="btn btn-small btn-black" target="_blank" style="margin: 10px 0 0 0;">
                         <i class="fab fa-github"></i> Contribute
                     </a>
                 </div>
@@ -1675,6 +1671,7 @@
                 <h2 class="modal-title">Unduh T4n OS</h2>
                 <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
             </div>
+            <div class="modal-download-options">
                 <a href="https://drive.google.com/drive/folders/1n46pLVusTyGlu3k04HpDBTO6E1t7j7ud?usp=sharing" target="_blank" class="download-option">
                     <i class="fab fa-google-drive"></i>
                     <div class="download-info">

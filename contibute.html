@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kontribusi - T4n OS</title>
-    <meta name="description" content="Bergabunglah dan berkontribusi pada pengembangan T4n OS.">
+    <meta name="description" content="Berkontribusi pada Pengembangan T4n OS.">
     <link rel="icon" href="./assets/images/Logo-W.svg" type="image/svg+xml">      
 
-    <!-- Google Fonts untuk Gaya Luxury -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
@@ -17,24 +17,30 @@
     
     <style>
         /* ==========================================================================
-           CSS Custom Properties (Luxury Theme)
+           CSS Custom Properties (Shadow Forest Theme)
            ========================================================================== */
         :root {
-            --primary-gold: #d4af37;
-            --primary-gold-hover: #b5952f;
-            --secondary-gold: #f3e5ab;
+            /* 10% Aksen: Cool Grey/Concrete */
+            --accent-concrete: #b0b8c1;
+            --concrete-glow: rgba(176, 184, 193, 0.2);
             
-            --dark-bg: #050505;
-            --dark-card: rgba(20, 20, 30, 0.7);
-            --dark-surface: #0f111a;
+            /* 30% Sekunder: Forest Green */
+            --forest-green: #2d6a4f;
+            --forest-light: #40916c;
+            --forest-tint: rgba(45, 106, 79, 0.15);
+            --border-forest: rgba(45, 106, 79, 0.3);
             
-            --text-main: #e2e8f0;
-            --text-muted: #94a3b8;
+            /* 60% Dominan: Black Night */
+            --black-night: #050505;
+            --dark-card: rgba(10, 20, 15, 0.7); /* Green tint */
+            --dark-surface: #0a0f0c;
             
-            --accent-glow: rgba(212, 175, 55, 0.15);
-            --glass-border: rgba(212, 175, 55, 0.2);
+            /* Text Colors */
+            --text-main: #eceff1;
+            --text-muted: #90a4ae;
             
-            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            /* UI Elements */
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7);
             --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
             --border-radius: 4px;
         }
@@ -53,14 +59,15 @@
         }
 
         body {
-            background-color: var(--dark-bg);
+            background-color: var(--black-night);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
             line-height: 1.7;
             overflow-x: hidden;
+            /* Ambient forest fog effect */
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(30, 40, 60, 0.4) 0%, transparent 40%);
+                radial-gradient(circle at 15% 50%, rgba(45, 106, 79, 0.08) 0%, transparent 30%),
+                radial-gradient(circle at 85% 30%, rgba(20, 30, 25, 0.4) 0%, transparent 40%);
         }
 
         h1, h2, h3, h4, h5 {
@@ -75,28 +82,29 @@
             padding: 0 24px;
         }
 
+        /* Gradient: Concrete to Forest Green */
         .text-gradient {
-            background: linear-gradient(135deg, var(--secondary-gold), var(--primary-gold));
+            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 10px var(--accent-glow);
+            text-shadow: 0 0 20px rgba(45, 106, 79, 0.2);
         }
 
         code {
             font-family: 'Fira Code', monospace;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             padding: 2px 6px;
             border-radius: 4px;
-            color: var(--primary-gold);
+            color: var(--forest-light);
         }
 
         /* ==========================================================================
-           PRELOADER STYLES (Ditambahkan)
+           PRELOADER STYLES
            ========================================================================== */
-        @keyframes pulse-luxury {
-            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); }
-            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0); }
+        @keyframes pulse-forest {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.4); }
+            70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(45, 106, 79, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(45, 106, 79, 0); }
         }
 
         .preloader {
@@ -105,7 +113,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: var(--dark-bg);
+            background-color: var(--black-night);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -126,12 +134,12 @@
             width: 100px;
             height: auto;
             margin-bottom: 30px;
-            animation: pulse-luxury 2s infinite;
-            filter: drop-shadow(0 0 10px var(--primary-gold));
+            animation: pulse-forest 2s infinite;
+            filter: drop-shadow(0 0 10px var(--forest-green));
         }
 
         .preloader-text {
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             font-size: 1rem;
             letter-spacing: 3px;
             text-transform: uppercase;
@@ -144,47 +152,52 @@
         header {
             position: sticky;
             top: 0;
-            z-index: 100;
+            z-index: 1000;
             transition: var(--transition);
-            background: rgba(5, 5, 5, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--glass-border);
+            background: rgba(5, 5, 5, 0.9);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border-forest);
         }
 
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.2rem 0;
+            padding: 1rem 0;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             font-weight: bold;
             color: var(--text-main);
             text-decoration: none;
+            z-index: 1001;
         }
 
         .logo img {
-            height: 45px;
+            height: 40px;
             width: auto;
             display: block;
             margin-right: 12px;
-            filter: drop-shadow(0 0 5px var(--primary-gold));
+            filter: drop-shadow(0 0 5px var(--forest-green));
         }
 
         .logo p {
             margin: 0;
             font-family: 'Cinzel', serif;
             letter-spacing: 1px;
+            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
+            align-items: center;
         }
 
         .nav-links li {
@@ -193,7 +206,7 @@
 
         .nav-links a {
             text-decoration: none;
-            color: var(--text-main);
+            color: var(--text-muted);
             font-weight: 400;
             font-size: 0.9rem;
             letter-spacing: 1px;
@@ -210,13 +223,14 @@
             height: 1px;
             bottom: 0;
             left: 0;
-            background-color: var(--primary-gold);
+            background-color: var(--forest-green);
             transition: width 0.3s ease;
+            box-shadow: 0 0 8px var(--forest-green);
         }
 
         .nav-links a:hover,
         .nav-links a.active {
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
         }
 
         .nav-links a:hover::after,
@@ -228,18 +242,19 @@
             display: none;
             background: none;
             border: none;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             font-size: 1.5rem;
             cursor: pointer;
+            z-index: 1001;
         }
 
         /* ==========================================================================
-           Buttons
+           Buttons (Concrete Base, Forest Hover)
            ========================================================================== */
         .btn {
             display: inline-block;
             background: transparent;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             padding: 12px 35px;
             text-decoration: none;
             font-size: 0.9rem;
@@ -249,7 +264,7 @@
             margin: 10px;
             transition: var(--transition);
             cursor: pointer;
-            border: 1px solid var(--primary-gold);
+            border: 1px solid var(--accent-concrete);
             position: relative;
             overflow: hidden;
             z-index: 1;
@@ -262,7 +277,7 @@
             left: 0;
             width: 0;
             height: 100%;
-            background-color: var(--primary-gold);
+            background-color: var(--forest-green);
             transition: width 0.3s ease;
             z-index: -1;
         }
@@ -272,8 +287,9 @@
         }
 
         .btn:hover {
-            color: var(--dark-bg);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+            color: #fff;
+            border-color: var(--forest-green);
+            box-shadow: 0 0 20px rgba(45, 106, 79, 0.4);
         }
 
         /* ==========================================================================
@@ -282,7 +298,7 @@
         .page-hero {
             padding: 120px 0 80px;
             text-align: center;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid var(--border-forest);
             margin-bottom: 60px;
         }
 
@@ -290,6 +306,7 @@
             font-size: 3rem;
             margin-bottom: 15px;
             color: var(--text-main);
+            line-height: 1.2;
         }
 
         .page-hero p {
@@ -319,12 +336,13 @@
             content: '';
             width: 50px;
             height: 2px;
-            background-color: var(--primary-gold);
+            background-color: var(--forest-green);
+            flex-shrink: 0;
         }
 
         .grid-2 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 40px;
         }
 
@@ -337,7 +355,7 @@
         .card {
             background-color: var(--dark-card);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.05);
+            border: 1px solid var(--border-forest);
             border-radius: var(--border-radius);
             padding: 35px;
             transition: var(--transition);
@@ -345,14 +363,20 @@
         }
 
         .card:hover {
-            border-color: var(--primary-gold);
+            border-color: var(--forest-green);
             transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(45, 106, 79, 0.1);
         }
 
         .card-icon {
             font-size: 2rem;
-            color: var(--primary-gold);
+            color: var(--accent-concrete);
             margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .card:hover .card-icon {
+            color: var(--forest-light);
         }
 
         .card h3 {
@@ -382,7 +406,7 @@
 
         .card ul li::before {
             content: '•';
-            color: var(--primary-gold);
+            color: var(--forest-light);
             position: absolute;
             left: 0;
         }
@@ -391,8 +415,8 @@
            Special T4n-Maker Section
            ========================================================================== */
         .t4n-maker-box {
-            background: linear-gradient(145deg, rgba(212, 175, 55, 0.05), rgba(20, 20, 30, 0.8));
-            border: 1px solid var(--glass-border);
+            background: linear-gradient(145deg, rgba(45, 106, 79, 0.1), rgba(10, 20, 15, 0.8));
+            border: 1px solid var(--border-forest);
             padding: 50px;
             border-radius: var(--border-radius);
             display: flex;
@@ -415,9 +439,9 @@
         }
 
         .badge-license {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--primary-gold);
-            color: var(--primary-gold);
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid var(--forest-light);
+            color: var(--forest-light);
             padding: 5px 15px;
             border-radius: 20px;
             font-size: 0.8rem;
@@ -432,20 +456,26 @@
             background: rgba(0, 0, 0, 0.4);
             padding: 15px;
             border-radius: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--secondary-gold);
+            border: 1px solid var(--border-forest);
+            color: var(--accent-concrete);
             display: block;
             margin: 20px 0;
             width: 100%;
             word-break: break-all;
             text-decoration: none;
             transition: var(--transition);
+            font-size: 0.9rem;
         }
 
         .repo-link:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: var(--primary-gold);
+            background: rgba(45, 106, 79, 0.2);
+            border-color: var(--forest-light);
             padding-left: 20px;
+            color: #fff;
+        }
+        
+        .repo-link i {
+            margin-right: 8px;
         }
 
         /* ==========================================================================
@@ -462,14 +492,14 @@
             min-width: 50px;
             height: 50px;
             border-radius: 50%;
-            border: 1px solid var(--primary-gold);
+            border: 1px solid var(--forest-green);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Cinzel', serif;
             font-size: 1.2rem;
-            color: var(--primary-gold);
-            background: rgba(212, 175, 55, 0.05);
+            color: var(--forest-green);
+            background: rgba(45, 106, 79, 0.1);
             flex-shrink: 0;
         }
 
@@ -487,11 +517,12 @@
             background: #0d0d0d;
             padding: 20px;
             border-radius: 4px;
-            border-left: 3px solid var(--primary-gold);
+            border-left: 3px solid var(--forest-light);
             font-family: 'Fira Code', monospace;
             color: #a5b3ce;
-            font-size: 0.9rem;
-            overflow-x: auto;
+            font-size: 0.85rem;
+            overflow-x: auto; /* Pastikan scroll horizontal aktif */
+            white-space: pre-wrap; /* Agar teks memecah baris jika terlalu panjang */
             margin-top: 15px;
         }
 
@@ -502,7 +533,7 @@
             background-color: #020202;
             padding: 60px 0 30px;
             margin-top: 100px;
-            border-top: 1px solid var(--glass-border);
+            border-top: 1px solid var(--border-forest);
             text-align: center;
         }
 
@@ -522,6 +553,9 @@
         .footer-logo p {
             font-family: 'Cinzel', serif;
             font-size: 1.5rem;
+            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .copyright {
@@ -530,26 +564,114 @@
             margin-top: 30px;
         }
 
-        /* Responsive */
+        /* ==========================================================================
+           RESPONSIVE MEDIA QUERIES
+           ========================================================================== */
+        
+        /* Tablet & Down (Max-width 992px) */
+        @media (max-width: 992px) {
+            .page-hero h1 { font-size: 2.5rem; }
+            .container { padding: 0 20px; }
+            .grid-2 { grid-template-columns: 1fr; } /* Force 1 column earlier for easier reading */
+        }
+
+        /* Mobile (Max-width 768px) */
         @media (max-width: 768px) {
+            /* Nav Links Mobile */
             .nav-links {
-                display: none; /* Simplified for this subpage */
+                position: fixed;
+                top: 0;
+                right: -100%; /* Hide off-screen */
+                width: 75%;
+                max-width: 300px;
+                height: 100vh;
+                background-color: var(--dark-surface);
+                border-left: 1px solid var(--border-forest);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.8);
+                z-index: 999;
             }
+
+            .nav-links.active {
+                right: 0; /* Slide in */
+            }
+
+            .nav-links li {
+                margin: 20px 0;
+            }
+            
             .menu-toggle {
                 display: block;
             }
-            .page-hero h1 { font-size: 2rem; }
-            .grid-2 { grid-template-columns: 1fr; }
+
+            /* Typography */
+            .page-hero {
+                padding: 80px 0 60px;
+            }
+            .page-hero h1 { font-size: 2.2rem; }
+            .page-hero p { font-size: 1rem; }
+            .section-title { font-size: 1.5rem; }
+            
+            /* Sections */
+            .grid-2, .grid-3 { grid-template-columns: 1fr; }
             .t4n-maker-box { padding: 30px; }
+            
+            /* Workflow */
+            .workflow-step {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                gap: 20px;
+            }
+            .code-block {
+                width: 100%; /* Full width on mobile */
+                text-align: left; /* Keep code left aligned */
+                font-size: 0.8rem;
+            }
+
+            /* Buttons */
+            .btn {
+                width: 100%; /* Full width buttons on mobile */
+                margin: 10px 0;
+                text-align: center;
+            }
+        }
+
+        /* Small Mobile (Max-width 480px) */
+        @media (max-width: 480px) {
+            .page-hero h1 { font-size: 1.8rem; }
+            .container { padding: 0 15px; }
+            
+            .card { padding: 25px; }
+            .card h3 { font-size: 1.3rem; }
+            
+            .badge-license { font-size: 0.7rem; padding: 4px 10px; }
+            .t4n-maker-box::after { display: none; } /* Hide background text on very small screens */
+            
+            .repo-link { font-size: 0.8rem; padding: 10px; }
+            
+            /* Adjust Section Title for center alignment on mobile if needed */
+            .section-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            .section-title::before {
+                width: 30px;
+                height: 3px;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- PRELOADER (DITAMBAHKAN) -->
+    <!-- PRELOADER -->
     <div class="preloader">
         <div class="preloader-content">
-            <div class="preloader-text">Loading Experience...</div>
+            <div class="preloader-text">Entering Shadow...</div>
         </div>
     </div>
 
@@ -565,7 +687,7 @@
                 <li><a href="#" class="active">Contribute</a></li>
                 <li><a href="https://t4n-tech.github.io/t4n-os_docs/">Documentation</a></li>
             </ul>
-            <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+            <button class="menu-toggle" aria-label="Toggle navigation"><i class="fas fa-bars"></i></button>
         </nav>
     </header>
 
@@ -592,16 +714,16 @@
                     <i class="fab fa-github"></i> https://github.com/t4n-tech/t4n-maker/
                 </a>
 
-                <div style="margin-top: 30px;">
+                <div style="margin-top: 30px; width: 100%;">
                     <h4 style="color: var(--text-main); margin-bottom: 10px;">Detail Teknis:</h4>
                     <ul class="card" style="padding: 20px; margin-top: 0; background: rgba(0,0,0,0.2);">
-                        <li><strong>Forked From:</strong> <a href="https://github.com/void-linux/void-mklive/" style="color: var(--primary-gold);">void-linux/void-mklive</a></li>
+                        <li><strong>Forked From:</strong> <a href="https://github.com/void-linux/void-mklive/" style="color: var(--forest-light);">void-linux/void-mklive</a></li>
                         <li><strong>Lisensi:</strong> Mengikuti standar lisensi Void Linux (Open Source).</li>
                         <li><strong>Fungsi:</strong> Script pembuat Live ISO yang bisa dikustomisasi untuk varian BASE, Server, XFCE4, maupun KDE.</li>
                     </ul>
                 </div>
 
-                <div style="margin-top: 30px;">
+                <div style="margin-top: 30px; width: 100%;">
                     <a href="https://github.com/t4n-tech/t4n-maker/" target="_blank" class="btn">Fork T4n-Maker</a>
                     <a href="https://github.com/void-linux/void-mklive/" target="_blank" class="btn" style="border-color: var(--text-muted); color: var(--text-muted);">Lihat void-mklive</a>
                 </div>
@@ -651,16 +773,14 @@
                         <h4>Clone & Buat Branch</h4>
                         <p>Clone fork Anda ke lokal dan buat branch baru untuk fitur atau perbaikan Anda.</p>
                         <div class="code-block">
-                            git clone https://github.com/t4n-tech/t4n-maker.git<br>
-                            cd t4n-maker<br>
-                            git checkout -b example
-                        </div>
+git clone https://github.com/t4n-tech/t4n-maker.git
+cd t4n-maker
+git checkout -b example</div>
                         <h4>Atau</h4>
                         <div class="code-block">
-                            git clone git@username:t4n-tech/t4n-maker.git<br>
-                            cd t4n-maker<br>
-                            git checkout -b example
-                        </div>
+git clone git@username:t4n-tech/t4n-maker.git
+cd t4n-maker
+git checkout -b example</div>
                     </div>
                 </div>
 
@@ -690,11 +810,11 @@
             <h2 class="section-title">Panduan Komunitas</h2>
             <div class="grid-2">
                 <div class="card">
-                    <h3><i class="fas fa-gavel" style="color:var(--primary-gold); margin-right: 10px;"></i> Code of Conduct</h3>
+                    <h3><i class="fas fa-gavel" style="color:var(--forest-light); margin-right: 10px;"></i> Code of Conduct</h3>
                     <p>Kami mengharapkan semua kontributor untuk saling menghargai. Hindari komentar yang menyinggung, diskusi yang toxic, atau perilaku yang merugikan komunitas lain.</p>
                 </div>
                 <div class="card">
-                    <h3><i class="fas fa-file-contract" style="color:var(--primary-gold); margin-right: 10px;"></i> Lisensi</h3>
+                    <h3><i class="fas fa-file-contract" style="color:var(--forest-light); margin-right: 10px;"></i> Lisensi</h3>
                     <p>Seluruh kontribusi yang Anda berikan ke proyek T4n OS akan dilisensikan di bawah lisensi yang sama dengan Void Linux (open source).</p>
                 </div>
             </div>
@@ -719,7 +839,7 @@
     </footer>
 
     <script>
-        // PRELOADER LOGIC (DITAMBAHKAN)
+        // PRELOADER LOGIC
         window.addEventListener('load', () => {
             const preloader = document.querySelector('.preloader');
             if (preloader) {
@@ -727,34 +847,40 @@
                     preloader.classList.add('fade-out');
                     setTimeout(() => {
                         preloader.style.display = 'none';
-                    }, 800); // Sesuaikan dengan durasi CSS transition
-                }, 1500); // Durasi tampil preloader
+                    }, 800);
+                }, 1500);
             }
         });
 
-        // Simple Mobile Menu Toggle
+        // Mobile Menu Logic (Improved for Responsiveness)
         const menuToggle = document.querySelector('.menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         const body = document.body;
+        const navIcon = menuToggle.querySelector('i');
 
         menuToggle.addEventListener('click', () => {
-            const isActive = navLinks.style.display === 'flex';
+            navLinks.classList.toggle('active');
             
-            if (isActive) {
-                navLinks.style.display = 'none';
-                body.style.overflow = '';
-            } else {
-                navLinks.style.display = 'flex';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.position = 'absolute';
-                navLinks.style.top = '80px';
-                navLinks.style.left = '0';
-                navLinks.style.width = '100%';
-                navLinks.style.background = 'rgba(5,5,5,0.95)';
-                navLinks.style.padding = '20px';
-                navLinks.style.borderBottom = '1px solid var(--primary-gold)';
+            // Prevent background scrolling when menu is open
+            if (navLinks.classList.contains('active')) {
                 body.style.overflow = 'hidden';
+                navIcon.classList.remove('fa-bars');
+                navIcon.classList.add('fa-times');
+            } else {
+                body.style.overflow = '';
+                navIcon.classList.remove('fa-times');
+                navIcon.classList.add('fa-bars');
             }
+        });
+
+        // Close menu when a link is clicked
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                body.style.overflow = '';
+                navIcon.classList.remove('fa-times');
+                navIcon.classList.add('fa-bars');
+            });
         });
     </script>
 </body>
