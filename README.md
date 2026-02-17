@@ -1,3 +1,6 @@
+### Website Theme
+* Default
+
 # T4n OS
 
 **T4n OS** adalah distribusi Linux berbasis **Void Linux**.
