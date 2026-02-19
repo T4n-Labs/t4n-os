@@ -2,5 +2,5 @@
 - 20 : Create T4n OS
 - 24 : Push ISO Google Drive & Source Forge
 
-[18 - 20 / Feb / 2026]
-- 18 : Optimize & Create T4n OS Base & XFCE4
+[19 / Feb / 2026]
+- 19 : Create T4n OS XFCE4
