@@ -5,13 +5,13 @@
 
 **T4n OS** adalah distribusi Linux berbasis **Void Linux**.
  
-## 🧠 Filosofi
+## Filosofi
 * **Keep Things Simple**
 * **Suatu Hal Yang Sulit Menjadi Mudah**
 
-## 🧪 Status Proyek
-- 🟡 Development
-- ✅ Cocok untuk user linux intermediate
+## Status Proyek
+- Development
+- Cocok untuk user linux intermediate
 
 ## 📜 Lisensi
 
