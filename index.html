@@ -2,9 +2,11 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Viewport dengan dukungan penuh untuk iOS/Android -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
     <title>T4n OS | The New ERA</title>
     <meta name="description" content="T4n OS adalah sistem operasi berbasis Void Linux yang dirancang untuk memberikan pengalaman penggunaan yang mudah, ringan, dan stabil.">
+    <meta name="theme-color" content="#050505">
     <link rel="icon" href="./assets/images/T4n-OS.svg" type="image/svg+xml">    
 
     <!-- Google Fonts -->
@@ -17,38 +19,29 @@
     
     <style>
         /* ==========================================================================
-           CSS Custom Properties (Shadow Forest Theme Variables)
+           CSS Custom Properties & Responsive Setup
            ========================================================================== */
         :root {
-            /* Palette: Black Night, Forest Green, Concrete Grey */
-            
-            /* 10% Aksen: Cool Grey/Concrete */
+            /* Palette */
             --accent-concrete: #b0b8c1;
-            --concrete-hover: #ced6da;
-            --concrete-glow: rgba(176, 184, 193, 0.2);
-            
-            /* 30% Sekunder: Forest Green */
-            --forest-green: #2d6a4f;       /* Deep Forest */
-            --forest-light: #40916c;       /* Lighter Forest */
-            --forest-tint: rgba(45, 106, 79, 0.15);
+            --forest-green: #2d6a4f;
+            --forest-light: #40916c;
             --border-forest: rgba(45, 106, 79, 0.3);
-            
-            /* 60% Dominan: Black Night */
-            --black-night: #050505;       /* Deep Shadow */
-            --dark-card: rgba(10, 20, 15, 0.7); /* Black with green tint */
+            --black-night: #050505;
+            --dark-card: rgba(10, 20, 15, 0.7);
             --dark-surface: #0a0f0c;
-            
-            /* Text Colors */
             --text-main: #eceff1;
             --text-muted: #90a4ae;
             
             /* UI Elements */
             --shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.7);
             --shadow-green: 0 0 20px rgba(45, 106, 79, 0.25);
-            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            --transition: all 0.3s ease;
             --border-radius: 4px;
             
-            /* Monospace Font */
+            /* Layout & Spacing */
+            --container-padding: 24px;
+            --section-padding: 80px;
             --font-mono: 'Fira Code', monospace;
         }
 
@@ -59,6 +52,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent; /* Hapus highlight biru di Android/iOS */
         }
 
         html {
@@ -69,27 +63,35 @@
             background-color: var(--black-night);
             color: var(--text-main);
             font-family: 'Inter', sans-serif;
-            line-height: 1.7;
+            line-height: 1.6;
             overflow-x: hidden;
-            /* Ambient forest fog effect */
+            /* Ambient forest fog */
             background-image: 
                 radial-gradient(circle at 15% 50%, rgba(45, 106, 79, 0.08) 0%, transparent 30%),
                 radial-gradient(circle at 85% 30%, rgba(20, 30, 25, 0.4) 0%, transparent 40%);
+            padding-bottom: env(safe-area-inset-bottom); /* iOS Home Indicator support */
         }
 
+        /* Fluid Typography: Skala otomatis dari HP ke Desktop */
         h1, h2, h3, h4, h5 {
             font-family: 'Cinzel', serif;
             font-weight: 700;
             letter-spacing: 1px;
+            line-height: 1.2;
         }
+        
+        h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+        h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+        h3 { font-size: clamp(1.2rem, 2.5vw, 1.4rem); }
+        p { font-size: clamp(0.9rem, 1.5vw, 1.1rem); }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 24px;
+            padding: 0 var(--container-padding);
+            width: 100%;
         }
 
-        /* Utility Text Gradient (Concrete to Forest) */
         .text-gradient {
             background: linear-gradient(135deg, var(--accent-concrete), var(--forest-light));
             -webkit-background-clip: text;
@@ -105,12 +107,6 @@
             70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(45, 106, 79, 0); }
             100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(45, 106, 79, 0); }
         }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* ==========================================================================
@@ -118,11 +114,8 @@
            ========================================================================== */
         .preloader {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000; /* Hitam pekat untuk booting */
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #000;
             z-index: 9999;
             display: flex;
             flex-direction: column;
@@ -133,983 +126,448 @@
             transition: opacity 1s ease, visibility 1s ease;
         }
 
-        /* Scanline Effect (Garis monitor CRT) */
+        /* Scanline Effect */
         .preloader::before {
-            content: " ";
-            display: block;
-            position: absolute;
+            content: " "; display: block; position: absolute;
             top: 0; left: 0; bottom: 0; right: 0;
             background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2;
-            background-size: 100% 2px, 3px 100%;
-            pointer-events: none;
+            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        .preloader.fade-out {
-            opacity: 0;
-            visibility: hidden;
-        }
+        .preloader.fade-out { opacity: 0; visibility: hidden; }
 
-        /* Container konten boot */
         .boot-container {
-            width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            z-index: 3;
-            text-align: left;
+            width: 90%; max-width: 500px; padding: 20px;
+            z-index: 3; text-align: left;
         }
 
-        /* Logo muncul di tengah setelah boot */
         .boot-logo {
-            position: absolute;
-            top: 50%;
-            left: 50%;
+            position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%) scale(0.8);
-            text-align: center;
-            opacity: 0;
+            text-align: center; opacity: 0;
             transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 4;
+            z-index: 4; width: 100%;
         }
+        .boot-logo.visible { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        .boot-logo h1 { font-size: clamp(2.5rem, 8vw, 4rem); color: #fff; margin: 0; text-shadow: 0 0 20px var(--forest-green); letter-spacing: 5px; }
+        .boot-logo span { color: var(--forest-green); }
 
-        .boot-logo.visible {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1);
-        }
-
-        .boot-logo h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3.5rem;
-            color: #fff;
-            margin: 0;
-            text-shadow: 0 0 20px var(--forest-green);
-            letter-spacing: 5px;
-        }
-
-        .boot-logo span {
-            color: var(--forest-green);
-        }
-
-        /* Teks log booting */
-        .boot-log {
-            color: var(--accent-concrete);
-            font-size: 0.9rem;
-            line-height: 1.6;
-            opacity: 0.8;
-            min-height: 150px; /* Ruang untuk log */
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end; /* Log muncul dari bawah */
-        }
-
-        .log-line {
-            display: block;
-            margin-bottom: 4px;
-        }
-
+        .boot-log { color: var(--accent-concrete); font-size: clamp(0.75rem, 2.5vw, 0.9rem); line-height: 1.6; opacity: 0.8; min-height: 150px; display: flex; flex-direction: column; justify-content: flex-end; }
+        .log-line { display: block; margin-bottom: 4px; word-wrap: break-word; }
         .log-success { color: var(--forest-green); }
-        .log-warn { color: #ffd700; }
-        .cursor-block {
-            display: inline-block;
-            width: 10px;
-            height: 18px;
-            background-color: var(--forest-green);
-            animation: blink 0.8s infinite;
-            vertical-align: middle;
-            margin-left: 5px;
-        }
-
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .cursor-block { display: inline-block; width: 8px; height: 15px; background-color: var(--forest-green); animation: blink 0.8s infinite; vertical-align: middle; margin-left: 5px; }
 
         /* ==========================================================================
-           Header & Navigation (Glassmorphism)
+           Header & Navigation
            ========================================================================== */
         header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: var(--transition);
-            background: rgba(5, 5, 5, 0.85);
+            position: sticky; top: 0; z-index: 100;
+            background: rgba(5, 5, 5, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border-forest);
+            padding: 15px 0;
         }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.2rem 0;
-        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo-link { text-decoration: none; color: inherit; z-index: 101; }
+        .logo { display: flex; align-items: center; font-weight: bold; color: var(--text-main); }
+        .logo p { margin: 0; font-family: 'Cinzel', serif; letter-spacing: 1px; background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .logo-link {
-            text-decoration: none;
-            color: inherit;
-        }
+        /* Mobile Navigation Button */
+        .menu-toggle { display: none; background: none; border: none; color: var(--accent-concrete); font-size: 1.5rem; cursor: pointer; padding: 10px; z-index: 101; }
 
-        .logo {
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: var(--text-main);
-        }
-
-        .logo img {
-            height: 45px;
-            width: auto;
-            display: block;
-            margin-right: 12px;
-            filter: drop-shadow(0 0 5px var(--forest-green));
-        }
-
-        .logo p {
-            margin: 0;
-            font-family: 'Cinzel', serif;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-
-        .nav-links li {
-            margin-left: 30px;
-        }
-
+        .nav-links { display: flex; list-style: none; }
+        .nav-links li { margin-left: 30px; }
         .nav-links a {
-            text-decoration: none;
-            color: var(--text-muted);
-            font-weight: 400;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 8px 0;
-            position: relative;
-            transition: var(--transition);
+            text-decoration: none; color: var(--text-muted); font-weight: 400;
+            font-size: 0.9rem; text-transform: uppercase; position: relative;
+            transition: var(--transition); padding: 5px 0; display: block;
         }
-
-        /* Efek Garis Bawah Forest Green */
         .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 1px;
-            bottom: 0;
-            left: 0;
-            background-color: var(--forest-green);
-            box-shadow: 0 0 8px var(--forest-green);
-            transition: width 0.3s ease;
+            content: ''; position: absolute; width: 0; height: 1px; bottom: 0; left: 0;
+            background-color: var(--forest-green); box-shadow: 0 0 8px var(--forest-green); transition: width 0.3s ease;
         }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--accent-concrete);
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--accent-concrete);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
+        .nav-links a:hover, .nav-links a.active { color: var(--accent-concrete); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
         /* ==========================================================================
-           Buttons (Concrete Style)
+           Buttons
            ========================================================================== */
         .btn {
-            display: inline-block;
-            background: var(--accent-concrete);
-            color: #1a1a1a;
-            padding: 12px 35px;
-            text-decoration: none;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            margin: 10px;
-            transition: var(--transition);
-            cursor: pointer;
-            border: 1px solid var(--accent-concrete);
-            border-radius: var(--border-radius);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: inline-block; background: var(--accent-concrete); color: #1a1a1a;
+            padding: 12px 24px; text-decoration: none; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+            transition: var(--transition); cursor: pointer;
+            border: 1px solid var(--accent-concrete); border-radius: var(--border-radius);
+            position: relative; overflow: hidden; z-index: 1; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-
         .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0;
-            height: 100%;
-            background-color: var(--forest-green);
-            transition: width 0.3s ease;
-            z-index: -1;
+            content: ''; position: absolute; top: 0; left: 0; width: 0; height: 100%;
+            background-color: var(--forest-green); transition: width 0.3s ease; z-index: -1;
         }
+        .btn:hover::before { width: 100%; }
+        .btn:hover { color: #fff; border-color: var(--forest-green); box-shadow: 0 0 25px rgba(45, 106, 79, 0.4); }
 
-        .btn:hover::before {
-            width: 100%;
-        }
-
-        .btn:hover {
-            color: #fff;
-            border-color: var(--forest-green);
-            box-shadow: 0 0 25px rgba(45, 106, 79, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--accent-concrete);
-            border: 1px solid var(--text-muted);
-            box-shadow: none;
-        }
-
-        .btn-outline:hover {
-            border-color: var(--accent-concrete);
-            color: var(--text-main);
-            background: rgba(176, 184, 193, 0.1);
-        }
-        
-        .btn-outline::before {
-            background: transparent;
-        }
-
-        .btn-small {
-            padding: 8px 20px;
-            font-size: 0.8rem;
-            margin: 0;
-        }
-
-        .btn-block {
-            display: block;
-            width: 100%;
-            margin: 0;
-        }
-
-        .btn-disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            background-color: var(--text-muted);
-            border-color: var(--text-muted);
-            color: #000;
-        }
-        
-        .btn-disabled:hover {
-            background: var(--text-muted);
-            color: #000;
-            box-shadow: none;
-            transform: none;
-        }
-
-        .btn-black {
-            background-color: #000000;
-            color: #ffffff;
-            border-color: #000000;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-
-        .btn-black::before { display: none; }
-
-        .btn-black:hover {
-            background-color: #1a1a1a;
-            color: #ffffff;
-            border-color: #1a1a1a;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
-            transform: translateY(-2px);
-        }
+        .btn-outline { background: transparent; color: var(--accent-concrete); border: 1px solid var(--text-muted); box-shadow: none; }
+        .btn-outline:hover { border-color: var(--accent-concrete); color: var(--text-main); background: rgba(176, 184, 193, 0.1); }
+        .btn-outline::before { background: transparent; }
+        .btn-block { display: block; width: 100%; margin: 0; }
+        .btn-disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
 
         /* ==========================================================================
-           Hero Section & Terminal
+           Hero Section
            ========================================================================== */
         .hero {
-            padding: 120px 0 100px;
-            position: relative;
-            overflow: hidden;
-            min-height: 90vh;
-            display: flex;
-            align-items: center;
+            padding: var(--section-padding) 0; position: relative; overflow: hidden;
+            min-height: 90vh; /* Fallback */
+            min-height: 90dvh; /* Mobile Support */
+            display: flex; align-items: center;
         }
 
         .hero-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: radial-gradient(circle at 50% 50%, rgba(15, 25, 20, 0.8), rgba(5, 5, 5, 1));
             z-index: -1;
         }
 
         .hero .container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 60px;
+            display: flex; align-items: center; justify-content: space-between; gap: 40px;
+            flex-wrap: wrap; /* Allow wrapping on tablet */
         }
 
-        .hero-content {
-            flex: 1;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 10px;
-            line-height: 1.1;
-            color: var(--text-main);
+        .hero-content { flex: 1; min-width: 300px; z-index: 2; }
+        .hero-subtitle {
+            color: var(--accent-concrete); margin-bottom: 20px; font-family: 'Inter', sans-serif;
+            letter-spacing: 2px; text-transform: uppercase; border-left: 3px solid var(--forest-green);
+            padding-left: 15px; display: inline-block; font-size: clamp(0.9rem, 2vw, 1.2rem);
         }
         
-        .hero h1 span {
-            background: linear-gradient(135deg, var(--accent-concrete), var(--forest-light));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: var(--accent-concrete);
-            margin-bottom: 30px;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            border-left: 3px solid var(--forest-green);
-            padding-left: 20px;
-            display: inline-block;
-        }
-
+        /* Perbaikan Balance & Spacing Hero */
         .hero p {
             font-size: 1.1rem;
             color: var(--text-muted);
-            max-width: 500px;
-            margin-bottom: 40px;
+            margin-bottom: 30px; /* Jarak bawah tagline */
             font-weight: 300;
         }
 
         .hero-buttons {
-            margin-bottom: 50px;
-        }
-
-        .hero-stats {
+            margin-bottom: 40px; /* Jarak bawah tombol ke stats */
             display: flex;
-            gap: 50px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-forest);
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: flex-start; /* Default Desktop: Left */
         }
 
-        .stat-item { text-align: left; }
+        .hero-stats { display: flex; gap: 30px; padding-top: 20px; border-top: 1px solid var(--border-forest); flex-wrap: wrap; }
+        .stat-item { text-align: left; min-width: 100px; }
+        .stat-number { font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 700; color: var(--accent-concrete); font-family: 'Cinzel', serif; display: block; }
+        .stat-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
 
-        .stat-number {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--accent-concrete);
-            font-family: 'Cinzel', serif;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-        }
-
-        /* Terminal Animation Container */
-        .hero-terminal {
-            flex: 1;
-            max-width: 600px;
-            font-family: var(--font-mono);
-        }
-
+        /* Terminal Animation */
+        .hero-terminal { flex: 1; min-width: 300px; max-width: 600px; font-family: var(--font-mono); }
         .terminal-window {
-            background: #0f0f0f;
-            border: 1px solid var(--border-forest);
-            border-radius: 6px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-            overflow: hidden;
-            position: relative;
+            background: #0f0f0f; border: 1px solid var(--border-forest); border-radius: 6px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden; position: relative;
         }
-
-        .terminal-header {
-            background: #1a1a1a;
-            padding: 10px 15px;
-            display: flex;
-            gap: 8px;
-            border-bottom: 1px solid #333;
-        }
-
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
-        .red { background: #ff5f56; }
-        .yellow { background: #ffbd2e; }
-        .green { background: #27c93f; }
-
+        .terminal-header { background: #1a1a1a; padding: 8px 15px; display: flex; gap: 8px; border-bottom: 1px solid #333; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .red { background: #ff5f56; } .yellow { background: #ffbd2e; } .green { background: #27c93f; }
         .terminal-body {
-            padding: 20px;
-            font-size: 0.9rem;
-            color: #d4d4d4;
-            min-height: 200px;
+            padding: 15px; font-size: clamp(0.75rem, 2vw, 0.9rem); /* Responsive font size */
+            color: #d4d4d4; min-height: 180px; word-wrap: break-word; /* Prevent horizontal scroll */
         }
-
-        .cmd-line { display: block; margin-bottom: 8px; }
+        .cmd-line { display: block; margin-bottom: 5px; }
         .cmd-prefix { color: var(--forest-light); margin-right: 8px; }
-        .cmd-text { color: #fff; }
         .cmd-success { color: var(--forest-light); }
-        .cursor {
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background-color: var(--forest-green);
-            animation: blink 1s infinite;
-            vertical-align: middle;
-        }
+        .cursor { display: inline-block; width: 8px; height: 15px; background-color: var(--forest-green); animation: blink 1s infinite; vertical-align: middle; }
 
         /* ==========================================================================
-           Main Content & Sections
+           Sections & Cards
            ========================================================================== */
         main { padding: 40px 0; }
-        .section { margin-bottom: 120px; }
-        
+        .section { margin-bottom: 80px; }
         .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: var(--text-main);
-            text-align: center;
-            position: relative;
-            padding-bottom: 20px;
+            font-size: clamp(1.8rem, 4vw, 2.5rem); margin-bottom: 40px;
+            color: var(--text-main); text-align: center; position: relative;
         }
+        .section-title span { border-bottom: 2px solid var(--accent-concrete); padding-bottom: 10px; color: var(--accent-concrete); }
 
-        .section-title span {
-            border-bottom: 2px solid var(--accent-concrete);
-            padding-bottom: 10px;
-            color: var(--accent-concrete);
-        }
-
-        /* Philosophy Section */
-        .philosophy-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-        
-        .philosophy-card {
+        /* About Section (Glass Card) */
+        .about-container {
             background: var(--dark-card);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--border-forest);
+            border-radius: 8px;
             padding: 40px;
-            text-align: center;
-            transition: var(--transition);
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: left;
         }
-        
-        .philosophy-card:hover {
-            border-color: var(--forest-green);
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-green);
-        }
-        
-        .philosophy-icon {
-            font-size: 3rem;
-            color: var(--forest-green);
-            margin-bottom: 20px;
-        }
+        .about-container p { margin-bottom: 1.5rem; color: var(--text-muted); }
+        .about-container a { color: var(--forest-light); text-decoration: none; border-bottom: 1px solid var(--forest-light); }
 
-        /* Standard Card Component */
-        .card-container {
+        /* Grid Layouts */
+        .card-container, .philosophy-grid, .download-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
         }
 
-        .card {
+        /* Card Styles */
+        .card, .philosophy-card, .download-card {
             background-color: var(--dark-card);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid var(--border-forest);
             border-radius: var(--border-radius);
-            padding: 35px;
+            padding: 25px;
             transition: var(--transition);
             height: 100%;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+            display: flex; flex-direction: column;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, var(--forest-green), transparent);
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            border-color: var(--forest-green);
+        .card:hover, .download-card:hover {
+            transform: translateY(-5px); border-color: var(--forest-green);
             box-shadow: var(--shadow-green);
         }
 
-        .card:hover::before { transform: scaleX(1); }
-
         .card-icon {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            width: 50px; height: 50px; border-radius: 50%;
             background: rgba(45, 106, 79, 0.15);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 25px;
-            border: 1px solid var(--border-forest);
-            transition: var(--transition);
+            display: flex; justify-content: center; align-items: center;
+            margin-bottom: 20px; border: 1px solid var(--border-forest);
         }
-
-        .card:hover .card-icon {
-            background: rgba(45, 106, 79, 0.3);
-            border-color: var(--accent-concrete);
-            box-shadow: 0 0 15px rgba(176, 184, 193, 0.2);
-        }
-
-        .card-icon i {
-            font-size: 1.5rem;
-            color: var(--accent-concrete);
-            transition: var(--transition);
-        }
-
-        .card:hover .card-icon i { color: var(--forest-light); }
-
-        .card h3 {
-            color: var(--text-main);
-            margin-bottom: 15px;
-            font-size: 1.4rem;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .card p {
-            margin-bottom: 20px;
-            flex-grow: 1;
-            color: var(--text-muted);
-            font-weight: 300;
-        }
+        .card-icon i { font-size: 1.2rem; color: var(--accent-concrete); }
+        
+        /* SVG Icon Styling */
+        .tech-svg { width: 2.5rem; height: 2.5rem; fill: currentColor; }
 
         /* Tech Stack */
         .tech-stack-container {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 40px;
-            margin-top: 50px;
+            display: flex; justify-content: center; flex-wrap: wrap; gap: 30px; margin-top: 40px;
         }
-        
-        .tech-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-muted);
-            transition: var(--transition);
-        }
-        
-        .tech-item:hover {
-            color: var(--forest-light);
-            transform: translateY(-5px);
-        }
-        
-        .tech-item i {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: var(--border-forest);
-            transition: var(--transition);
-        }
-        
-        .tech-item:hover i {
-            color: var(--forest-green);
-            text-shadow: 0 0 10px var(--forest-green);
-        }
+        .tech-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-align: center; width: 80px; }
+        .tech-item i { font-size: 2rem; margin-bottom: 8px; color: var(--border-forest); }
 
         /* Roadmap */
-        .roadmap-container {
-            margin-top: 50px;
-            border-left: 2px solid var(--border-forest);
-            padding-left: 30px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .roadmap-item {
-            margin-bottom: 40px;
-            position: relative;
-        }
-        
+        .roadmap-container { margin-top: 40px; border-left: 2px solid var(--border-forest); padding-left: 20px; }
+        .roadmap-item { margin-bottom: 30px; position: relative; padding-left: 20px; }
         .roadmap-item::before {
-            content: '';
-            position: absolute;
-            left: -37px;
-            top: 5px;
-            width: 12px;
-            height: 12px;
-            background: var(--bg-color);
-            border: 2px solid var(--forest-green);
-            border-radius: 50%;
+            content: ''; position: absolute; left: -27px; top: 5px;
+            width: 12px; height: 12px; background: var(--bg-color);
+            border: 2px solid var(--forest-green); border-radius: 50%;
         }
-        
-        .roadmap-year {
-            font-family: var(--font-mono);
-            color: var(--forest-green);
-            font-weight: 700;
-            margin-bottom: 5px;
-            display: block;
-            text-transform: uppercase;
-        }
-
-        /* Status Badges */
-        .status-badge {
-            display: inline-block;
-            padding: 2px 8px;
-            border-radius: 2px;
-            font-size: 0.6rem;
-            font-weight: bold;
-            margin-left: 8px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            vertical-align: middle;
-        }
-
-        .status-fixed { background-color: rgba(76, 175, 80, 0.2); color: #4caf50; border: 1px solid #4caf50; }
-        .status-bug { background-color: rgba(244, 67, 54, 0.2); color: #f44336; border: 1px solid #f44336; }
-        .status-new { 
-            background-color: rgba(45, 106, 79, 0.2); 
-            color: var(--forest-light); 
-            border: 1px solid var(--forest-green);
-            animation: pulse-forest 2s infinite;
-        }
+        .roadmap-year { font-family: var(--font-mono); color: var(--forest-green); font-weight: 700; margin-bottom: 5px; display: block; }
 
         /* Gallery */
         .gallery-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Mobile Friendly min-width */
+            gap: 15px;
         }
-
         .gallery-item {
-            position: relative;
-            overflow: hidden;
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: var(--transition);
-            height: 280px;
-            border: 1px solid var(--border-forest);
-        }
-
-        .gallery-item:hover { transform: scale(1.02); border-color: var(--forest-green); }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-            filter: sepia(40%) hue-rotate(80deg) contrast(1.1);
-        }
-
-        .gallery-item:hover img {
-            transform: scale(1.1);
-            filter: sepia(0%) hue-rotate(0deg);
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(5,5,5, 0.95), transparent);
-            padding: 30px 20px 20px;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: var(--transition);
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .gallery-overlay h3 { color: var(--forest-light); margin-bottom: 5px; font-size: 1.2rem; }
-        .gallery-overlay p { color: var(--accent-concrete); font-size: 0.85rem; }
-
-        /* Lightbox */
-        .lightbox {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(5, 5, 5, 0.95);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .lightbox.active { display: flex; }
-
-        .lightbox-content {
-            max-width: 90%; max-height: 90%;
-            position: relative;
-            border: 1px solid var(--forest-green);
-            padding: 5px; 
-            box-shadow: 0 0 30px rgba(45, 106, 79, 0.2);
-        }
-
-        .lightbox-content img { width: 100%; height: auto; display: block; }
-
-        .lightbox-close {
-            position: absolute; top: -50px; right: 0;
-            color: var(--text-main); font-size: 2.5rem;
+            position: relative; overflow: hidden; border-radius: var(--border-radius);
             cursor: pointer; transition: var(--transition);
+            border: 1px solid var(--border-forest); aspect-ratio: 16/9;
         }
-        .lightbox-close:hover { color: var(--forest-light); }
-
-        .lightbox-caption {
-            position: absolute; bottom: -50px; left: 0; right: 0;
-            text-align: center; color: var(--accent-concrete);
-            font-family: 'Cinzel', serif; letter-spacing: 1px;
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.6s ease; filter: sepia(40%) hue-rotate(80deg) contrast(1.1);
         }
-
-        .lightbox-nav {
-            position: absolute; top: 50%; width: 100%;
-            display: flex; justify-content: space-between;
-            transform: translateY(-50%); padding: 0 40px;
+        .gallery-item:hover img { transform: scale(1.1); filter: sepia(0%) hue-rotate(0deg); }
+        .gallery-overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(5,5,5, 0.95), transparent);
+            padding: 20px 15px 15px; transform: translateY(20px); opacity: 0; transition: var(--transition);
         }
+        .gallery-item:hover .gallery-overlay { transform: translateY(0); opacity: 1; }
 
-        .lightbox-prev, .lightbox-next {
-            background: transparent; border: 1px solid var(--text-muted);
-            color: var(--text-main); width: 50px; height: 50px;
-            font-size: 1.2rem; cursor: pointer; transition: var(--transition);
-            display: flex; justify-content: center; align-items: center; border-radius: 50%;
+        /* Download Specifics */
+        .download-header {
+            display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border-forest); padding-bottom: 10px; margin-bottom: 10px;
         }
-
-        .lightbox-prev:hover, .lightbox-next:hover {
-            border-color: var(--forest-green); color: var(--forest-light);
-            background: rgba(45, 106, 79, 0.1);
+        .download-size {
+            background: rgba(176, 184, 193, 0.15); color: var(--accent-concrete);
+            padding: 2px 8px; font-size: 0.7rem; border-radius: 10px;
         }
+        .download-features { list-style: none; margin-bottom: 15px; }
+        .download-features li { margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: flex-start; }
+        .download-features i { color: var(--forest-light); margin-right: 8px; margin-top: 4px; font-size: 0.7rem; }
 
-        /* Download Section */
-        .download-content { margin-top: 50px; }
-        .download-info { text-align: center; margin-bottom: 50px; }
-        .download-info h3 { font-size: 2rem; color: var(--accent-concrete); margin-bottom: 15px; }
-        .download-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-
-        .download-card {
-            background-color: var(--dark-card);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--border-forest);
-            border-radius: var(--border-radius);
-            padding: 30px;
-            transition: var(--transition);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+        /* Community Download Section (Unofficial) */
+        .community-section-container {
+            /* Dashed border container untuk membedakan visual section ini */
+            border: 2px dashed var(--border-forest);
+            border-radius: 8px;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
         
-        .download-card:hover {
-            border-color: var(--forest-green);
-            box-shadow: var(--shadow-green);
+        .community-download-header { margin-bottom: 30px; }
+        .community-download-header h3 { color: var(--text-muted); font-size: 1.2rem; margin-bottom: 5px; }
+        .community-download-header span { color: var(--forest-light); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block; padding: 2px 6px; border-radius: 2px;
+            font-size: 0.6rem; font-weight: bold; margin-left: 5px;
+            background: rgba(45, 106, 79, 0.2); color: var(--forest-light);
         }
 
-        .download-header {
-            border-bottom: 1px solid var(--border-forest);
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Lightbox & Modal */
+        .lightbox, .download-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.95); backdrop-filter: blur(5px); z-index: 2000;
+            justify-content: center; align-items: center; padding: 20px;
         }
-
-        .download-header h4 {
-            margin: 0; color: var(--text-main); font-size: 1.2rem;
-            font-family: 'Cinzel', serif;
+        .lightbox.active, .download-modal.active { display: flex; }
+        .lightbox-content {
+            max-width: 90%; max-height: 85vh; position: relative; border: 1px solid var(--forest-green);
+            box-shadow: 0 0 30px rgba(45, 106, 79, 0.2); display: flex; align-items: center; justify-content: center;
         }
-
-        .download-size {
-            background: rgba(176, 184, 193, 0.15);
-            color: var(--accent-concrete);
-            padding: 4px 12px; font-size: 0.75rem;
-            border-radius: 20px; border: 1px solid var(--accent-concrete);
-        }
-
-        .download-body { flex-grow: 1; }
-        .download-body p { margin-bottom: 15px; font-size: 0.95rem; color: var(--text-muted); font-weight: 600; }
-        .download-features { list-style: none; margin-bottom: 20px; }
-        .download-features li { margin-bottom: 12px; display: flex; align-items: flex-start; font-size: 0.9rem; color: var(--text-muted); line-height: 1.4; }
-        .download-features i { color: var(--forest-light); margin-right: 12px; font-size: 0.8rem; min-width: 15px; margin-top: 4px; }
-
-        .download-footer { margin-top: auto; border-top: 1px solid var(--border-forest); padding-top: 20px; }
-
-        /* Modal */
-        .download-modal {
-            display: none;
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .download-modal.active { display: flex; }
-
+        .lightbox-content img { max-width: 100%; max-height: 85vh; object-fit: contain; }
         .modal-content {
-            background: var(--dark-surface);
-            border: 1px solid var(--border-forest);
-            border-radius: var(--border-radius);
-            padding: 40px;
-            max-width: 500px; width: 90%;
-            position: relative;
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            background: var(--dark-surface); border: 1px solid var(--border-forest);
+            border-radius: var(--border-radius); padding: 30px; max-width: 500px; width: 95%;
+            position: relative; max-height: 90vh; overflow-y: auto;
         }
 
-        .modal-header {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 30px; border-bottom: 1px solid var(--border-forest); padding-bottom: 20px;
+        /* Lightbox Controls */
+        .lightbox-close, .modal-close {
+            position: absolute; top: 10px; right: 15px; color: #fff; font-size: 2rem;
+            cursor: pointer; z-index: 10;
         }
-
-        .modal-title { color: var(--accent-concrete); font-size: 1.8rem; margin: 0; font-family: 'Cinzel', serif; }
-        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: var(--transition); }
-        .modal-close:hover { color: var(--forest-light); }
-
-        .modal-download-options { display: flex; flex-direction: column; gap: 15px; }
-
-        .download-option {
-            display: flex; align-items: center; padding: 20px;
-            background-color: rgba(255, 255, 255, 0.03);
-            border: 1px solid transparent; border-radius: var(--border-radius);
-            transition: var(--transition); cursor: pointer; text-decoration: none; color: var(--text-main);
+        .lightbox-nav {
+            position: absolute; top: 50%; width: 100%; display: flex;
+            justify-content: space-between; padding: 0 10px; transform: translateY(-50%);
         }
-
-        .download-option:hover {
-            background-color: rgba(45, 106, 79, 0.1);
-            border-color: var(--forest-green);
-            transform: translateX(5px);
+        .lightbox-prev, .lightbox-next {
+            background: rgba(255,255,255,0.1); color: #fff; border: none;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
-
-        .download-option i { font-size: 1.8rem; margin-right: 20px; color: var(--accent-concrete); }
 
         /* Footer */
         footer {
-            background-color: #020202;
-            padding: 80px 0 30px;
-            margin-top: 100px;
+            background-color: #020202; padding: 60px 0 30px; margin-top: 80px;
             border-top: 1px solid var(--border-forest);
         }
-
-        .footer-content {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin-bottom: 60px;
-            gap: 50px;
-        }
-
+        .footer-content { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px; margin-bottom: 40px; }
         .footer-section { flex: 1; min-width: 250px; }
-        .footer-logo { display: flex; align-items: center; margin-bottom: 25px; }
-        .footer-logo h3 { color: var(--text-main); margin: 0; font-size: 1.5rem; font-family: 'Cinzel', serif; background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .footer-section h3 { color: var(--accent-concrete); margin-bottom: 25px; font-size: 1.2rem; font-family: 'Cinzel', serif; }
-        .footer-section p { margin-bottom: 20px; color: var(--text-muted); font-weight: 300; }
+        .footer-logo h3 { color: var(--text-main); font-size: 1.5rem; font-family: 'Cinzel', serif; margin-bottom: 15px; }
+        .footer-section h3 { color: var(--accent-concrete); margin-bottom: 20px; font-size: 1.1rem; }
         .footer-section ul { list-style: none; }
-        .footer-section ul li { margin-bottom: 15px; }
-        .footer-section a { color: var(--text-muted); text-decoration: none; transition: var(--transition); font-size: 0.95rem; }
-        .footer-section a:hover { color: var(--forest-light); padding-left: 5px; }
-
-        .social-links { display: flex; margin-top: 30px; }
+        .footer-section li { margin-bottom: 10px; }
+        .footer-section a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; }
+        .social-links { display: flex; gap: 15px; margin-top: 20px; }
         .social-links a {
-            display: inline-flex; justify-content: center; align-items: center;
-            width: 45px; height: 45px; background-color: rgba(255, 255, 255, 0.05);
-            color: var(--text-main); border: 1px solid var(--border-forest);
-            margin-right: 15px; transition: var(--transition); font-size: 1.1rem;
+            width: 40px; height: 40px; background: rgba(255, 255, 255, 0.05); color: var(--text-main);
+            border: 1px solid var(--border-forest); display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
         }
-        .social-links a:hover { background-color: var(--forest-green); color: #fff; border-color: var(--forest-green); transform: translateY(-5px); }
-
-        .copyright {
-            text-align: center; padding-top: 30px;
-            border-top: 1px solid rgba(45, 106, 79, 0.2);
-            font-size: 0.85rem; color: var(--text-muted);
-        }
-        .copyright i { color: var(--forest-green); margin: 0 5px; }
+        .social-links a:hover { background: var(--forest-green); color: #fff; }
 
         /* Back to Top */
         #back-to-top {
-            position: fixed; bottom: 30px; right: 30px;
-            width: 50px; height: 50px; background: var(--dark-surface);
-            color: var(--accent-concrete); border: 1px solid var(--border-forest);
-            border-radius: 50%; font-size: 1.2rem; cursor: pointer;
-            opacity: 0; visibility: hidden; transition: var(--transition);
-            z-index: 99; display: flex; align-items: center; justify-content: center;
+            position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px;
+            background: var(--dark-surface); color: var(--accent-concrete); border: 1px solid var(--border-forest);
+            border-radius: 50%; display: none; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 90; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
-        #back-to-top.show { opacity: 1; visibility: visible; }
-        #back-to-top:hover { background: var(--forest-green); color: #fff; box-shadow: 0 0 20px rgba(45, 106, 79, 0.4); }
+        #back-to-top.show { display: flex; }
+        #back-to-top:active { transform: scale(0.95); }
 
-        /* Responsive */
+        /* ==========================================================================
+           MEDIA QUERIES (Responsive & Balance Fixes)
+           ========================================================================== */
+
+        /* Tablet & Mobile (Landscape) */
         @media (max-width: 992px) {
-            .hero .container { flex-direction: column; text-align: center; padding-top: 50px; }
-            .hero-content { text-align: center; }
+            .hero .container { flex-direction: column; text-align: center; padding-top: 20px; }
+            
+            .hero-content {
+                width: 100%;
+                text-align: center;
+                max-width: 600px; /* Batasi lebar teks agar lebih rapi/center */
+                margin: 0 auto 40px auto;
+            }
+            
+            .hero-subtitle {
+                border-left: none; border-bottom: 3px solid var(--forest-green);
+                padding-bottom: 10px; padding-left: 0; display: inline-block;
+                margin-bottom: 20px;
+            }
+
+            /* Perbaikan Balance: Pastikan tombol terpusat di mobile */
+            .hero-buttons {
+                justify-content: center;
+                width: 100%;
+            }
+
             .hero-stats { justify-content: center; }
-            .hero-subtitle { border-left: none; border-bottom: 3px solid var(--forest-green); padding-bottom: 10px; padding-left: 0; display: inline-block; }
+            .hero-terminal { width: 100%; max-width: 100%; margin-top: 0; }
         }
 
+        /* Mobile (Portrait) */
         @media (max-width: 768px) {
-            .menu-toggle { display: block; z-index: 101; }
+            :root { --container-padding: 16px; --section-padding: 60px; }
+
+            /* Nav Mobile Menu */
+            .menu-toggle { display: block; }
             .nav-links {
-                position: fixed; top: 0; left: -100%; width: 80%; max-width: 300px; height: 100vh;
-                background-color: var(--dark-surface); border-right: 1px solid var(--border-forest);
-                flex-direction: column; align-items: flex-start; padding: 100px 40px;
-                transition: left 0.4s cubic-bezier(0.77, 0, 0.175, 1); box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+                position: fixed; top: 0; right: -100%; width: 80%; max-width: 300px; height: 100vh;
+                background-color: #0a0a0a; border-left: 1px solid var(--border-forest);
+                flex-direction: column; align-items: flex-start; padding: 80px 30px;
+                transition: right 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.8); z-index: 100;
             }
-            .nav-links.active { left: 0; }
-            .nav-links li { margin: 20px 0; width: 100%; }
-            .nav-links a { font-size: 1.1rem; display: block; padding: 10px 0; }
-            .hero h1 { font-size: 2.8rem; }
+            .nav-links.active { right: 0; }
+            .nav-links li { margin: 0; width: 100%; margin-bottom: 20px; }
+            .nav-links a { font-size: 1.1rem; padding: 10px 0; display: block; width: 100%; }
+
+            /* Layout Grids */
+            .card-container, .philosophy-grid, .download-options { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            
+            /* Modal/Lightbox adjustments */
+            .modal-content { width: 90%; padding: 20px; }
+            .lightbox-nav { padding: 0; }
+            .lightbox-prev, .lightbox-next { width: 35px; height: 35px; }
         }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            h1 { letter-spacing: 0; }
+            .hero { min-height: auto; padding: 60px 0; }
+            
+            /* Stack Buttons vertically jika sangat kecil */
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            .btn { width: 100%; text-align: center; margin: 5px 0; }
+            
+            .footer-content { flex-direction: column; }
+        }
+
     </style>
 </head>
 <body>
-        <!-- Advanced Preloader -->
+    <!-- Preloader -->
     <div class="preloader" id="preloader">
         <div class="boot-container">
-            <!-- Area Log Terminal -->
             <div class="boot-log" id="boot-log">
                 <span class="cursor-block"></span>
             </div>
         </div>
-        
-        <!-- Logo yang akan muncul belakangan -->
         <div class="boot-logo" id="boot-logo">
             <h1>T4n <span>OS</span></h1>
         </div>
     </div>
 
-    <!-- Header & Navigation -->
+    <!-- Header -->
     <header>
         <nav class="container">
             <a href="#home" class="logo-link">
@@ -1117,20 +575,19 @@
                     <p>T4n OS</p>
                 </div>
             </a>
-
+            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#download">Download</a></li>
                 <li><a href="https://t4n-labs.github.io/t4n-os_docs/">Docs</a></li>
                 <li><a href="https://t4n-labs.github.io/vur-web/">VUR</a></li>
             </ul>
-            <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu">
-                <i class="fas fa-bars"></i>
-            </button>
         </nav>
     </header>
 
-    <!-- Hero Section with Terminal -->
+    <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-bg"></div>
         <div class="container">
@@ -1140,7 +597,7 @@
                 <p>Fast • Lightweight • Community Driven</p>
                 
                 <div class="hero-buttons">
-                    <a href="#download" class="btn">V.0.2.0</a>
+                    <a href="#download" class="btn">V.0.3.0</a>
                     <a href="https://t4n-labs.github.io/t4n-os_docs/" class="btn btn-outline">Documentation</a>
                 </div>
                 
@@ -1178,31 +635,39 @@
 
     <!-- Main Content -->
     <main class="container">
-        <!-- About -->
-        <section id="philosophy" class="section">
+        <!-- About Section -->
+        <section id="about" class="section">
             <h2 class="section-title"><span>Tentang T4n OS</span></h2>
-                <p>T4n OS adalah GNU Linux berbasis Void Linux, dirancang dengan prinsip minimalis, cepat, dan ringan. T4n OS menggunakan runit sebagai init system untuk performa dan kontrol.</p>
-                <p>T4n OS dikembangkan di Indonesia-Atjeh yang sebelumnya dikembangkan pertama kali diinisiasi oleh <a href="https://github.com/gh0st4n/">Gh0sT4n</a> pada 17 Agustus 2025, seorang pelajar asal Atjeh (Darussa’adah Cot Tarom Baroh – SMKN 5 Takengon) dengan pendekatan community-driven: dari komunitas, oleh komunitas, dan untuk komunitas.</p>
-                <p>T4n OS juga mengadopsi konsep yang terinspirasi dari AUR (Arch User Repository), yaitu VUR (Void User Repository)</p>
+            <div class="about-container">
+                <p>
+                    T4n OS adalah GNU/Linux berbasis Void Linux, dirancang dengan prinsip minimalis, cepat, dan ringan. Sistem ini menggunakan runit sebagai init system untuk memberikan performa maksimal dan kontrol penuh terhadap sistem.
+                </p>
+                <p>
+                    T4n OS dikembangkan di Indonesia, Aceh, dan pertama kali diinisiasi oleh <a href="https://github.com/gh0st4n/" target="_blank">Gh0sT4n</a> pada 17 Agustus 2025, seorang pelajar asal Aceh (Darussa’adah Cot Tarom Baroh – SMKN 5 Takengon). Pengembangan T4n OS menggunakan pendekatan community-driven: dari komunitas, oleh komunitas, dan untuk komunitas.
+                </p>
+                <p>
+                    Selain itu, T4n OS mengadopsi konsep repositori yang terinspirasi dari AUR (Arch User Repository), yaitu VUR (Void User Repository), untuk mempermudah distribusi dan pengelolaan paket bagi pengguna.
+                </p>
+            </div>
         </section>
 
         <!-- Philosophy Section -->
         <section id="philosophy" class="section">
-            <h2 class="section-title"><span>Philosophy</span></h2>
+            <h2 class="section-title"><span>Filosofi</span></h2>
             <div class="philosophy-grid">
                 <div class="philosophy-card">
-                    <div class="philosophy-icon"><i class="fas fa-bolt"></i></div>
                     <h3>Keep Things Simple</h3>
+                    <p>.</p>
                     <p>Mengikuti filosofi UNIX: lakukan satu hal dengan baik. Tanpa abstraksi yang tidak perlu.</p>
                 </div>
                 <div class="philosophy-card">
-                    <div class="philosophy-icon"><i class="fas fa-users"></i></div>
                     <h3>Community First</h3>
+                    <p>.</p>
                     <p>Proyek dikembangkan secara terbuka oleh komunitas, untuk komunitas. Bukan produk perusahaan.</p>
                 </div>
                 <div class="philosophy-card">
-                    <div class="philosophy-icon"><i class="fas fa-cube"></i></div>
                     <h3>Minimal by Default</h3>
+                    <p>.</p>
                     <p>Hanya yang dibutuhkan. Sistem dasar yang bersih tanpa bloatware atau aplikasi surplus.</p>
                 </div>
             </div>
@@ -1213,13 +678,18 @@
             <h2 class="section-title"><span>Core Features</span></h2>
             <div class="card-container">
                 <div class="card">
-                    <div class="card-icon"><i class="fas fa-box-open"></i></div>
+                    <div class="card-icon">
+                        <!-- SVG Void Linux (Fixed Color) -->
+                        <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" class="tech-svg" style="color: var(--accent-concrete);">
+                            <path d="M15.818 12a3.82 3.82 0 0 1 -3.82 3.82A3.82 3.82 0 0 1 8.178 12a3.82 3.82 0 0 1 3.82 -3.82 3.82 3.82 0 0 1 3.82 3.82Zm3.179 9.73 -2.726 -2.725A8.212 8.212 0 0 1 12 20.212 8.212 8.212 0 0 1 3.788 12a8.212 8.212 0 0 1 1.209 -4.269l-2.73 -2.73A12 12 0 0 0 0 12c0 6.627 5.373 12 12 12a12 12 0 0 0 6.997 -2.27zM12 0a12 12 0 0 0 -6.997 2.27L7.73 4.994A8.212 8.212 0 0 1 12 3.788 8.212 8.212 0 0 1 20.212 12a8.212 8.212 0 0 1 -1.209 4.269l2.73 2.73A12 12 0 0 0 24 12c0 -6.627 -5.373 -12 -12 -12Z" fill="currentColor" stroke-width="1"></path>
+                        </svg>
+                    </div>
                     <h3>Void Linux Base</h3>
                     <p>Mewarisi kestabilan dan kecepatan Void Linux sebagai upstream utama.</p>
                 </div>
                 
                 <div class="card">
-                    <div class="card-icon"><i class="fas fa-server"></i></div>
+                    <div class="card-icon"><i class="fa-solid fa-gears"></i></div>
                     <h3>Runit Init</h3>
                     <p>Sistem init yang cepat, ringan, dan mudah dipahami dibandingkan systemd.</p>
                 </div>
@@ -1232,7 +702,7 @@
                 
                 <div class="card">
                     <div class="card-icon"><i class="fas fa-rocket"></i></div>
-                    <h3>VUR Ecosystem <span class="status-badge status-new">NEW</span></h3>
+                    <h3>VUR Ecosystem</h3>
                     <p>Void User Repository. Akses instan ke ribuan paket tambahan komunitas.</p>
                 </div>
                 
@@ -1246,29 +716,6 @@
                     <div class="card-icon"><i class="fas fa-microchip"></i></div>
                     <h3>Lightweight</h3>
                     <p>Arsitektur yang dirancang untuk performa maksimal pada hardware lama maupun baru.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Technology Stack Section -->
-        <section id="tech" class="section">
-            <h2 class="section-title"><span>Technology Stack</span></h2>
-            <div class="tech-stack-container">
-                <div class="tech-item">
-                    <i class="fab fa-linux"></i>
-                    <span>Void Linux</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fas fa-bolt"></i>
-                    <span>Runit</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fas fa-box"></i>
-                    <span>XBPS</span>
-                </div>
-                <div class="tech-item">
-                    <i class="fas fa-code-branch"></i>
-                    <span>VUR</span>
                 </div>
             </div>
         </section>
@@ -1317,14 +764,16 @@
             </div>
         </section>
 
-        <!-- Download Section -->
+        <!-- Download Section (Official) -->
         <section id="download" class="section">
-            <h2 class="section-title"><span>Download</span></h2>
+            <h2 class="section-title"><span>Download Resmi</span></h2>
             <div class="download-content">
-                <div class="download-info">
-                    <h3>Pilih Edisi Anda</h3>
+                <div class="download-info" style="text-align: center; margin-bottom: 40px;">
+                    <h3 style="margin-bottom: 10px;">Pilih Edisi Anda</h3>
                     <p>Tersedia dalam beberapa varian yang disesuaikan untuk kebutuhan spesifik Anda.</p>
                 </div>
+                
+                <!-- Official Downloads -->
                 <div class="download-options">
                     <!-- 1. BASE EDITION -->
                     <div class="download-card">
@@ -1348,7 +797,7 @@
                     <!-- 2. SERVER EDITION -->
                     <div class="download-card">
                         <div class="download-header">
-                            <h4>SERVER <span class="status-badge status-new">SOON</span></h4>
+                            <h4>SERVER <span class="status-badge">SOON</span></h4>
                             <span class="download-size">TBA</span>
                         </div>
                         <div class="download-body">
@@ -1385,6 +834,41 @@
                 </div>
             </div>
         </section>
+
+        <!-- NEW: Community Edition Section (Separated) -->
+        <section id="community-edition" class="section">
+            <h2 class="section-title"><span>Edisi Komunitas</span></h2>
+            
+            <div class="community-section-container">
+                <div class="community-download-header">
+                    <h3>Build Custom Komunitas</h3>
+                    <span>Unofficial</span>
+                    <p style="margin-top: 15px; color: var(--text-muted); font-size: 0.9rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+                        Edisi ini dikembangkan dan dimodifikasi oleh anggota komunitas, namun tetap menggunakan dasar T4n OS.
+                    </p>
+                </div>
+                
+                <!-- 1. BSPWM EDITION -->
+                <div class="download-card">
+                    <div class="download-header">
+                            <h4>BSPWM</h4>
+                            <span class="download-size">TBA</span>
+                    </div>
+                    <div class="download-body">
+                        <p>Window Manager With BSPWM By Gh0sT4n</p>
+                        <ul class="download-features">
+                            <li><i class="fas fa-check"></i> BSPWM</li>
+                            <li><i class="fas fa-check"></i> init - Runit</li>
+                            <li><i class="fas fa-check"></i> Pre-Install BSPWM Style Gh0sT4n</li>
+                        </ul>
+                    </div>
+                    <div class="download-footer">
+                        <button class="btn btn-block download-btn" data-version="SERVER">Download ISO</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
@@ -1393,9 +877,9 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <div class="footer-logo">
-                        <h3>T4n OS</h3>
+                        <h3>T4n Labs</h3>
+                        <p>T4n Labs adalah organisasi GitHub yang berfokus pada pengembangan: Open Source, Simple & Transparant</p>
                     </div>
-                    <p>Definisi ulang distribusi Linux dengan fokus pada estetika, performa absolut, dan kebebasan kustomisasi.</p>
                     <div class="social-links">
                         <a href="https://github.com/gh0st4n" target="_blank"><i class="fab fa-github"></i></a>
                         <a href="https://github.com/T4n-Labs" target="_blank"><i class="fab fa-github"></i></a>
@@ -1417,13 +901,13 @@
                 <div class="footer-section">
                     <h3>Kontribusi</h3>
                     <p>T4n OS adalah proyek open-source yang terbuka untuk kontribusi.</p>
-                    <a href="https://github.com/T4n-Labs" class="btn btn-small btn-black" target="_blank">
+                    <a href="https://github.com/T4n-Labs" class="btn btn-small" style="margin-top: 10px; background: #000; color: #fff;" target="_blank">
                         <i class="fab fa-github"></i> Contribute
                     </a>
                 </div>
             </div>
-            <div class="copyright">
-                <p>&copy; 2026 T4n OS. Project Community. Dibangun dengan <i class="fas fa-heart"></i> berbasis Void Linux.</p>
+            <div class="copyright" style="text-align: center; padding-top: 20px; border-top: 1px solid #222; font-size: 0.8rem; color: #666;">
+                <p>&copy; 2026 T4n OS. Project Community. Dibangun dengan berbasis Void Linux.</p>
             </div>
         </div>
     </footer>
@@ -1434,30 +918,21 @@
     <!-- Download Modal -->
     <div class="download-modal" id="download-modal">
         <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="modal-title">Unduh T4n OS</h2>
-                <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
-            </div>
-            <div class="modal-download-options">
-                <a href="https://drive.google.com/drive/folders/1n46pLVusTyGlu3k04HpDBTO6E1t7j7ud?usp=sharing" target="_blank" class="download-option">
-                    <i class="fab fa-google-drive"></i>
-                    <div class="download-info">
-                        <h3>Google Drive</h3>
-                        <p>Google Service</p>
+            <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+            <h2 style="margin-bottom: 20px; color: var(--accent-concrete);">Unduh T4n OS</h2>
+            <div class="modal-download-options" style="display: flex; flex-direction: column; gap: 15px;">
+                <a href="https://drive.google.com/drive/folders/1n46pLVusTyGlu3k04HpDBTO6E1t7j7ud?usp=sharing" target="_blank" class="download-option" style="display: flex; align-items: center; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid #333; border-radius: 4px; text-decoration: none; color: #fff;">
+                    <i class="fab fa-google-drive" style="font-size: 1.5rem; margin-right: 15px; color: var(--forest-green);"></i>
+                    <div>
+                        <h4 style="margin: 0;">Google Drive</h4>
+                        <small style="color: #aaa;">Google Service</small>
                     </div>
                 </a>
-                <a href="https://sourceforge.net/projects/t4n-os/files/" target="_blank" class="download-option">
-                    <i class="fa-solid fa-download"></i>
-                    <div class="download-info">
-                        <h3>SourceForge</h3>
-                        <p>Open Source Service</p>
-                    </div>
-                </a>
-                <a href="#" target="_blank" class="download-option">
-                    <i class="fas fa-magnet"></i>
-                    <div class="download-info">
-                        <h3>Torrent <span class="status-badge status-new">SOON</span></h3>
-                        <p>P2P Distributed Download</p>
+                <a href="https://sourceforge.net/projects/t4n-os/files/" target="_blank" class="download-option" style="display: flex; align-items: center; padding: 15px; background: rgba(255,255,255,0.05); border: 1px solid #333; border-radius: 4px; text-decoration: none; color: #fff;">
+                    <i class="fa-solid fa-download" style="font-size: 1.5rem; margin-right: 15px; color: var(--forest-green);"></i>
+                    <div>
+                        <h4 style="margin: 0;">SourceForge</h4>
+                        <small style="color: #aaa;">Open Source Service</small>
                     </div>
                 </a>
             </div>
@@ -1515,7 +990,6 @@
         };
 
         // --- 1. Preloader Manager ---
-                // --- 1. Advanced Preloader / Boot Sequence Manager ---
         class PreloaderManager {
             constructor() { 
                 this.bootLogEl = document.getElementById('boot-log');
@@ -1530,66 +1004,43 @@
                     { text: "Starting runit services...", type: '' },
                     { text: "Loading VUR Helper...", type: '' },
                     { text: "[ SYSTEM ] Environment Ready.", type: 'log-success' },
-                    { text: " ", type: '' } // Spacer
+                    { text: " ", type: '' }
                 ];
                 this.init();
             }
 
             init() {
-                // Jalankan urutan boot saat window load
                 window.addEventListener('load', () => {
                     this.runBootSequence();
                 });
             }
 
             async runBootSequence() {
-                // 1. Tampilkan log satu per satu
                 for (let i = 0; i < this.logs.length; i++) {
                     await this.typeLog(this.logs[i]);
-                    await this.wait(Math.random() * 300 + 100); // Delay acak antar log
+                    await this.wait(Math.random() * 200 + 50); 
                 }
-
-                // 2. Hapus cursor, bersihkan log (opsional), dan tampilkan Logo
                 const cursor = this.bootLogEl.querySelector('.cursor-block');
                 if(cursor) cursor.style.display = 'none';
-
-                // Fade out log container agar fokus ke logo
-                this.bootLogEl.style.transition = 'opacity 0.5s';
                 this.bootLogEl.style.opacity = '0';
-
-                // Tampilkan Logo dengan animasi CSS
                 this.bootLogoEl.classList.add('visible');
-
-                // 3. Tunggu sebentar, lalu hilangkan preloader
                 await this.wait(1500);
-
                 if (this.preloaderEl) {
                     this.preloaderEl.classList.add('fade-out');
-                    // Hapus elemen dari DOM setelah animasi selesai agar tidak mengganggu scroll
-                    setTimeout(() => {
-                        this.preloaderEl.style.display = 'none';
-                    }, 1000);
+                    setTimeout(() => { this.preloaderEl.style.display = 'none'; }, 1000);
                 }
             }
 
             async typeLog(logData) {
                 const line = document.createElement('span');
                 line.className = `log-line ${logData.type}`;
-                
-                // Masukkan log sebelum cursor
                 const cursor = this.bootLogEl.querySelector('.cursor-block');
                 this.bootLogEl.insertBefore(line, cursor);
-                
-                // Efek mengetik cepat (atau langsung muncul untuk kecepatan boot)
                 line.textContent = logData.text;
-                
-                // Auto scroll ke bawah
                 this.bootLogEl.scrollTop = this.bootLogEl.scrollHeight;
             }
 
-            wait(ms) {
-                return new Promise(resolve => setTimeout(resolve, ms));
-            }
+            wait(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
         }
 
         // --- 2. Navigation Manager ---
@@ -1625,37 +1076,15 @@
         class ScrollManager {
             constructor() { this.init(); }
             init() {
-                this.setupBackToTop();
-                this.setupScrollSpy();
-            }
-            setupBackToTop() {
                 if (!DOM.backToTop) return;
                 window.addEventListener('scroll', () => {
                     DOM.backToTop.classList.toggle('show', window.pageYOffset > 300);
                 });
                 DOM.backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
             }
-            setupScrollSpy() {
-                const sections = document.querySelectorAll('section[id]');
-                const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
-                if (!sections.length || !navLinks.length) return;
-
-                const observer = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        if (entry.isIntersecting) {
-                            const currentId = entry.target.getAttribute('id');
-                            navLinks.forEach(link => {
-                                link.classList.toggle('active', link.getAttribute('href') === `#${currentId}`);
-                            });
-                        }
-                    });
-                }, { threshold: 0.3, rootMargin: `-${CONSTANTS.HEADER_HEIGHT}px 0px 0px 0px` });
-
-                sections.forEach(section => observer.observe(section));
-            }
         }
 
-        // --- 4. Terminal Animation Manager (New Feature) ---
+        // --- 4. Terminal Animation Manager ---
         class TerminalManager {
             constructor() {
                 this.lines = [
@@ -1665,9 +1094,7 @@
                     { text: "Configuring runit services...", delay: 600 },
                     { text: "Done.", delay: 400, class: "cmd-success" }
                 ];
-                this.lineIndex = 0;
-                this.charIndex = 0;
-                this.currentEl = null;
+                this.lineIndex = 0; this.charIndex = 0; this.currentEl = null;
                 this.init();
             }
             init() {
@@ -1681,35 +1108,26 @@
                         this.currentEl = document.createElement('div');
                         this.currentEl.className = 'cmd-line';
                         if (line.class) this.currentEl.classList.add(line.class);
-                        
-                        // Add prompt prefix for commands
                         if (line.text.startsWith('$')) {
                             const prefix = document.createElement('span');
                             prefix.className = 'cmd-prefix';
                             prefix.textContent = 'user@t4n-os:~$';
                             this.currentEl.appendChild(prefix);
-                            
                             const cmdText = document.createElement('span');
                             cmdText.className = 'cmd-text';
                             this.currentEl.appendChild(cmdText);
                             this.cmdTextEl = cmdText;
                         }
-                        
                         DOM.terminalOutput.appendChild(this.currentEl);
                     }
-
-                    // Get text content without the prefix
                     const textToType = line.text.startsWith('$') ? line.text.substring(2) : line.text;
                     const targetEl = line.text.startsWith('$') ? this.cmdTextEl : this.currentEl;
-
                     if (this.charIndex < textToType.length) {
                         targetEl.textContent += textToType.charAt(this.charIndex);
                         this.charIndex++;
                         setTimeout(() => this.typeWriter(), 50);
                     } else {
-                        this.currentEl = null;
-                        this.charIndex = 0;
-                        this.lineIndex++;
+                        this.currentEl = null; this.charIndex = 0; this.lineIndex++;
                         setTimeout(() => this.typeWriter(), line.delay);
                     }
                 } else {
@@ -1741,8 +1159,7 @@
                 });
             }
             openLightbox(index) {
-                AppState.isLightboxOpen = true;
-                AppState.currentGalleryIndex = index;
+                AppState.isLightboxOpen = true; AppState.currentGalleryIndex = index;
                 this.updateContent();
                 DOM.lightbox.classList.add('active');
                 document.body.style.overflow = 'hidden';
@@ -1794,7 +1211,7 @@
                 this.preloader = new PreloaderManager();
                 this.navigation = new NavigationManager();
                 this.scroll = new ScrollManager();
-                this.terminal = new TerminalManager(); // Added Terminal
+                this.terminal = new TerminalManager();
                 this.lightbox = new LightboxManager();
                 this.modal = new ModalManager();
             }
