@@ -7,3 +7,6 @@
 
 [Mar / 2026]
 - 16 : Processing T4n OS BSPWM Community edition & Add CodeName "Miftah"
+
+[Apr / 2026]
+- 06 : Fix os-release & Push New Edition(BSPWM)
