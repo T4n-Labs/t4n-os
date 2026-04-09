@@ -7,7 +7,7 @@
     <title>T4n OS | The New ERA Void Linux</title>
     <meta name="description" content="T4n OS adalah sistem operasi berbasis Void Linux yang dirancang untuk memberikan pengalaman penggunaan yang mudah, ringan, dan stabil.">
     <meta name="theme-color" content="#050505">
-    <link rel="icon" href="./assets/images/T4n-OS.svg" type="image/svg+xml">    
+    <link rel="icon" href="./assets/images/T4nOS.svg" type="image/svg+xml">    
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -581,6 +581,7 @@
             <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#download">Download</a></li>
+                <li><a href="./roadmap.html">Roadmap</a></li>
                 <li><a href="https://t4n-labs.github.io/t4n-os_docs/">Docs</a></li>
                 <li><a href="https://t4n-labs.github.io/vur-web/">VUR</a></li>
             </ul>
@@ -664,7 +665,7 @@
                 <div class="philosophy-card">
                     <h3>Community First</h3>
                     <p>.</p>
-                    <p>Proyek dikembangkan secara terbuka oleh komunitas, untuk komunitas. Bukan produk perusahaan.</p>
+                    <p>Proyek dikembangkan secara terbuka oleh komunitas, untuk komunitas.</p>
                 </div>
                 <div class="philosophy-card">
                     <h3>Minimal by Default</h3>
@@ -722,7 +723,7 @@
         </section>
 
         <!-- Roadmap Section -->
-        <section id="roadmap" class="section">
+        <!-- <section id="roadmap" class="section">
             <h2 class="section-title"><span>Project Roadmap</span></h2>
             <div class="roadmap-container">
                 <div class="roadmap-item">
@@ -744,7 +745,7 @@
                     <p>Rilis BSPWM With Style Gh0sT4n</p>
                 </div>
             </div>
-        </section>
+        </section> -->
 
         <!-- Gallery Section -->
         <section id="gallery" class="section">
@@ -758,10 +759,10 @@
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="https://wallpapersok.com/images/high/original-void-linux-logo-b1191jmjhcfjapwc.webp" alt="T4n OS Terminal">
+                    <img src="./assets/images/ASCII.png" alt="T4n OS Terminal">
                     <div class="gallery-overlay">
-                        <h3>Terminal Workflow</h3>
-                        <p>Power of CLI</p>
+                        <h3>T4n OS ASCII</h3>
+                        <p>T4n OS Logo</p>
                     </div>
                 </div>
                 <div class="gallery-item" data-title="T4n OS Terminal">
@@ -916,7 +917,7 @@
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h3>Sumber Daya</h3>
+                    <h3>Sumber</h3>
                     <ul>
                         <li><a href="https://voidlinux.org/" target="_blank">Void Linux</a></li>
                         <li><a href="https://docs.voidlinux.org/" target="_blank">Void Linux Docs</a></li>
@@ -935,7 +936,7 @@
                 </div>
             </div>
             <div class="copyright" style="text-align: center; padding-top: 20px; border-top: 1px solid #222; font-size: 0.8rem; color: #666;">
-                <p>&copy; 2026 T4n OS. Project Community. Dibangun dengan berbasis Void Linux.</p>
+                <p>&copy; 2026 T4n Labs. Project Community. Dibangun dengan berbasis Void Linux.</p>
             </div>
         </div>
     </footer>
@@ -1024,13 +1025,12 @@
                 this.bootLogoEl = document.getElementById('boot-logo');
                 this.preloaderEl = document.getElementById('preloader');
                 this.logs = [
-                    { text: "[ OK ] Started T4n OS Boot Service v0.3.0", type: 'log-success' },
+                    { text: "[ OK ] Started T4n OS", type: 'log-success' },
                     { text: "Mounting /proc... [ OK ]", type: '' },
                     { text: "Loading kernel modules... [ OK ]", type: '' },
                     { text: "Initializing XBPS Package Manager...", type: '' },
                     { text: "Checking disk integrity... 100%", type: 'log-success' },
                     { text: "Starting runit services...", type: '' },
-                    { text: "Loading VUR Helper...", type: '' },
                     { text: "[ SYSTEM ] Environment Ready.", type: 'log-success' },
                     { text: " ", type: '' }
                 ];
@@ -1253,3 +1253,4 @@
     </script>
 </body>
 </html>
+
