@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News - T4N OS</title>
+    <style>
+        /* --- RESET & VARIABEL --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #050505;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.2s;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* --- NAVIGASI (Sama dengan Home) --- */
+        nav {
+            padding: 30px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #111;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
+            color: #fff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a {
+            color: #666;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #00e5ff;
+        }
+
+        /* --- NEWS HEADER --- */
+        .news-header {
+            padding: 60px 0 40px;
+            text-align: center;
+        }
+
+        .news-header h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .news-header p {
+            color: #555;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* --- DAFTAR BERITA (List Style) --- */
+        .news-list {
+            margin-bottom: 60px;
+        }
+
+        .news-item {
+            border-bottom: 1px solid #1a1a1a;
+            padding: 40px 0;
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .news-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Kolom Tanggal (Kiri) */
+        .news-date {
+            min-width: 100px;
+            font-family: 'Courier New', monospace;
+            color: #666;
+            font-size: 0.9rem;
+            padding-top: 5px;
+            text-align: right;
+        }
+
+        .news-date span {
+            display: block;
+            color: #00e5ff; /* Aksen Cyan */
+            font-weight: bold;
+        }
+
+        /* Kolom Konten (Kanan) */
+        .news-content {
+            flex-grow: 1;
+        }
+
+        .news-title {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .news-title:hover {
+            color: #00e5ff;
+            cursor: pointer;
+        }
+
+        .news-meta {
+            font-size: 0.8rem;
+            color: #444;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .tag-badge {
+            background-color: #111;
+            padding: 2px 8px;
+            border-radius: 2px;
+            color: #888;
+        }
+
+        .news-excerpt {
+            color: #999;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            max-width: 700px;
+        }
+
+        .read-more {
+            font-size: 0.9rem;
+            color: #fff;
+            border-bottom: 1px solid #444;
+            padding-bottom: 2px;
+        }
+
+        .read-more:hover {
+            color: #00e5ff;
+            border-color: #00e5ff;
+        }
+
+        /* --- PAGINATION --- */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 40px;
+        }
+
+        .page-link {
+            padding: 8px 12px;
+            border: 1px solid #222;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .page-link:hover, .page-link.active {
+            border-color: #fff;
+            color: #fff;
+        }
+
+        /* --- FOOTER TERMINAL --- */
+        .terminal-section {
+            background-color: #0a0a0a;
+            border-top: 1px solid #111;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+
+        .terminal-window {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .prompt { color: #00e5ff; margin-right: 8px; }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .news-item {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .news-date {
+                text-align: left;
+                margin-bottom: 5px;
+            }
+            .nav-links {
+                display: none; /* Sederhana untuk mobile */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Navigasi -->
+        <nav>
+            <div class="logo">T4N OS</div>
+            <div class="nav-links">
+                <a href="../../id.html">Home</a>
+                <a href="#" class="active">News</a>
+                <a href="https://t4n-labs.github.io/t4n-os_docs/">Docs</a>
+            </div>
+        </nav>
+
+        <!-- Header Halaman Berita -->
+        <header class="news-header">
+            <h1>SYSTEM LOGS</h1>
+            <p>Pembaruan Terbaru • Log perubahan • Pengumuman</p>
+        </header>
+
+        <!-- Daftar Berita -->
+        <main class="news-list">
+
+            <!-- Item Berita 1 (Featured/Latest) -->
+            <article class="news-item">
+                <div class="news-date">
+                    2026<br>
+                    <span>APR 28</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span class="tag-badge">UPDATE</span>
+                    </div>
+                    <h2 class="news-title">Let-X (VUR Helper) UPDATE: Version 0.1.1</h2>
+                    <p class="news-excerpt">
+                        Let-X 0.1.1: Default language changed from Indonesian to English to improve consistency and user reach.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Item Berita 2 -->
+            <article class="news-item">
+                <div class="news-date">
+                    2026<br>
+                    <span>MAY 01</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span class="tag-badge">UPDATE</span>
+                    </div>
+                    <h2 class="news-title">Let-X (VUR Helper) UPDATE: Version 0.1.2/h2>
+                    <p class="news-excerpt">
+                        Improvements to Let-X core features, including stability fixes, build process
+                        optimizations, and CLI command enhancements for a more efficient VUR workflow.
+                    </p>
+                </div>
+            </article>
+
+            <!-- Item Berita 3 -->
+            <article class="news-item">
+                <div class="news-date">
+                    2026<br>
+                    <span>MAR 07</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span class="tag-badge">RELEASE</span>
+                    </div>
+                    <h2 class="news-title">VUR (Void User Repository) Released</h2>
+                    <p class="news-excerpt">
+                        VUR kini tersedia untuk T4n OS dan turunan Void Linux. Repository berbasis komunitas untuk
+                        distribusi paket tambahan, dengan konsep mirip AUR namun disesuaikan dengan ekosistem Void.
+                    </p>
+                </div>
+            </article>
+
+
+            <!-- Item Berita 4 -->
+            <!-- <article class="news-item">
+                <div class="news-date">
+                    2026<br>
+                    <span>MAR 09</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span class="tag-badge">RELEASE</span>
+                    </div>
+                    <h2 class="news-title">VUR Website Released</h2>
+                    <p class="news-excerpt">
+                        The official VUR website is now available. It provides access to browse packages, search for
+                        templates, and facilitate contributions to the Void User Repository in one centralized interface.
+                    </p>
+                </div>
+            </article> -->
+
+            <!-- Item Berita 5 -->
+            <!-- <article class="news-item">
+                <div class="news-date">
+                    2026<br>
+                    <span>APR 24</span>
+                </div>
+                <div class="news-content">
+                    <div class="news-meta">
+                        <span class="tag-badge">RELEASE</span>
+                    </div>
+                    <h2 class="news-title">Let-X (VUR Helper) Released</h2>
+                    <p class="news-excerpt">
+                        Let-X was released as a CLI helper for VUR. It simplifies searching,
+                        building, and managing package templates, inspired by yay in the AUR.
+                    </p>
+                </div>
+            </article> -->
+
+        </main>
+
+        <!-- Pagination Sederhana -->
+        <div class="pagination">
+            <a href="news.html" class="page-link">previously</a>
+            <a href="#" class="page-link">Next</a>
+        </div>
+
+    </div>
+</body>
+</html>
