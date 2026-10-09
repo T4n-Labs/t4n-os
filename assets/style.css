@@ -1,0 +1,1202 @@
+/* ================================================================
+   T4n OS — style.css
+   ----------------------------------------------------------------
+   File     : assets/style.css
+   Dimuat   : index.html & id.html (jangan duplikat file ini)
+
+   DAFTAR ISI:
+   01. Custom Properties  : Variabel warna, spacing, font
+   02. Global Reset       : Reset bawaan browser + base body
+   03. Animations         : @keyframes (pulse, blink)
+   04. Preloader          : Boot sequence overlay (4 fase)
+   05. Header & Nav       : Navbar sticky + menu mobile
+   06. Buttons            : Tombol utama & variasinya
+   07. Hero Section       : Judul, stats, terminal (tinggi tetap)
+   08. Sections & Cards   : Layout section umum + kartu
+   09. Gallery            : Grid gambar + hover overlay
+   10. Download           : Kartu edisi download
+   11. Overlay            : Lightbox & modal (via JS)
+   12. Footer             : Footer + contribute grid + sosmed
+   13. Back to Top        : Tombol fixed
+   14. Media Queries      : Responsive (992px / 768px / 480px)
+
+   CHANGELOG:
+   [v2] Preloader : logo muncul SETELAH log fade-out (fase terpisah)
+   [v2] Terminal  : height FIXED (tidak membesar saat mengetik) +
+                    auto-scroll ala terminal asli
+   ================================================================ */
+
+
+/* ================================================================
+   01. CUSTOM PROPERTIES
+   ----------------------------------------------------------------
+   Semua warna/jarak diatur di sini. Ubah satu tempat, berubah
+   di seluruh website.
+   ================================================================ */
+:root {
+    /* --- Palet Warna --- */
+    --accent-concrete: #b0b8c1;
+    --forest-green: #2d6a4f;
+    --forest-light: #40916c;
+    --border-forest: rgba(45, 106, 79, 0.3);
+    --black-night: #050505;
+    --dark-card: rgba(10, 20, 15, 0.7);
+    --dark-surface: #0a0f0c;
+    --text-main: #eceff1;
+    --text-muted: #90a4ae;
+
+    /* --- UI Elements --- */
+    --shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.7);
+    --shadow-green: 0 0 20px rgba(45, 106, 79, 0.25);
+    --transition: all 0.3s ease;
+    --border-radius: 4px;
+
+    /* --- Layout & Spacing --- */
+    --container-padding: 24px;
+    --section-padding: 80px;
+    --font-mono: 'Fira Code', monospace;
+}
+
+
+/* ================================================================
+   02. GLOBAL RESET & BASE
+   ================================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    /* Hapus highlight biru saat tap di Android/iOS */
+}
+
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+body {
+    background-color: var(--black-night);
+    color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    /* Ambient "forest fog" — gradasi hijau lembut di background */
+    background-image:
+        radial-gradient(circle at 15% 50%, rgba(45, 106, 79, 0.08) 0%, transparent 30%),
+        radial-gradient(circle at 85% 30%, rgba(20, 30, 25, 0.4) 0%, transparent 40%);
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Dukungan Home Indicator di iPhone */
+}
+
+/* Fluid Typography: skala otomatis dari HP ke Desktop */
+h1, h2, h3, h4, h5 {
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+h1 { font-size: clamp(2.5rem, 5vw, 4rem); }
+h2 { font-size: clamp(1.8rem, 4vw, 2.5rem); }
+h3 { font-size: clamp(1.2rem, 2.5vw, 1.4rem); }
+
+p { font-size: clamp(0.9rem, 1.5vw, 1.1rem); }
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--container-padding);
+    width: 100%;
+}
+
+/* Teks gradien (dipakai di " OS" pada judul hero) */
+.text-gradient {
+    background: linear-gradient(135deg, var(--accent-concrete), var(--forest-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 20px rgba(45, 106, 79, 0.2);
+}
+
+
+/* ================================================================
+   03. ANIMATIONS (Keyframes)
+   ================================================================ */
+@keyframes pulse-forest {
+    0%   { transform: scale(1);    box-shadow: 0 0 0 0 rgba(45, 106, 79, 0.4); }
+    70%  { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(45, 106, 79, 0); }
+    100% { transform: scale(1);    box-shadow: 0 0 0 0 rgba(45, 106, 79, 0); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0; }
+}
+
+
+/* ================================================================
+   04. PRELOADER — Boot Sequence (4 Fase)
+   ----------------------------------------------------------------
+   Urutan fase (dikendalikan script.js → initPreloader):
+     Fase 1 : Log boot dicetak baris demi baris
+     Fase 2 : Log fade-out → layar gelap bersih (.boot-log.fade-out)
+     Fase 3 : Logo T4n OS muncul sendirian (.boot-logo.visible)
+     Fase 4 : Seluruh preloader fade-out (.preloader.fade-out)
+   ================================================================ */
+.preloader {
+    position: fixed;
+    inset: 0;
+    background-color: #000;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Fira Code', monospace;
+    overflow: hidden;
+    transition: opacity 1s ease, visibility 1s ease;
+}
+
+/* Efek scanline layar CRT retro */
+.preloader::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 2;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* FASE 4 — preloader menghilang (class via JS) */
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Kotak area log boot */
+.boot-container {
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    z-index: 3;
+    text-align: left;
+}
+
+/* FASE 2 — log menghilang dulu, SEBELUM logo muncul.
+   Mencegah logo menimpa log yang masih terlihat. */
+.boot-log.fade-out {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+/* Logo tengah — FASE 3, muncul setelah layar bersih */
+.boot-logo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    text-align: center;
+    opacity: 0;
+    transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 4;
+    width: 100%;
+}
+
+.boot-logo.visible {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.boot-logo h1 {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    color: #fff;
+    margin: 0;
+    text-shadow: 0 0 20px var(--forest-green);
+    letter-spacing: 5px;
+}
+
+.boot-logo span { color: var(--forest-green); }
+
+/* Baris-baris log boot */
+.boot-log {
+    color: var(--accent-concrete);
+    font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+    line-height: 1.6;
+    opacity: 0.8;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.log-line {
+    display: block;
+    margin-bottom: 4px;
+    word-wrap: break-word;
+}
+
+.log-success { color: var(--forest-green); }
+
+/* Kursor kedip ala terminal */
+.cursor-block {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background-color: var(--forest-green);
+    animation: blink 0.8s infinite;
+    vertical-align: middle;
+    margin-left: 5px;
+}
+
+
+/* ================================================================
+   05. HEADER & NAVIGATION
+   ================================================================ */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(5, 5, 5, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-forest);
+    padding: 15px 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-link {
+    text-decoration: none;
+    color: inherit;
+    z-index: 101;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    color: var(--text-main);
+}
+
+.logo p {
+    margin: 0;
+    font-family: 'Cinzel', serif;
+    letter-spacing: 1px;
+    background: linear-gradient(135deg, var(--accent-concrete), var(--forest-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Tombol hamburger — display:none di desktop, muncul di mobile (MQ 768px) */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--accent-concrete);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 101;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+}
+
+.nav-links li { margin-left: 30px; }
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 400;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    position: relative;
+    transition: var(--transition);
+    padding: 5px 0;
+    display: block;
+}
+
+/* Garis hijau bawah saat hover/aktif */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: 0;
+    left: 0;
+    background-color: var(--forest-green);
+    box-shadow: 0 0 8px var(--forest-green);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active { color: var(--accent-concrete); }
+
+.nav-links a:hover::after,
+.nav-links a.active::after { width: 100%; }
+
+
+/* ================================================================
+   06. BUTTONS
+   ----------------------------------------------------------------
+   .btn          : tombol utama solid
+   .btn-outline  : versi garis (transparan)
+   .btn-block    : tombol selebar parent (full width)
+   .btn-disabled : versi nonaktif
+   ================================================================ */
+.btn {
+    display: inline-block;
+    background: var(--accent-concrete);
+    color: #1a1a1a;
+    padding: 12px 24px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition: var(--transition);
+    cursor: pointer;
+    border: 1px solid var(--accent-concrete);
+    border-radius: var(--border-radius);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Efek "wipe" hijau dari kiri saat hover */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background-color: var(--forest-green);
+    transition: width 0.3s ease;
+    z-index: -1;
+}
+
+.btn:hover::before { width: 100%; }
+
+.btn:hover {
+    color: #fff;
+    border-color: var(--forest-green);
+    box-shadow: 0 0 25px rgba(45, 106, 79, 0.4);
+}
+
+/* --- Variasi Outline --- */
+.btn-outline {
+    background: transparent;
+    color: var(--accent-concrete);
+    border: 1px solid var(--text-muted);
+    box-shadow: none;
+}
+
+.btn-outline:hover {
+    border-color: var(--accent-concrete);
+    color: var(--text-main);
+    background: rgba(176, 184, 193, 0.1);
+}
+
+.btn-outline::before { background: transparent; }
+
+/* --- Variasi Block & Disabled --- */
+.btn-block {
+    display: block;
+    width: 100%;
+    margin: 0;
+}
+
+.btn-disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+
+/* ================================================================
+   07. HERO SECTION
+   ================================================================ */
+.hero {
+    padding: var(--section-padding) 0;
+    position: relative;
+    overflow: hidden;
+    min-height: 90vh;   /* Fallback browser lama */
+    min-height: 90dvh;  /* Dukungan mobile (dynamic viewport) */
+    display: flex;
+    align-items: center;
+}
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(15, 25, 20, 0.8), rgba(5, 5, 5, 1));
+    z-index: -1;
+}
+
+.hero .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+.hero-content {
+    flex: 1;
+    min-width: 300px;
+    z-index: 2;
+}
+
+.hero-subtitle {
+    color: var(--accent-concrete);
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-left: 3px solid var(--forest-green);
+    padding-left: 15px;
+    display: inline-block;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+}
+
+.hero p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    margin-bottom: 30px;
+    font-weight: 300;
+}
+
+.hero-buttons {
+    margin-bottom: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: flex-start;
+}
+
+.hero-stats {
+    display: flex;
+    gap: 30px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-forest);
+    flex-wrap: wrap;
+}
+
+.stat-item {
+    text-align: left;
+    min-width: 100px;
+}
+
+.stat-number {
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 700;
+    color: var(--accent-concrete);
+    font-family: 'Cinzel', serif;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+/* --- Terminal Preview (Animasi) --- */
+.hero-terminal {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    font-family: var(--font-mono);
+}
+
+.terminal-window {
+    background: #0f0f0f;
+    border: 1px solid var(--border-forest);
+    border-radius: 6px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+    position: relative;
+}
+
+/* Bar atas jendela (3 titik macOS) */
+.terminal-header {
+    background: #1a1a1a;
+    padding: 8px 15px;
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid #333;
+}
+
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.red    { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green  { background: #27c93f; }
+
+/* Isi terminal — [FIX v2]
+   Tinggi TETAP sejak awal (height, bukan min-height) sehingga
+   terminal TIDAK membesar setiap kali ada baris baru diketik.
+   Baris lama otomatis naik ke atas via auto-scroll di script.js. */
+.terminal-body {
+    padding: 15px;
+    font-size: clamp(0.75rem, 2vw, 0.9rem);
+    color: #d4d4d4;
+    height: 300px;            /* ← FIXED height — sesuaikan selera */
+    overflow-y: auto;         /* Scroll dikontrol JS */
+    word-wrap: break-word;
+    /* Sembunyikan scrollbar agar rapi (scroll tetap berfungsi) */
+    scrollbar-width: none;                     /* Firefox */
+    -ms-overflow-style: none;                  /* IE/Edge lama */
+}
+
+/* Sembunyikan scrollbar — Chrome/Safari */
+.terminal-body::-webkit-scrollbar {
+    display: none;
+}
+
+.cmd-line {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.cmd-prefix { color: var(--forest-light); margin-right: 8px; }
+.cmd-success { color: var(--forest-light); }
+
+.cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background-color: var(--forest-green);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+}
+
+
+/* ================================================================
+   08. SECTIONS & CARDS
+   ================================================================ */
+main { padding: 40px 0; }
+
+.section { margin-bottom: 80px; }
+
+.section-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    margin-bottom: 40px;
+    color: var(--text-main);
+    text-align: center;
+    position: relative;
+}
+
+.section-title span {
+    border-bottom: 2px solid var(--accent-concrete);
+    padding-bottom: 10px;
+    color: var(--accent-concrete);
+}
+
+/* --- About (Glass Card) --- */
+.about-container {
+    background: var(--dark-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-forest);
+    border-radius: 8px;
+    padding: 40px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.about-container p {
+    margin-bottom: 1.5rem;
+    color: var(--text-muted);
+}
+
+.about-container a {
+    color: var(--forest-light);
+    text-decoration: none;
+    border-bottom: 1px solid var(--forest-light);
+}
+
+/* --- Grid Layout (dipakai Features / Philosophy / Download) ---
+   auto-fit: kolom menyesuaikan lebar layar otomatis */
+.card-container,
+.philosophy-grid,
+.download-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+/* --- Base Card (dipakai 3 jenis kartu) --- */
+.card,
+.philosophy-card,
+.download-card {
+    background-color: var(--dark-card);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border-forest);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    transition: var(--transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Kartu Features: konten rata tengah.
+   align-items: center ikut memusatkan lingkaran .card-icon. */
+.card {
+    text-align: center;
+    align-items: center;
+}
+
+.card:hover,
+.download-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--forest-green);
+    box-shadow: var(--shadow-green);
+}
+
+/* Lingkaran ikon di kartu Features — otomatis tengah
+   karena parent .card memakai align-items: center */
+.card-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(45, 106, 79, 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-forest);
+    flex-shrink: 0;   /* Cegah lingkaran gepeng saat ruang sempit */
+}
+
+.card-icon i {
+    font-size: 1.2rem;
+    color: var(--accent-concrete);
+}
+
+/* Kartu Philosophy: konten rata tengah */
+.philosophy-card {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Divider ・・・・・ di bawah judul philosophy card */
+.philosophy-card h3 + p {
+    color: var(--forest-light);
+    font-size: 0.9rem;
+    line-height: 1.2;
+    margin: 12px 0 15px 0;
+    user-select: none;
+}
+
+/* Ikon SVG (logo Void Linux) */
+.tech-svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    fill: currentColor;
+}
+
+/* --- Tech Stack (opsional, bila section ditambahkan) --- */
+.tech-stack-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.tech-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-muted);
+    text-align: center;
+    width: 80px;
+}
+
+.tech-item i {
+    font-size: 2rem;
+    margin-bottom: 8px;
+    color: var(--border-forest);
+}
+
+
+/* ================================================================
+   09. GALLERY
+   ================================================================ */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border-forest);
+    aspect-ratio: 16/9;
+}
+
+/* Filter hijau sepia → normal saat hover */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+    filter: sepia(40%) hue-rotate(80deg) contrast(1.1);
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+    filter: sepia(0%) hue-rotate(0deg);
+}
+
+/* Overlay keterangan (slide-up saat hover) */
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(5, 5, 5, 0.95), transparent);
+    padding: 20px 15px 15px;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+
+/* ================================================================
+   10. DOWNLOAD
+   ================================================================ */
+.download-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-forest);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+/* Badge ukuran ISO */
+.download-size {
+    background: rgba(176, 184, 193, 0.15);
+    color: var(--accent-concrete);
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    border-radius: 10px;
+}
+
+.download-features {
+    list-style: none;
+    margin-bottom: 15px;
+}
+
+.download-features li {
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: flex-start;
+}
+
+.download-features i {
+    color: var(--forest-light);
+    margin-right: 8px;
+    margin-top: 4px;
+    font-size: 0.7rem;
+}
+
+/* Badge status (SOON / ONGOING) */
+.status-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-size: 0.6rem;
+    font-weight: bold;
+    margin-left: 5px;
+    background: rgba(45, 106, 79, 0.2);
+    color: var(--forest-light);
+}
+
+
+/* ================================================================
+   11. OVERLAY: LIGHTBOX & MODAL
+   ----------------------------------------------------------------
+   Default display:none, muncul saat class .active ditambah via JS
+   ================================================================ */
+.lightbox,
+.download-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(5px);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.lightbox.active,
+.download-modal.active { display: flex; }
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 85vh;
+    position: relative;
+    border: 1px solid var(--forest-green);
+    box-shadow: 0 0 30px rgba(45, 106, 79, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+}
+
+.modal-content {
+    background: var(--dark-surface);
+    border: 1px solid var(--border-forest);
+    border-radius: var(--border-radius);
+    padding: 30px;
+    max-width: 500px;
+    width: 95%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Tombol tutup (X) — dipakai lightbox & modal */
+.lightbox-close,
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Navigasi kiri/kanan lightbox */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    transform: translateY(-50%);
+}
+
+.lightbox-prev,
+.lightbox-next {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ================================================================
+   12. FOOTER
+   ================================================================ */
+footer {
+    background-color: #020202;
+    padding: 60px 0 30px;
+    margin-top: 80px;
+    border-top: 1px solid var(--border-forest);
+}
+
+.footer-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 250px;
+}
+
+.footer-logo h3 {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    font-family: 'Cinzel', serif;
+    margin-bottom: 15px;
+}
+
+.footer-section h3 {
+    color: var(--accent-concrete);
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.footer-section ul { list-style: none; }
+.footer-section li { margin-bottom: 10px; }
+
+.footer-section a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* --- Contribute Grid 2x2 (Github/Gitlab/Saweria/Kreate) --- */
+.contribute-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;          /* Jarak antar kotak */
+    margin-top: 20px;   /* Jarak dari paragraf di atasnya */
+}
+
+.contribute-box {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;          /* Jarak ikon ↔ teks */
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-forest);
+    border-radius: var(--border-radius);
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: var(--transition);
+}
+
+.contribute-box:hover {
+    background: var(--forest-green);
+    border-color: var(--forest-light);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-green);
+}
+
+.contribute-box i {
+    font-size: 1.2rem;
+    color: var(--accent-concrete);
+}
+
+/* --- Sosial Media (baris ikon bulat) --- */
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.social-links a {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    border: 1px solid var(--border-forest);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: var(--forest-green);
+    color: #fff;
+}
+
+
+/* ================================================================
+   13. BACK TO TOP
+   ----------------------------------------------------------------
+   Muncul saat class .show ditambahkan oleh script.js
+   ================================================================ */
+#back-to-top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: var(--dark-surface);
+    color: var(--accent-concrete);
+    border: 1px solid var(--border-forest);
+    border-radius: 50%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 90;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+}
+
+#back-to-top.show { display: flex; }
+
+#back-to-top:active { transform: scale(0.95); }
+
+
+/* ================================================================
+   14. MEDIA QUERIES (Responsive)
+   ----------------------------------------------------------------
+   Urutan: Tablet → Mobile → Small Mobile
+   ================================================================ */
+
+/* ---------- Tablet & Mobile Landscape (≤ 992px) ---------- */
+@media (max-width: 992px) {
+    .hero .container {
+        flex-direction: column;
+        text-align: center;
+        padding-top: 20px;
+    }
+
+    .hero-content {
+        width: 100%;
+        text-align: center;
+        max-width: 600px;
+        margin: 0 auto 40px auto;
+    }
+
+    /* Garis aksen subtitle pindah dari kiri ke bawah */
+    .hero-subtitle {
+        border-left: none;
+        border-bottom: 3px solid var(--forest-green);
+        padding-bottom: 10px;
+        padding-left: 0;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .hero-buttons { justify-content: center; width: 100%; }
+    .hero-stats   { justify-content: center; }
+
+    .hero-terminal {
+        width: 100%;
+        max-width: 100%;
+        margin-top: 0;
+    }
+}
+
+/* ---------- Mobile Portrait (≤ 768px) ---------- */
+@media (max-width: 768px) {
+    :root {
+        --container-padding: 16px;
+        --section-padding: 50px;
+    }
+
+    /* Aktifkan tombol hamburger */
+    .menu-toggle { display: block; }
+
+    /* Drawer menu dari kanan (slide-in) */
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background-color: #0a0a0a;
+        border-left: 1px solid var(--border-forest);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px 30px;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        box-shadow: -10px 0 30px rgba(0, 0, 0, 0.8);
+        z-index: 100;
+    }
+
+    /* Terbuka (class via JS) */
+    .nav-links.active { transform: translateX(0); }
+
+    .nav-links li {
+        margin: 0;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .nav-links a {
+        font-size: 1.1rem;
+        padding: 10px 0;
+        display: block;
+        width: 100%;
+    }
+
+    .about-container { padding: 20px; }
+
+    /* Semua grid jadi 1 kolom */
+    .card-container,
+    .philosophy-grid,
+    .download-options,
+    .gallery-grid { grid-template-columns: 1fr; }
+
+    .modal-content { width: 90%; padding: 20px; }
+
+    .lightbox-nav { padding: 0; }
+
+    .lightbox-prev,
+    .lightbox-next { width: 35px; height: 35px; }
+}
+
+/* ---------- Small Mobile (≤ 480px) ---------- */
+@media (max-width: 480px) {
+    h1 { letter-spacing: 0; }
+
+    .hero {
+        min-height: auto;
+        padding: 60px 0;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn {
+        width: 100%;
+        text-align: center;
+        margin: 5px 0;
+    }
+
+    /* [FIX v2] Terminal di HP: tetap fixed height, lebih pendek */
+    .terminal-body {
+        font-size: 0.65rem;
+        padding: 10px;
+        height: 220px;
+    }
+
+    .footer-content { flex-direction: column; }
+
+    /* Kotak contribute: ikon ke atas, teks di bawah */
+    .contribute-box {
+        flex-direction: column;
+        text-align: center;
+        font-size: 0.8rem;
+        padding: 12px 8px;
+    }
+}
