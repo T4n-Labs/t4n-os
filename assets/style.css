@@ -569,8 +569,23 @@ nav {
     margin-bottom: 5px;
 }
 
-.cmd-prefix { color: var(--forest-light); margin-right: 8px; }
-.cmd-success { color: var(--forest-light); }
+.cmd-prefix {
+    color: var(--forest-light);
+    margin-right: 8px;
+}
+
+.cmd-success {
+     color: var(--forest-light);
+}
+
+.cmd-password-prompt {
+  color: var(--text-muted);   /* prompt redup, seperti sudo asli */
+}
+
+.cmd-password {
+  color: var(--forest-light);
+  letter-spacing: 2px;
+}
 
 .cursor {
     display: inline-block;
@@ -859,6 +874,23 @@ main { padding: 40px 0; }
 
 .lightbox.active,
 .download-modal.active { display: flex; }
+
+/* ================================================================
+   MODAL DOWNLOAD — jarak antar tombol mirror
+   ================================================================ */
+#modal-links {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* jarak antar tombol & ke teks verify */
+}
+
+/* Disabled di modal: gaya placeholder, bukan abu pekat */
+#modal-links .btn-disabled {
+  background: transparent;
+  border: 1px dashed var(--text-muted);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
 
 .lightbox-content {
     max-width: 90%;

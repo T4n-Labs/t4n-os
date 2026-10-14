@@ -8,21 +8,33 @@
    01. Konfigurasi Global (CONFIG)   — ubah nilai di sini saja
    02. Preloader / Boot Sequence     — 4 fase (log → gelap → logo → out)
    03. Terminal Typing Animation     — tinggi tetap + auto-scroll
+                                       + animasi password
    04. Navigasi Mobile (Hamburger)   — #menu-toggle, .nav-links
    05. Nav Link Aktif Saat Scroll    — .nav-links a
    06. Tombol Back to Top            — #back-to-top
    07. Lightbox Gallery              — .gallery-item, #lightbox
    08. Modal Download ISO            — .download-btn, #download-modal
+                                       (multi-mirror: Direct,
+                                        SourceForge, Google Drive)
 
    CARA MAINTAIN:
    - Ganti link download → CONFIG.downloadLinks
+       • Setiap versi = daftar mirror (urutan array = urutan tombol)
+       • url "#" → otomatis jadi tombol disabled "Coming Soon"
    - Ganti pesan boot    → CONFIG.bootMessages
    - Ganti isi terminal  → CONFIG.terminalSequence
+       • Step command : { cmd: "...", output: [...] }
+       • Step password: { password: { prompt, value }, output: [...] }
    - Atur kecepatan      → CONFIG bagian "Kecepatan Animasi"
 
    CHANGELOG:
-   [v2] Preloader : logo muncul SETELAH log fade-out (tidak menimpa)
-   [v2] Terminal  : auto-scroll, ukuran tidak berubah saat mengetik
+   [v2.0] Preloader : logo muncul SETELAH log fade-out (tidak menimpa)
+   [v2.0] Terminal  : auto-scroll, ukuran tetap saat mengetik
+   [v2.0] Terminal  : animasi ketik password — diketik satu per satu
+                      dan tampil apa adanya (tanpa penyamaran)
+   [v2.0] Modal ISO : dukungan multi-mirror per versi (Direct,
+                      SourceForge, Google Drive) — mirror yang belum
+                      tersedia tampil sebagai tombol Coming Soon
    ================================================================ */
 
 "use strict";
@@ -39,15 +51,72 @@ const CONFIG = {
   logHoldTime: 500, // Jeda log selesai → log fade-out (Fase 2)
   logoDelay: 400, // Jeda layar gelap → logo T4n OS muncul (Fase 3)
   logoHoldTime: 1600, // Lama logo tampil → preloader hilang (Fase 4)
-  typeSpeed: 70, // Kecepatan ketik terminal (per karakter)
-  linePause: 600, // Jeda setelah command selesai diketik
+  typeSpeed: 70, // Kecepatan ketik command terminal (per karakter)
+  linePause: 600, // Jeda setelah command/output selesai
+  passwordSpeed: 110, // Kecepatan ketik password (per karakter)
 
-  /* --- Link Download ISO ---
-       Ganti '#' dengan URL rilis asli.
-       ⚠️ Key HARUS sama dengan data-version pada tombol di HTML. */
+  /* --- Link Download ISO (MULTI-MIRROR) ---
+       Setiap versi berisi DAFTAR mirror; urutan array = urutan
+       tombol di modal. ⚠️ Key HARUS sama dengan data-version
+       pada tombol di HTML.
+
+       Properti per mirror:
+         label   : teks tombol
+         icon    : class Font Awesome
+         url     : link download. Isi "#" bila mirror belum ada
+                   → otomatis tampil sebagai tombol disabled
+                     "Coming Soon" (tidak perlu hapus/tambah kode)
+         download: (opsional) true → atribut `download` dipasang,
+                   hanya untuk link file ISO langsung (server sendiri).
+                   Untuk SourceForge/GDrive JANGAN diisi true. */
+  /* --- Link Download ISO (MULTI-MIRROR) --- */
   downloadLinks: {
-    BASE: "#", // contoh: 'https://dl.t4nlabs.web.id/t4nos-base.iso'
-    XFCE: "#", // contoh: 'https://dl.t4nlabs.web.id/t4nos-xfce.iso'
+    BASE: [
+      {
+        label: "Direct Download (ISO)",
+        icon: "fas fa-download",
+        url: "#", // ← isi URL .iso di server sendiri bila sudah ada
+        download: true,
+      },
+      {
+        label: "SourceForge",
+        icon: "fas fa-server",
+        url: "https://sourceforge.net/projects/t4n-os/",
+      },
+      {
+        label: "Google Drive",
+        icon: "fab fa-google-drive",
+        url: "https://drive.google.com/drive/folders/1n46pLVusTyGlu3k04HpDBTO6E1t7j7ud?usp=drive_link",
+      },
+      {
+        label: "Torrent",
+        icon: "fas fa-globe",
+        url: "#",
+      },
+    ],
+    XFCE: [
+      {
+        label: "Direct Download (ISO)",
+        icon: "fas fa-download",
+        url: "#", // ← isi URL .iso di server sendiri bila sudah ada
+        download: true,
+      },
+      {
+        label: "SourceForge",
+        icon: "fas fa-server",
+        url: "https://sourceforge.net/projects/t4n-os/",
+      },
+      {
+        label: "Google Drive",
+        icon: "fab fa-google-drive",
+        url: "https://drive.google.com/drive/folders/1n46pLVusTyGlu3k04HpDBTO6E1t7j7ud?usp=drive_link",
+      },
+      {
+        label: "Torrent",
+        icon: "fas fa-globe",
+        url: "#",
+      },
+    ],
   },
 
   /* --- Pesan Boot Sequence (Preloader) ---
@@ -64,27 +133,42 @@ const CONFIG = {
   ],
 
   /* --- Animasi Terminal di Hero ---
-       cmd    : perintah yang diketik (efek ketik per karakter)
-       output : baris hasil yang muncul setelah command selesai.
-       Baris berawalan '[ OK ]' otomatis diwarnai hijau. */
+       Dua jenis step yang didukung:
+
+       1) STEP COMMAND (efek ketik per karakter):
+          { cmd: "uname -r", output: ["6.18 x86_64 GNU/Linux"] }
+
+       2) STEP PASSWORD (mengetik password ala sudo):
+          { password: { prompt, value },
+            output: ["[ OK ] Authentication successful."] }
+          - prompt : teks prompt (langsung tampil, tidak diketik)
+          - value  : password yang "diketik" → tampil PENUH,
+                     tidak disembunyikan; jumlah karakter yang
+                     diketik mengikuti panjang string ini
+
+       Baris output berawalan '[ OK ]' otomatis diwarnai hijau. */
   terminalSequence: [
     {
-      cmd: "let-x -S t4n-repo",
-      output: [
-        "[*] Syncing VUR repository...",
-        "[ OK ] t4n-repo synchronized.",
-      ],
+      cmd: "let-x -S",
+      output: ["[*] Root privileges required..."],
     },
     {
-      cmd: "sudo xbps-install -S base-system",
+      // Step password: diketik satu per satu & terlihat penuh
+      password: {
+        prompt: "[sudo] password for t4nlabs:",
+        value: "t4nlabs",
+      },
       output: [
-        "[*] Resolving dependencies...",
-        "[ OK ] 124 packages installed.",
+        "[OK] Authentication successful.",
+        "[*] Syncing VUR repository...",
+        "[*] t4n-repo synchronized...",
+        "[ OK ] 41 packages available.",
+        "[ OK ] 871 packages available.",
       ],
     },
     {
       cmd: "uname -rmo",
-      output: ["6.6.x_x x86_64 GNU/Linux"],
+      output: ["6.18 x86_64 GNU/Linux"],
     },
     {
       cmd: "fastfetch",
@@ -166,10 +250,16 @@ function initPreloader() {
 /* ================================================================
    03. TERMINAL TYPING ANIMATION (Hero Section)
    ----------------------------------------------------------------
-   [v2] Terminal memakai height TETAP (lihat .terminal-body di CSS).
-   - Ukuran jendela TIDAK berubah saat mengetik → layout stabil
+   - Terminal memakai height TETAP (lihat .terminal-body di CSS).
+     Ukuran jendela TIDAK berubah saat mengetik → layout stabil.
    - Saat konten melebihi tinggi, baris lama otomatis naik ke atas
-     via scrollToEnd() — persis perilaku terminal Linux asli
+     via scrollToEnd() — persis perilaku terminal Linux asli.
+
+   - Dukungan STEP PASSWORD:
+     typePassword() : prompt tampil → karakter dari `value` diketik
+       satu per satu dan terlihat penuh (tanpa penyamaran) →
+       selesai, jeda "verifikasi" → lanjut ke output.
+     Urutan & isi step dikendalikan CONFIG.terminalSequence (modul 01).
    ================================================================ */
 function initTerminal() {
   const output = document.getElementById("terminal-output");
@@ -184,7 +274,7 @@ function initTerminal() {
 
   let cmdIndex = 0;
 
-  /* Ketik command per karakter + kursor berkedip */
+  /* ---- A. Ketik command per karakter + kursor berkedip ---- */
   const typeCommand = (command, done) => {
     const line = document.createElement("span");
     line.className = "cmd-line";
@@ -216,7 +306,53 @@ function initTerminal() {
     }, CONFIG.typeSpeed);
   };
 
-  /* Cetak output command (baris [ OK ] otomatis hijau) */
+  /* ---- B. Animasi ketik password (tampil apa adanya) ----
+       Cara kerja:
+       1. Prompt (mis. "[sudo] password for t4nlabs:") langsung tampil
+       2. Setiap karakter dari `value` diketik SATU PER SATU dan
+          TERLIHAT penuh — tidak ada penyamaran/bullet
+       3. Selesai → jeda sesaat (linePause) sebagai "verifikasi"
+          → lanjut ke output berikutnya
+       Catatan: tanpa kursor berkedip, sama seperti input sudo asli. */
+  const typePassword = ({ prompt = "Password:", value = "password" }, done) => {
+    /* Satu baris berisi prompt + password yang diketik */
+    const line = document.createElement("span");
+    line.className = "cmd-line";
+
+    const promptEl = document.createElement("span");
+    promptEl.className = "cmd-password-prompt"; // styling opsional di CSS
+    promptEl.textContent = prompt;
+
+    const textEl = document.createElement("span");
+    textEl.className = "cmd-password"; // styling opsional di CSS
+
+    line.append(promptEl, " ", textEl); // spasi antara prompt & password
+    output.appendChild(line);
+    scrollToEnd();
+
+    /* Ketik karakter satu per satu.
+       Jeda acak (±0.6x–1.4x passwordSpeed) agar terasa seperti
+       manusia mengetik. Ingin jeda TETAP? Ganti baris `const delay`
+       menjadi: const delay = CONFIG.passwordSpeed; */
+    let i = 0;
+    const typeChar = () => {
+      textEl.textContent += value[i++];
+      scrollToEnd();
+
+      if (i >= value.length) {
+        // Semua karakter selesai → jeda "verifikasi" → lanjut output
+        setTimeout(done, CONFIG.linePause);
+        return;
+      }
+
+      const delay = CONFIG.passwordSpeed * (0.6 + Math.random() * 0.8);
+      setTimeout(typeChar, delay);
+    };
+
+    typeChar(); // mulai mengetik dari karakter pertama
+  };
+
+  /* ---- C. Cetak output command (baris [ OK ] otomatis hijau) ---- */
   const printOutput = (lines, done) => {
     lines.forEach((text) => {
       const out = document.createElement("span");
@@ -229,10 +365,21 @@ function initTerminal() {
     setTimeout(done, CONFIG.linePause);
   };
 
-  /* Jalankan step berikutnya dalam urutan */
+  /* ---- D. Jalankan step berikutnya dalam urutan ----
+       Mendukung 2 jenis step (lihat dokumentasi CONFIG):
+       - step.password ada → animasi password dulu → output
+       - selain itu        → animasi ketik command → output */
   const next = () => {
     if (cmdIndex >= CONFIG.terminalSequence.length) return; // Selesai
     const step = CONFIG.terminalSequence[cmdIndex++];
+
+    if (step.password) {
+      // Step password: ketik value → output (output boleh kosong)
+      typePassword(step.password, () => printOutput(step.output || [], next));
+      return;
+    }
+
+    // Step command biasa
     typeCommand(step.cmd, () => printOutput(step.output, next));
   };
 
@@ -378,10 +525,18 @@ function initLightbox() {
 }
 
 /* ================================================================
-   08. MODAL DOWNLOAD ISO
+   08. MODAL DOWNLOAD ISO (MULTI-MIRROR)
    ----------------------------------------------------------------
-   Klik tombol .download-btn → modal dengan link ISO sesuai
-   versi (dideteksi dari atribut data-version pada tombol).
+   Klik tombol .download-btn → modal berisi DAFTAR tombol mirror
+   sesuai versi (dari CONFIG.downloadLinks[version]):
+
+     - url terisi     → tombol <a> aktif
+         • download: true → atribut `download` (untuk file ISO langsung)
+         • selain itu     → buka di tab baru (SourceForge, GDrive, dll)
+     - url "#"        → tombol disabled "Coming Soon" (span, bukan link)
+     - daftar kosong  → pesan "belum tersedia"
+
+   Di bawah daftar selalu tampil petunjuk verifikasi sha256sum.
    ================================================================ */
 function initDownloadModal() {
   const modal = document.getElementById("download-modal");
@@ -392,17 +547,47 @@ function initDownloadModal() {
   document.querySelectorAll(".download-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
       const version = btn.dataset.version; // 'BASE' / 'XFCE' / dst.
-      const url = CONFIG.downloadLinks[version] || "#";
+      const mirrors = CONFIG.downloadLinks[version] || [];
 
       titleEl.textContent = `T4n OS ${version} Edition`;
-      linksEl.innerHTML = `
-                <a href="${url}" class="btn btn-block" ${url !== "#" ? "download" : ""}>
-                    <i class="fas fa-download"></i>&nbsp; Direct Download (ISO)
-                </a>
-                <p style="margin-top:12px; font-size:.8rem; color:var(--text-muted);">
-                    Verify after download:<br>
-                    <code style="color:var(--forest-light);">sha256sum t4nos-${version.toLowerCase()}*.iso</code>
-                </p>`;
+
+      /* Susun HTML tombol untuk setiap mirror.
+         Mirror dengan url "#" → tombol disabled (Coming Soon). */
+      const buttons = mirrors
+        .map((m) => {
+          const available = m.url && m.url !== "#";
+
+          // Mirror belum tersedia → span disabled, bukan link
+          if (!available) {
+            return `
+              <span class="btn btn-block btn-disabled" aria-disabled="true">
+                  <i class="${m.icon}"></i>&nbsp; ${m.label} - Coming Soon
+              </span>`;
+          }
+
+          // Mirror aktif. `download: true` hanya untuk link file langsung;
+          // mirror eksternal (SourceForge/GDrive) dibuka di tab baru.
+          const attrs = m.download
+            ? "download"
+            : 'target="_blank" rel="noopener"';
+
+          return `
+              <a href="${m.url}" class="btn btn-block" ${attrs}>
+                  <i class="${m.icon}"></i>&nbsp; ${m.label}
+              </a>`;
+        })
+        .join("");
+
+      /* Petunjuk verifikasi setelah download (selalu tampil) */
+      const verify = `
+            <p style="margin-top:12px; font-size:.8rem; color:var(--text-muted);">
+                Verify after download:<br>
+                <code style="color:var(--forest-light);">sha256sum t4nos-${version.toLowerCase()}*.iso</code>
+            </p>`;
+
+      /* Jika versi tidak punya mirror sama sekali → pesan fallback */
+      linksEl.innerHTML =
+        (buttons || "<p>Link download belum tersedia.</p>") + verify;
 
       modal.classList.add("active");
     });
