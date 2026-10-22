@@ -162,8 +162,8 @@ const CONFIG = {
         "[OK] Authentication successful.",
         "[*] Syncing VUR repository...",
         "[*] t4n-repo synchronized...",
-        "[ OK ] 41 packages available.",
-        "[ OK ] 871 packages available.",
+        "[ OK ] 41 VUR packages are available.",
+        "[ OK ] 871 XBPS packages are available.",
       ],
     },
     {
@@ -175,7 +175,7 @@ const CONFIG = {
       output: [
         "  os     : T4n OS (Void Linux)",
         "  init   : runit",
-        "  pkg    : xbps + let-x (VUR)",
+        "  pkg    : xbps + VUR",
         "  uptime : community driven ♥",
       ],
     },
@@ -281,7 +281,7 @@ function initTerminal() {
 
     const prefix = document.createElement("span");
     prefix.className = "cmd-prefix";
-    prefix.textContent = "t4nlabs@t4nos:~$";
+    prefix.textContent = "t4nos@t4nlabs:~$";
 
     const text = document.createElement("span");
     const cursor = document.createElement("span");

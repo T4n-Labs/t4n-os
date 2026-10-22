@@ -1,4 +1,8 @@
+# robots.txt — T4n OS (https://t4nos.t4nlabs.web.id)
+# Izinkan semua mesin pencari meng-crawl seluruh situs
+
 User-agent: *
 Allow: /
 
+# Sitemap
 Sitemap: https://t4nos.t4nlabs.web.id/sitemap.xml

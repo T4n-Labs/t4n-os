@@ -7,26 +7,106 @@
          Struktur : HTML murni (tanpa CSS/JS inline)
          CSS      : assets/style.css
          JS       : assets/script.js
+         SEO      : meta lengkap (OG, Twitter Card, canonical, hreflang,
+                    robots, JSON-LD @graph: WebSite + Organization
+                    + SoftwareApplication)
          ================================================================ -->
 
     <meta charset="UTF-8">
     <!-- Viewport dengan dukungan penuh untuk iOS/Android -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <title>T4n OS | The New ERA Void Linux</title>
-    <meta
-        name="description"
-        content="T4n OS is a Void Linux-based operating system designed to provide an easy-to-use, lightweight, and stable user experience.">
+
+    <!-- ===== SEO UTAMA ===== -->
+    <!-- Title ideal 50-60 karakter, memuat keyword utama -->
+    <title>T4n OS | Lightweight Void Linux-Based OS — Runit, XBPS & VUR</title>
+    <!-- Description ideal 140-160 karakter, unik per halaman -->
+    <meta name="description" content="T4n OS is a free, lightweight Linux distro based on Void Linux — fast, stable, and community driven, featuring runit init, XBPS, and the VUR user repository.">
+    <meta name="author" content="T4n Labs">
+    <meta name="keywords" content="T4n OS, Void Linux, lightweight Linux, Linux distro, runit, XBPS, VUR, Void User Repository, rolling release, distro Indonesia">
+    <!-- Instruksi crawling: izinkan index + preview gambar ukuran besar (Google Images/Discover) -->
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- Canonical: mencegah duplikasi konten antara /index.html dan / -->
+    <link rel="canonical" href="https://t4nos.t4nlabs.web.id/">
+    <!-- hreflang: versi Inggris (index.html) & Indonesia (id.html) -->
+    <link rel="alternate" hreflang="en" href="https://t4nos.t4nlabs.web.id/">
+    <link rel="alternate" hreflang="id" href="https://t4nos.t4nlabs.web.id/id.html">
+    <link rel="alternate" hreflang="x-default" href="https://t4nos.t4nlabs.web.id/">
+
     <meta name="theme-color" content="#050505">
     <link rel="icon" href="./assets/images/T4nOS.svg" type="image/svg+xml">
+    <!-- Ikon iOS/Apple: buat PNG 180x180 dari logo, lalu aktifkan baris di bawah ini -->
+    <!-- <link rel="apple-touch-icon" href="./assets/images/T4nOS-180.png"> -->
 
-    <meta property="og:site_name" content="T4n OS Wesbite" />
+    <!-- ===== OPEN GRAPH (Facebook, WhatsApp, Discord, LinkedIn) ===== -->
+    <meta property="og:site_name" content="T4n OS" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://t4nos.t4nlabs.web.id/" />
+    <meta property="og:title" content="T4n OS | Lightweight Void Linux-Based OS" />
+    <meta property="og:description" content="Fast • Lightweight • Community Driven. T4n OS delivers a minimal Void Linux experience with runit init, XBPS package manager, and the VUR ecosystem." />
+    <!-- OG image idealnya 1200x630 px (rasio 1.91:1) untuk preview maksimal -->
+    <meta property="og:image" content="https://t4nos.t4nlabs.web.id/assets/images/T4nOS.png" />
+    <meta property="og:image:alt" content="Logo T4n OS" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale:alternate" content="id_ID" />
+
+    <!-- ===== TWITTER CARD ===== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="T4n OS | Lightweight Void Linux-Based OS" />
+    <meta name="twitter:description" content="Fast • Lightweight • Community Driven. Minimal Void Linux experience with runit, XBPS, and the VUR ecosystem." />
+    <meta name="twitter:image" content="https://t4nos.t4nlabs.web.id/assets/images/T4nOS.png" />
+
+    <!-- ===== STRUCTURED DATA (schema.org JSON-LD) =====
+         @graph berisi 3 entitas: WebSite, Organization, SoftwareApplication
+         agar Google memahami situs, organisasi, dan produk OS-nya. -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "T4n OS Wesbite",
-        "url": "https://t4nos.t4nlabs.web.id"
-      }
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://t4nos.t4nlabs.web.id/#website",
+          "name": "T4n OS",
+          "alternateName": "T4n OS Website",
+          "url": "https://t4nos.t4nlabs.web.id/",
+          "inLanguage": ["en", "id"],
+          "publisher": { "@id": "https://t4nos.t4nlabs.web.id/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://t4nos.t4nlabs.web.id/#organization",
+          "name": "T4n Labs",
+          "url": "https://t4nos.t4nlabs.web.id/",
+          "logo": "https://t4nos.t4nlabs.web.id/assets/images/T4nOS.svg",
+          "sameAs": [
+            "https://github.com/T4n-Labs",
+            "https://gitlab.com/t4n-labs",
+            "https://www.instagram.com/t4n_labs",
+            "https://discord.gg/yM5s7RWBxq"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://t4nos.t4nlabs.web.id/#software",
+          "name": "T4n OS",
+          "operatingSystem": "Void Linux",
+          "applicationCategory": "OperatingSystem",
+          "description": "T4n OS is a free, lightweight, and stable Linux distribution based on Void Linux with runit init, XBPS package manager, and VUR (Void User Repository).",
+          "url": "https://t4nos.t4nlabs.web.id/",
+          "downloadUrl": "https://t4nos.t4nlabs.web.id/#download",
+          "softwareVersion": "Stable",
+          "fileSize": "1.4GB",
+          "featureList": "Calamares GUI installer (glibc), runit init, XBPS package manager, VUR (Void User Repository), rolling release",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "author": { "@id": "https://t4nos.t4nlabs.web.id/#organization" },
+          "keywords": "Void Linux, runit, XBPS, VUR, lightweight Linux, rolling release, community driven"
+        }
+      ]
+    }
     </script>
 
     <!-- ===== External Resources ===== -->
@@ -35,7 +115,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome 6 (ikon) -->
+    <!-- Font Awesome 6 (ikon) — preconnect ke CDN agar CSS pihak ketiga dimuat lebih cepat -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- ===== STYLESHEET UTAMA ===== -->
@@ -47,7 +128,9 @@
          PRELOADER — Simulasi boot sequence Linux
          Log & logo dikendalikan oleh script.js (initPreloader)
          ================================================================ -->
-    <div class="preloader" id="preloader">
+    <!-- aria-hidden: preloader murni dekoratif, disembunyikan dari screen reader.
+         H1 utama halaman tetap ada di hero section. -->
+    <div class="preloader" id="preloader" aria-hidden="true">
         <div class="boot-container">
             <div class="boot-log" id="boot-log">
                 <span class="cursor-block"></span>
@@ -77,10 +160,10 @@
             <ul class="nav-links">
                 <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#download">Download</a></li>
-                <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank">Docs</a></li>
-                <li><a href="https://vur.t4nlabs.web.id" target="_blank">VUR</a></li>
-                <li><a href="https://repo.t4nlabs.web.id" target="_blank">Repository</a></li>
-                <li><a href="./id.html">🇮🇩 ID</a></li>
+                <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" rel="noopener">Docs</a></li>
+                <li><a href="https://vur.t4nlabs.web.id" target="_blank" rel="noopener">VUR</a></li>
+                <li><a href="https://repo.t4nlabs.web.id" target="_blank" rel="noopener">Repository</a></li>
+                <li><a href="./id.html" hreflang="id" rel="alternate">🇮🇩 ID</a></li>
             </ul>
         </nav>
     </header>
@@ -98,8 +181,8 @@
 
                 <div class="hero-buttons">
                     <a href="#download" class="btn">Stable</a>
-                    <a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" class="btn btn-outline">Documentation</a>
-                    <a href="https://t4nos-docs.t4nlabs.web.id/02/01.html" target="_blank" class="btn">Installation Guide</a>
+                    <a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" rel="noopener" class="btn btn-outline">Documentation</a>
+                    <a href="https://t4nos-docs.t4nlabs.web.id/02/01.html" target="_blank" rel="noopener" class="btn">Installation Guide</a>
                 </div>
 
                 <div class="hero-stats">
@@ -148,7 +231,7 @@
                 </p>
                 <p>
                     T4n OS was developed in Indonesia, Atjeh, and was first initiated by
-                    <a href="https://gh0st4n.my.id/" target="_blank">Gh0sT4n</a> on August 17, 2025,
+                    <a href="https://gh0st4n.my.id/" target="_blank" rel="noopener">Gh0sT4n</a> on August 17, 2025,
                     a student from Aceh (Darussa'adah Cot Tarom Baroh - SMKN 5 Takengon). The
                     development of T4n OS uses a community-driven approach: from the community, by
                     the community, and for the community.
@@ -239,21 +322,21 @@
             <h2 class="section-title"><span>Gallery</span></h2>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="./assets/images/T4nOS.png" alt="T4n OS Desktop">
+                    <img src="./assets/images/T4nOS.png" alt="T4n OS default desktop screenshot with clean and minimalist user interface" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>User Interface</h3>
                         <p>Clean & Minimalist</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="./assets/images/XFCE.png" alt="T4n OS XFCE">
+                    <img src="./assets/images/XFCE.png" alt="T4n OS XFCE edition desktop with customized XFCE4 environment" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>T4n OS XFCE</h3>
                         <p>Customize XFCE</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="./assets/images/Tools.png" alt="VUR-Helper">
+                    <img src="./assets/images/Tools.png" alt="Terminal window running Let-X, the VUR helper for the Void User Repository" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>Terminal Workflow</h3>
                         <p>Let-X - VUR Helper</p>
@@ -269,6 +352,18 @@
                 <div class="download-info" style="text-align: center; margin-bottom: 40px;">
                     <h3 style="margin-bottom: 10px;">Choose Your Edition</h3>
                     <p>Available in several variants tailored to your specific needs.</p>
+
+                    <!-- Badge Calamares: pengumuman kompak 1 baris, menyatu dengan tema
+                         (pakai CSS vars: --border-forest, --forest-light). Kredit config:
+                         T4n-Labs/calamares (adopsi dari noid-linux). -->
+                    <div class="calamares-badge"
+                        style="display:inline-flex; align-items:center; gap:8px; margin-top:12px; padding:6px 16px; border:1px solid var(--border-forest); border-radius:999px; background:rgba(45,106,79,0.15);">
+                        <i class="fas fa-wand-magic-sparkles" style="color:var(--forest-light);" aria-hidden="true"></i>
+                        <span style="font-size:0.78rem; color:var(--text-main);">
+                            <strong style="color:var(--forest-light); text-transform:uppercase;">New</strong>
+                            · Calamares GUI Installer now available (glibc only)
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Official Downloads -->
@@ -285,7 +380,7 @@
                                 <li><i class="fas fa-check"></i> Command Line Interface </li>
                                 <li><i class="fas fa-check"></i> init - Runit </li>
                                 <li><i class="fas fa-check"></i> Basic Utilities </li>
-				                <li><i class="fa-solid fa-xmark"></i> GUI Installer </li>
+                                                <li><i class="fa-solid fa-xmark"></i> GUI Installer </li>
                             </ul>
                         </div>
                         <div class="download-footer">
@@ -305,7 +400,7 @@
                                 <li><i class="fas fa-check"></i> Server Optimized CLI </li>
                                 <li><i class="fas fa-check"></i> init - Runit Custom </li>
                                 <li><i class="fas fa-check"></i> Security Hardening </li>
-				                <li><i class="fa-solid fa-xmark"></i> GUI Installer </li>
+                                                <li><i class="fa-solid fa-xmark"></i> GUI Installer </li>
                             </ul>
                         </div>
                         <div class="download-footer">
@@ -392,10 +487,10 @@
                         </p>
                     </div>
                     <div class="social-links">
-                        <a href="https://github.com/T4n-Labs" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="https://gitlab.com/t4n-labs" target="_blank" aria-label="GitLab"><i class="fab fa-gitlab"></i></a>
-                        <a href="https://www.instagram.com/t4n_labs" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://discord.gg/yM5s7RWBxq" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="https://github.com/T4n-Labs" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://gitlab.com/t4n-labs" target="_blank" rel="noopener" aria-label="GitLab"><i class="fab fa-gitlab"></i></a>
+                        <a href="https://www.instagram.com/t4n_labs" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://discord.gg/yM5s7RWBxq" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord"></i></a>
                     </div>
                 </div>
 
@@ -403,10 +498,10 @@
                 <div class="footer-section">
                     <h3>Source</h3>
                     <ul>
-                        <li><a href="https://voidlinux.org" target="_blank">Void Linux</a></li>
-                        <li><a href="https://docs.voidlinux.org" target="_blank">Void Linux Docs</a></li>
-                        <li><a href="https://infradocs.voidlinux.org" target="_blank">Void Linux Infra Docs</a></li>
-                        <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank">T4n OS Docs</a></li>
+                        <li><a href="https://voidlinux.org" target="_blank" rel="noopener">Void Linux</a></li>
+                        <li><a href="https://docs.voidlinux.org" target="_blank" rel="noopener">Void Linux Docs</a></li>
+                        <li><a href="https://infradocs.voidlinux.org" target="_blank" rel="noopener">Void Linux Infra Docs</a></li>
+                        <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" rel="noopener">T4n OS Docs</a></li>
                     </ul>
                 </div>
 
@@ -415,16 +510,16 @@
                     <h3>Contribute</h3>
                     <p>T4n OS is an open-source project that is open for contributions.</p>
                     <div class="contribute-grid">
-                        <a href="https://github.com/T4n-Labs" target="_blank" class="contribute-box">
+                        <a href="https://github.com/T4n-Labs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fab fa-github"></i> Github
                         </a>
-                        <a href="https://gitlab.com/t4n-labs" target="_blank" class="contribute-box">
+                        <a href="https://gitlab.com/t4n-labs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fab fa-gitlab"></i> Gitlab
                         </a>
-                        <a href="https://saweria.co/t4nlabs" target="_blank" class="contribute-box">
+                        <a href="https://saweria.co/t4nlabs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fas fa-mug-hot"></i> Saweria Donate
                         </a>
-                        <a href="https://kreate.gg/t4nlabs" target="_blank" class="contribute-box">
+                        <a href="https://kreate.gg/t4nlabs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fas fa-gamepad"></i> Kreate.gg Donate
                         </a>
                     </div>

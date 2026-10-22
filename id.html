@@ -9,26 +9,104 @@
          CSS     : assets/style.css   (dipakai bersama index.html)
          JS      : assets/script.js   (dipakai bersama index.html)
          Catatan : Jangan duplikat CSS/JS — cukup edit di folder assets/
+         SEO     : meta lengkap (OG, Twitter Card, canonical, hreflang,
+                   robots, JSON-LD @graph: WebSite + Organization
+                   + SoftwareApplication)
          ================================================================ -->
 
     <meta charset="UTF-8">
     <!-- Viewport dengan dukungan penuh untuk iOS/Android -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
-    <title>T4n OS | Era Baru Void Linux</title>
-    <meta
-        name="description"
-        content="T4n OS adalah sistem operasi berbasis Void Linux yang dirancang untuk memberikan pengalaman penggunaan yang mudah, ringan, dan stabil.">
+    <title>T4n OS | Distro Linux Ringan & Stabil Berbasis Void Linux</title>
+    <!-- Description ideal 140-160 karakter, unik per halaman -->
+    <meta name="description" content="T4n OS adalah distro Linux gratis, ringan, dan stabil berbasis Void Linux — cepat, digerakkan komunitas, dengan runit, XBPS, dan repositori VUR.">
+    <meta name="author" content="T4n Labs">
+    <meta name="keywords" content="T4n OS, Void Linux, distro linux indonesia, linux ringan, distro indonesia, runit, XBPS, VUR, Void User Repository, rolling release">
+    <!-- Instruksi crawling: izinkan index + preview gambar ukuran besar (Google Images/Discover) -->
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <!-- Canonical: URL resmi versi Bahasa Indonesia -->
+    <link rel="canonical" href="https://t4nos.t4nlabs.web.id/id.html">
+    <!-- hreflang: versi Indonesia (id.html) & Inggris (index.html) -->
+    <link rel="alternate" hreflang="id" href="https://t4nos.t4nlabs.web.id/id.html">
+    <link rel="alternate" hreflang="en" href="https://t4nos.t4nlabs.web.id/">
+    <link rel="alternate" hreflang="x-default" href="https://t4nos.t4nlabs.web.id/">
+
     <meta name="theme-color" content="#050505">
     <link rel="icon" href="./assets/images/T4nOS.svg" type="image/svg+xml">
+    <!-- Ikon iOS/Apple: buat PNG 180x180 dari logo, lalu aktifkan baris di bawah ini -->
+    <!-- <link rel="apple-touch-icon" href="./assets/images/T4nOS-180.png"> -->
 
-    <meta property="og:site_name" content="T4n OS Wesbite" />
+    <!-- ===== OPEN GRAPH (Facebook, WhatsApp, Discord, LinkedIn) ===== -->
+    <meta property="og:site_name" content="T4n OS" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://t4nos.t4nlabs.web.id/id.html" />
+    <meta property="og:title" content="T4n OS | Distro Linux Ringan Berbasis Void Linux" />
+    <meta property="og:description" content="Cepat • Ringan • Digerakkan Komunitas. T4n OS menghadirkan pengalaman Void Linux yang minimalis dengan runit, XBPS, dan ekosistem VUR." />
+    <!-- OG image idealnya 1200x630 px (rasio 1.91:1) untuk preview maksimal -->
+    <meta property="og:image" content="https://t4nos.t4nlabs.web.id/assets/images/T4nOS.png" />
+    <meta property="og:image:alt" content="Logo T4n OS" />
+    <meta property="og:locale" content="id_ID" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- ===== TWITTER CARD ===== -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="T4n OS | Distro Linux Ringan Berbasis Void Linux" />
+    <meta name="twitter:description" content="Cepat • Ringan • Digerakkan Komunitas. Pengalaman Void Linux yang minimalis dengan runit, XBPS, dan ekosistem VUR." />
+    <meta name="twitter:image" content="https://t4nos.t4nlabs.web.id/assets/images/T4nOS.png" />
+
+    <!-- ===== STRUCTURED DATA (schema.org JSON-LD) =====
+         @graph berisi 3 entitas: WebSite, Organization, SoftwareApplication
+         agar Google memahami situs, organisasi, dan produk OS-nya.
+         @id konsisten dengan index.html agar entitas tergabung di Google. -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "T4n OS Wesbite",
-        "url": "https://t4nos.t4nlabs.web.id"
-      }
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://t4nos.t4nlabs.web.id/#website",
+          "name": "T4n OS",
+          "alternateName": "Situs Web T4n OS",
+          "url": "https://t4nos.t4nlabs.web.id/",
+          "inLanguage": ["id", "en"],
+          "publisher": { "@id": "https://t4nos.t4nlabs.web.id/#organization" }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://t4nos.t4nlabs.web.id/#organization",
+          "name": "T4n Labs",
+          "url": "https://t4nos.t4nlabs.web.id/",
+          "logo": "https://t4nos.t4nlabs.web.id/assets/images/T4nOS.svg",
+          "sameAs": [
+            "https://github.com/T4n-Labs",
+            "https://gitlab.com/t4n-labs",
+            "https://www.instagram.com/t4n_labs",
+            "https://discord.gg/yM5s7RWBxq"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://t4nos.t4nlabs.web.id/#software",
+          "name": "T4n OS",
+          "operatingSystem": "Void Linux",
+          "applicationCategory": "OperatingSystem",
+          "description": "T4n OS adalah distribusi Linux gratis, ringan, dan stabil berbasis Void Linux dengan runit, XBPS package manager, dan VUR (Void User Repository).",
+          "url": "https://t4nos.t4nlabs.web.id/",
+          "downloadUrl": "https://t4nos.t4nlabs.web.id/id.html#download",
+          "softwareVersion": "Stable",
+          "fileSize": "1.4GB",
+          "featureList": "Installer GUI Calamares (glibc), init runit, XBPS package manager, VUR (Void User Repository), rolling release",
+          "isAccessibleForFree": true,
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "author": { "@id": "https://t4nos.t4nlabs.web.id/#organization" },
+          "keywords": "Void Linux, runit, XBPS, VUR, linux ringan, rolling release, digerakkan komunitas"
+        }
+      ]
+    }
     </script>
 
     <!-- ===== Sumber Eksternal ===== -->
@@ -37,7 +115,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 
-    <!-- Font Awesome 6 (ikon) -->
+    <!-- Font Awesome 6 (ikon) — preconnect ke CDN agar CSS pihak ketiga dimuat lebih cepat -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- ===== STYLESHEET UTAMA (bersama index.html) ===== -->
@@ -49,7 +128,9 @@
          PRELOADER — Simulasi urutan boot Linux (4 fase)
          Log & logo dikendalikan oleh script.js (initPreloader)
          ================================================================ -->
-    <div class="preloader" id="preloader">
+    <!-- aria-hidden: preloader murni dekoratif, disembunyikan dari screen reader.
+         H1 utama halaman tetap ada di hero section. -->
+    <div class="preloader" id="preloader" aria-hidden="true">
         <div class="boot-container">
             <div class="boot-log" id="boot-log">
                 <span class="cursor-block"></span>
@@ -78,12 +159,11 @@
 
             <ul class="nav-links">
                 <li><a href="#home" class="active">Beranda</a></li>
-                <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#download">Download</a></li>
-                <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank">Docs</a></li>
-                <li><a href="https://vur.t4nlabs.web.id" target="_blank">VUR</a></li>
-                <li><a href="https://repo.t4nlabs.web.id" target="_blank">Repository</a></li>
-                <li><a href="./index.html">🇬🇧 EN</a></li>
+                <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" rel="noopener">Docs</a></li>
+                <li><a href="https://vur.t4nlabs.web.id" target="_blank" rel="noopener">VUR</a></li>
+                <li><a href="https://repo.t4nlabs.web.id" target="_blank" rel="noopener">Repository</a></li>
+                <li><a href="./index.html" hreflang="en" rel="alternate">🇬🇧 EN</a></li>
             </ul>
         </nav>
     </header>
@@ -101,8 +181,8 @@
 
                 <div class="hero-buttons">
                     <a href="#download" class="btn">Stabil</a>
-                    <a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" class="btn btn-outline">Dokumentasi</a>
-                    <a href="https://t4nos-docs.t4nlabs.web.id/02/01.html target="_blank" class="btn">Panduan Instalasi</a>
+                    <a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" rel="noopener" class="btn btn-outline">Dokumentasi</a>
+                    <a href="https://t4nos-docs.t4nlabs.web.id/02/01.html" target="_blank" rel="noopener" class="btn">Panduan Instalasi</a>
                 </div>
 
                 <div class="hero-stats">
@@ -151,7 +231,7 @@
                 </p>
                 <p>
                     T4n OS dikembangkan di Indonesia, Atjeh, dan pertama kali diinisiasi oleh
-                    <a href="https://gh0st4n.my.id/" target="_blank">Gh0sT4n</a> pada
+                    <a href="https://gh0st4n.my.id/" target="_blank" rel="noopener">Gh0sT4n</a> pada
                     17 Agustus 2025, seorang pelajar asal Aceh (Darussa'adah Cot Tarom Baroh -
                     SMKN 5 Takengon). Pengembangan T4n OS menggunakan pendekatan
                     community-driven: dari komunitas, oleh komunitas, dan untuk komunitas.
@@ -242,21 +322,21 @@
             <h2 class="section-title"><span>Galeri</span></h2>
             <div class="gallery-grid">
                 <div class="gallery-item">
-                    <img src="./assets/images/T4nOS.png" alt="Desktop T4n OS">
+                    <img src="./assets/images/T4nOS.png" alt="Tangkapan layar desktop bawaan T4n OS dengan antarmuka bersih dan minimalis" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>Antarmuka Pengguna</h3>
                         <p>Bersih &amp; Minimalis</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="./assets/images/XFCE.png" alt="T4n OS XFCE">
+                    <img src="./assets/images/XFCE.png" alt="Desktop T4n OS edisi XFCE dengan lingkungan XFCE4 yang dikustomisasi" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>T4n OS XFCE</h3>
                         <p>Kustomisasi XFCE</p>
                     </div>
                 </div>
                 <div class="gallery-item">
-                    <img src="./assets/images/Tools.png" alt="VUR-Helper">
+                    <img src="./assets/images/Tools.png" alt="Jendela terminal menjalankan Let-X, VUR helper untuk Void User Repository" loading="lazy" decoding="async">
                     <div class="gallery-overlay">
                         <h3>Alur Kerja Terminal</h3>
                         <p>Let-X - VUR Helper</p>
@@ -274,6 +354,18 @@
             <div class="download-info" style="text-align: center; margin-bottom: 40px;">
                 <h3 style="margin-bottom: 10px;">Pilih Edisi Anda</h3>
                 <p>Tersedia dalam beberapa varian yang disesuaikan dengan kebutuhan spesifik Anda.</p>
+
+                <!-- Badge Calamares: pengumuman kompak 1 baris, menyatu dengan tema
+                     (pakai CSS vars: --border-forest, --forest-light). Kredit config:
+                     T4n-Labs/calamares (adopsi dari noid-linux). -->
+                <div class="calamares-badge"
+                    style="display:inline-flex; align-items:center; gap:8px; margin-top:12px; padding:6px 16px; border:1px solid var(--border-forest); border-radius:999px; background:rgba(45,106,79,0.15);">
+                    <i class="fas fa-wand-magic-sparkles" style="color:var(--forest-light);" aria-hidden="true"></i>
+                    <span style="font-size:0.78rem; color:var(--text-main);">
+                        <strong style="color:var(--forest-light); text-transform:uppercase;">Baru</strong>
+                        · Calamares GUI Installer kini tersedia (glibc only)
+                    </span>
+                </div>
             </div>
 
             <div class="download-options">
@@ -396,10 +488,10 @@
                         </p>
                     </div>
                     <div class="social-links">
-                        <a href="https://github.com/T4n-Labs" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="https://gitlab.com/t4n-labs" target="_blank" aria-label="GitLab"><i class="fab fa-gitlab"></i></a>
-                        <a href="https://www.instagram.com/t4n_labs" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://discord.gg/yM5s7RWBxq" target="_blank" aria-label="Discord"><i class="fab fa-discord"></i></a>
+                        <a href="https://github.com/T4n-Labs" target="_blank" rel="noopener" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="https://gitlab.com/t4n-labs" target="_blank" rel="noopener" aria-label="GitLab"><i class="fab fa-gitlab"></i></a>
+                        <a href="https://www.instagram.com/t4n_labs" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://discord.gg/yM5s7RWBxq" target="_blank" rel="noopener" aria-label="Discord"><i class="fab fa-discord"></i></a>
                     </div>
                 </div>
 
@@ -407,10 +499,10 @@
                 <div class="footer-section">
                     <h3>Source</h3>
                     <ul>
-                        <li><a href="https://voidlinux.org" target="_blank">Void Linux</a></li>
-                        <li><a href="https://docs.voidlinux.org" target="_blank">Void Linux Docs</a></li>
-                        <li><a href="https://infradocs.voidlinux.org" target="_blank">Void Linux Infra Docs</a></li>
-                        <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank">T4n OS Docs</a></li>
+                        <li><a href="https://voidlinux.org" target="_blank" rel="noopener">Void Linux</a></li>
+                        <li><a href="https://docs.voidlinux.org" target="_blank" rel="noopener">Void Linux Docs</a></li>
+                        <li><a href="https://infradocs.voidlinux.org" target="_blank" rel="noopener">Void Linux Infra Docs</a></li>
+                        <li><a href="https://t4nos-docs.t4nlabs.web.id" target="_blank" rel="noopener">T4n OS Docs</a></li>
                     </ul>
                 </div>
 
@@ -419,16 +511,16 @@
                     <h3>Contribute</h3>
                     <p>T4n OS adalah proyek sumber terbuka yang menerima kontribusi.</p>
                     <div class="contribute-grid">
-                        <a href="https://github.com/T4n-Labs" target="_blank" class="contribute-box">
+                        <a href="https://github.com/T4n-Labs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fab fa-github"></i> Github
                         </a>
-                        <a href="https://gitlab.com/t4n-labs" target="_blank" class="contribute-box">
+                        <a href="https://gitlab.com/t4n-labs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fab fa-gitlab"></i> Gitlab
                         </a>
-                        <a href="https://saweria.co/t4nlabs" target="_blank" class="contribute-box">
+                        <a href="https://saweria.co/t4nlabs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fas fa-mug-hot"></i> Saweria Donate
                         </a>
-                        <a href="https://kreate.gg/t4nlabs" target="_blank" class="contribute-box">
+                        <a href="https://kreate.gg/t4nlabs" target="_blank" rel="noopener" class="contribute-box">
                             <i class="fas fa-gamepad"></i> Kreate.gg Donate
                         </a>
                     </div>
